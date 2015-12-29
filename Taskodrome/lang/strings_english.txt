@@ -1,0 +1,13 @@
+<?php
+
+# Copyright (c) 2015 Maxim Kuzmin
+# Licensed under the Apache license
+
+$s_plugin_Taskodrome_ = '';
+$s_plugin_Taskodrome_title = 'Taskodrome';
+$s_plugin_Taskodrome_description = 'Interactive scrum board';
+
+$s_plugin_Taskodrome_board = 'Taskodrome';
+
+$s_plugin_Taskodrome_assignment_board = 'Assignment board';
+$s_plugin_Taskodrome_status_board = 'Status board';
