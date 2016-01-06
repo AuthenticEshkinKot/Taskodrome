@@ -30,15 +30,16 @@ var bugsToSend = [];
 
 function init() {
 	myPanel = new createjs.Stage("panel");
-	
+
 	var parentDiv = document.getElementById("dev-grid");
-	
+
 	parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
 	parentHeight = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height")) - V_PADDING_CORRECTION;
-	
-	sortIssues();
-	
-	draw();
+
+  security_token = getSecurityToken();
+  
+  sortIssues();
+  draw();
 }
 
 function draw() {
@@ -159,7 +160,26 @@ function sendRequest(bugIndex)
   requestToken.send(null);
 }
 
+function getSecurityToken() {
+  return document.getElementsByClassName("token_assign")[0].getAttribute("token");
+}
+
+function getUsersRaw() {
+  var ret = [];
+  var array = document.getElementsByClassName("user_data");
+
+  for(var i = 0; i != array.length; ++i) {
+    var el = array[i];
+    ret[i] = { name :  el.getAttribute("name"), 
+      id : el.getAttribute("id")
+    };
+  }
+
+  return ret;
+}
+
 function sortIssues() {
+  var users = getUsersRaw();
 	users.sort( function (a, b) { if(a.name > b.name) return 1; else return -1; });
 	
 	issues = [];

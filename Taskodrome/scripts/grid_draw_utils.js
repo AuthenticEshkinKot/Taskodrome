@@ -6,6 +6,12 @@ var MIN_COL_WIDTH = 140;
 var update = false;
 var stageToUpdate;
 
+function fullRedraw() {
+  draw();
+  sortIssues_st();
+  draw_st();
+}
+
 function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gridName, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
 	var colNumber = issues.length;
 	var colWidth = (width - 2 * H_OFFSET) / colNumber;

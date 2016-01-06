@@ -1,7 +1,12 @@
 <link rel="stylesheet" type="text/css" href="<?php echo plugin_file( 'taskodrome.css' ) ?>"/>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js"></script>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_common_utils.js"></script>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_draw_utils.js"></script>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/devs_grid.js"></script>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/status_grid.js"></script>
+<script type="text/javascript" src="./plugins/Taskodrome/scripts/on_load_opening.js"></script>
 
 <?php
-
   html_page_top( plugin_lang_get( 'board' ) );
 
   /**
@@ -9,9 +14,9 @@
   */
   require_once( 'current_user_api.php' );
   /**
-	 * requires bug_api
-	 */
-	require_once( 'bug_api.php' );
+   * requires bug_api
+  */
+  require_once( 'bug_api.php' );
 	/**
 	 * requires string_api
 	 */
@@ -37,181 +42,79 @@
 	
 	$rows = filter_get_bug_rows( $f_page_number, $t_per_page, $t_page_count, $t_bug_count, null, null, null, true );
 
-	function write_bug_rows( $p_rows )
-	{
-		class Issue	{
-			public $id;
-			public $summary;
-			public $number;
-			public $status;
-			public $topColor;
-			public $bottomColor;
-			public $updateTime;
-		}
-		
-		$issues_raw = array();
+  function write_bug_rows( $p_rows )
+  {
+    $user_array = get_user_array();
+    $issues_array_html = '';
 
-		$user_array = get_user_array();
+    $t_rows = count( $p_rows );
+    for( $i=0; $i < $t_rows; $i++ ) {
+      $t_row = $p_rows[$i];
 
-		$t_rows = count( $p_rows );
-		for( $i=0; $i < $t_rows; $i++ ) {
-			$t_row = $p_rows[$i];
-			
-			$newIssue = new Issue();
-			$newIssue->id = $t_row->id;
-			$newIssue->summary = $t_row->summary;
-			$newIssue->status = $t_row->status;
-			
-			$newIssue->number = $t_row->handler_id;
-			$newIssue->topColor = '#0000FF';
-			$newIssue->bottomColor = '#FF0000';
-			$newIssue->updateTime = $t_row->last_updated;
-			
-			array_push($issues_raw, $newIssue);
-		}
-		
-		print '<script>
-		
-		function onLoadOpening() {
-			var mark_index = window.location.href.lastIndexOf("#");
-			
-			document.getElementById("tab_l1").style.display = "block";
-      document.getElementById("tab_l2").style.display = "block";
-		
-			if(mark_index != -1)
-			{			
-				var prevGrid = window.location.href.substr(mark_index + 1, 2);
-				if (prevGrid == "dg")
-				{				
-					document.getElementById("tab_1").checked = "checked";
-				}
-				else if (prevGrid == "sg")
-				{
-					document.getElementById("tab_2").checked = "checked";
-				}
-			}
-			else
-			{
-        document.getElementById("tab_1").checked = "checked";
-			}
-		}
-		</script>
-		';
-		
-		print '<section class="tabs">
-		<input id="tab_1" type="radio" name="tab" />
-		<input id="tab_2" type="radio" name="tab" />
+      $issues_array_html = $issues_array_html . '<p hidden="true" class="issue_data" ';
+      $issues_array_html = $issues_array_html . 'id="'.$t_row->id.'" ';
+      $issues_array_html = $issues_array_html . 'summary="'.$t_row->summary.'" ';
+      $issues_array_html = $issues_array_html . 'status="'.$t_row->status.'" ';
+      $issues_array_html = $issues_array_html . 'number="'.$t_row->handler_id.'" ';
+      $issues_array_html = $issues_array_html . 'topColor="#0000FF" ';
+      $issues_array_html = $issues_array_html . 'bottomColor="#FF0000" ';
+      $issues_array_html = $issues_array_html . 'updateTime="'.$t_row->last_updated.'" ';
+      $issues_array_html = $issues_array_html . '/>';
+    }
 
-		<label for="tab_1" id="tab_l1">' . plugin_lang_get("assignment_board") . '</label>
-		<label for="tab_2" id="tab_l2">' . plugin_lang_get("status_board") . '</label>
-		<div style="clear:both"></div>
-		
-		<script>
-		onLoadOpening();
-		</script>
-		
-		<div class="tabs_cont">
-		<div id="tab_c1">
-		';
-		
-		$issues_array = '
-		var issues_raw = [];
-		';
-		
-		$length = count($issues_raw);
-		$issues_array = $issues_array . 'issues_raw = [';
-		for( $i=0; $i != $length; ++$i ) {
-			$issues_array = $issues_array . '{ ';
-			$issues_array = $issues_array . 'id : "'.$issues_raw[$i]->id.'", ';
-			$issues_array = $issues_array . 'summary : "'.$issues_raw[$i]->summary.'", ';
-			$issues_array = $issues_array . 'status : "'.$issues_raw[$i]->status.'", ';
-			$issues_array = $issues_array . 'number : "'.$issues_raw[$i]->number.'", ';
-			$issues_array = $issues_array . 'topColor : "'.$issues_raw[$i]->topColor.'", ';
-			$issues_array = $issues_array . 'bottomColor : "'.$issues_raw[$i]->bottomColor.'", ';
-			$issues_array = $issues_array . 'updateTime : "'.$issues_raw[$i]->updateTime.'"';
-			$issues_array = $issues_array . ' }';
+    print $issues_array_html;
 
-			if( $i < $length - 1 ) {
-				$issues_array = $issues_array . ', ';
-			}
-		}
+    $users = '';
+    $user_number = count($user_array);
+    for( $i=0; $i != $user_number; $i++ ) {
+      $users = $users . '<p hidden="true" class="user_data" ';
+      $users = $users . 'name="'.$user_array[$i]->name.'"';
+      $users = $users . 'id="'.$user_array[$i]->id.'"';
+      $users = $users . '/>';
+    }
 
-		$issues_array = $issues_array . '];
-		';		
-		
-		print '<script>
-		' . $issues_array . '
-		</script>
-		';
-		
-		print '<script>
-		function fullRedraw() {
-			draw();
-			sortIssues_st();
-			draw_st();
-		}
-		</script>
-		';
-		
-		print '<script type="text/javascript" src="./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js"></script>
-		<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_common_utils.js"></script>
-		<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_draw_utils.js"></script>
-		<script type="text/javascript" src="./plugins/Taskodrome/scripts/devs_grid.js"></script>
-		<div id="dev-grid" class="grid">
-		<canvas id="panel">
-		</canvas>
-		</div>
-		<script>
-		';
-		
-		$users_array = 'var users = [];
-		';
-		$length = count($user_array);
-		for( $i=0; $i != $length; $i++ ) {
-			$users_array = $users_array . 'users['.$i.'] = { name : "'.$user_array[$i]->name.'" , id : "'.$user_array[$i]->id.'" };
-			';
-		}
-		
-		$security_token = '
-		var security_token = "'. form_security_token("bug_assign") . '"
-		';
-		
-		$result = $users_array . '' . $security_token . 'init();
-		</script>
-		';
-		
-		print $result;
-    
+    print $users;
+
+    print '<p hidden="true" class="token_assign" token="'.form_security_token("bug_assign").'"/>';
+    print '<p hidden="true" class="token_update" token="'.form_security_token("bug_update").'"/>';
+
+    print '<section class="tabs">
+    <input id="tab_1" type="radio" name="tab" />
+    <input id="tab_2" type="radio" name="tab" />
+
+    <label for="tab_1" id="tab_l1">' . plugin_lang_get("assignment_board") . '</label>
+    <label for="tab_2" id="tab_l2">' . plugin_lang_get("status_board") . '</label>
+    <div style="clear:both"></div>
+
+    <div class="tabs_cont">
+    <div id="tab_c1">
+    ';
+
+    print '<div id="dev-grid" class="grid">
+    <canvas id="panel">
+    </canvas>
+    </div>
+    ';
+
     html_page_bottom();
-    
-		print '</div>';
-		
-		print '<div id="tab_c2">
-		<script type="text/javascript" src="./plugins/Taskodrome/scripts/status_grid.js"></script>
-		<div id="st-grid" class="grid">
-		<canvas id="panel_st">
-		</canvas>
-		</div>
-		<script>
-		';
-		
-		$security_token = '
-		var security_token_st = "'. form_security_token("bug_update") . '"
-		';
-		
-		$result = $security_token . '' . 'statusInit();
-		</script>';
 
-		print $result;
-    
+    print '</div>';
+
+    print '<div id="tab_c2">
+    <div id="st-grid" class="grid">
+    <canvas id="panel_st">
+    </canvas>
+    </div>
+    ';
+
     html_page_bottom();
-		
-		print '</div>';
-		
-		print '</div>
-		</section>
-		';
-	}
+
+    print '</div>';
+
+    print '</div>
+    </section>
+    ';
+  }
 
 	function get_user_array()
 	{

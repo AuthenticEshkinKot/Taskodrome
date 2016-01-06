@@ -12,6 +12,25 @@ function getColorByStatus(issueStatus) {
 	}
 }
 
+function getIssuesRaw() {
+  var ret = [];
+  var array = document.getElementsByClassName("issue_data");
+  
+  for(var i = 0; i != array.length; ++i) {
+    var el = array[i];
+    ret[i] = { id : el.getAttribute("id"),
+      summary : el.getAttribute("summary"),
+      status : el.getAttribute("status"),
+      number : el.getAttribute("number"),
+      topColor: el.getAttribute("topColor"),
+      bottomColor: el.getAttribute("bottomColor"),
+      updateTime: el.getAttribute("updateTime")
+    };
+  }
+  
+  return ret;
+}
+
 function sortByNumbers(input_issues) {
 	for(var i = 0; i < input_issues.length; ++i)
 	{

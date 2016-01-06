@@ -37,9 +37,11 @@ function statusInit() {
 	
 	parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
 	parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height")) - V_PADDING_CORRECTION;
-	
+  
+  security_token_st = getSecurityToken_st();
+
 	sortIssues_st();
-	
+
 	draw_st();
 }
 
@@ -158,6 +160,10 @@ function sendRequest_st(bugIndex)
   var status = bugsToSend_st[bugIndex].status;
   var parameters = "id=" + bug_id + "&new_status=" + status;
   requestToken.send(parameters);
+}
+
+function getSecurityToken_st() {
+  return document.getElementsByClassName("token_update")[0].getAttribute("token");
 }
 
 function sortIssues_st() {
