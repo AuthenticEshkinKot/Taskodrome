@@ -68,14 +68,20 @@ function onPressUp(evt) {
 	issues[newColumnIndex].splice(issues[newColumnIndex].length, 0, selectedCard.value);
 
 	if(selectedCardSourceIndex.value != newColumnIndex) {
-    if(newColumnIndex != 0)
-    {
-      selectedCard.value.status = '50';
-    }
 		selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 		
     var handler_id = user_ids[newColumnIndex];
     var bug_id = selectedCard.value.id;
+    
+    if(handler_id == 0)
+    {
+      selectedCard.value.status = '10';
+    }
+    else
+    {
+      selectedCard.value.status = '50';
+    }
+    
     bugsToSend.push({ handler_id : handler_id, bug_id : bug_id });
     
     if (bugsToSend.length == 1) {
