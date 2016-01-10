@@ -73,11 +73,7 @@ function onPressUp(evt) {
     var handler_id = user_ids[newColumnIndex];
     var bug_id = selectedCard.value.id;
     
-    if(handler_id == 0)
-    {
-      selectedCard.value.status = '10';
-    }
-    else
+    if(handler_id != 0)
     {
       selectedCard.value.status = '50';
     }
