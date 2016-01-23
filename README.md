@@ -5,4 +5,4 @@ Interactive scrum board for Mantis bugtracker 1.2.9 and later.
 Just copy Taskodrome folder to mantisbt plugin directory.
 
 # Screenshots
-![alt tag](http://imgur.com/HJAEvNk)
+![demo](Screenshots/animation_crop.gif)
