@@ -164,7 +164,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 	}
 	
 	card.on("mousedown", function(evt) {
-		//console.log("mousedown");		
+		//console.log("mousedown");
 		//console.log("mouse X = " + evt.stageX);
 		//console.log("mouse Y = " + evt.stageY);
 		
@@ -184,9 +184,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 						boolSuccess = true;
 						
 						selectedCard.value = issues[i][k];
-						selectedCardSourceIndex.value = i;
-						
-						issues[i].splice(k, 1);
+						selectedCardSourceIndex.value = { i, k };
 						
 						//console.log("Found! issues array index = " + i + " issue index = " + k + " selectedCard.id = " + selectedCard.id);
 					}

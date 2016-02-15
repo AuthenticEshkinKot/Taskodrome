@@ -65,11 +65,13 @@ function onPressUp_st(evt) {
 	var newColumnIndex = computeColumnIndex(evt.stageX, issues_st, H_OFFSET, columnWidth_st.value);
 	
 	if(newColumnIndex == -1) {
-		newColumnIndex = selectedCardSourceIndex_st.value;
+		newColumnIndex = selectedCardSourceIndex_st.value.i;
 	}
 	
-	issues_st[newColumnIndex].splice(issues_st[newColumnIndex].length, 0, selectedCard_st.value);
-	if(selectedCardSourceIndex_st.value != newColumnIndex) {
+  if(selectedCardSourceIndex_st.value.i != newColumnIndex) {
+    issues_st[selectedCardSourceIndex_st.value.i].splice(selectedCardSourceIndex_st.value.k, 1);
+    issues_st[newColumnIndex].splice(issues_st[newColumnIndex].length, 0, selectedCard_st.value);
+
     var status = getStatusByColumn_st(newColumnIndex);
 		selectedCard_st.value.status = status;
 		selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
