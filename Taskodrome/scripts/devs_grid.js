@@ -62,12 +62,13 @@ function onPressUp(evt) {
 	var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
 
 	if(newColumnIndex == -1) {
-		newColumnIndex = selectedCardSourceIndex.value;
+		newColumnIndex = selectedCardSourceIndex.value.i;
 	}
 
-	issues[newColumnIndex].splice(issues[newColumnIndex].length, 0, selectedCard.value);
+  if(selectedCardSourceIndex.value.i != newColumnIndex) {
+    issues[selectedCardSourceIndex.value.i].splice(selectedCardSourceIndex.value.k, 1);
+    issues[newColumnIndex].splice(issues[newColumnIndex].length, 0, selectedCard.value);
 
-	if(selectedCardSourceIndex.value != newColumnIndex) {
 		selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 		
     var handler_id = user_ids[newColumnIndex];
