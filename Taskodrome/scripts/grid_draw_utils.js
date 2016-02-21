@@ -52,7 +52,9 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 		return null;
 	}
 	
-	var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, ColParams, onPressUp);
+	var isStatusGrid = (gridName == "st-grid") ? true : false;
+
+	var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, ColParams, onPressUp, isStatusGrid);
 	
 	if(cards != null)
 	{
@@ -65,7 +67,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 			columns = createColumns(columnHeaders, colNumber, colWidth, colHeight);
 			
 			ColParams.height += add;
-			cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, ColParams, onPressUp);
+			cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, ColParams, onPressUp, isStatusGrid);
 			
 			height += add;
 		}
@@ -92,7 +94,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
   }
 }
 
-function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, colParams, onPressUp) {
+function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, colParams, onPressUp, isStatusGrid) {
 	var textHeight = 10;
 	cardDescArray.length = 0;
 	
@@ -113,7 +115,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
 				height : cardHeight
 			}
 			
-			var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp);
+			var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid);
 			cards.push(card);
 			
 			CardDesc = {
@@ -139,7 +141,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
 	return cards;
 }
 
-function createCard(panel, position, issues, issue, selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp) {
+function createCard(panel, position, issues, issue, selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid) {
 	var card = new createjs.Container();
 	
 	var back = createCardBack(position.width, position.height);	
@@ -152,7 +154,9 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 	var topMark = createCardTopMark(issue.topColor, position.width, markWidth);
 	var bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
 	var number = createCardNumber(issue.id, position.width, markWidth);
-  var assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
+  if (isStatusGrid) {
+    var assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
+  }
 	var summary = createCardSummary(issue.summary, position.width, markWidth, number);
 	
 	if(summary.y + summary.getBounds().height + 10 > position.height) {
@@ -211,6 +215,9 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 	card.addChild(topMark);
 	card.addChild(bottomMark);
 	card.addChild(number);
+  if (isStatusGrid) {
+    card.addChild(assignee);
+  }
 	card.addChild(summary);
 	
 	card.tickEnabled = false;
@@ -277,8 +284,11 @@ function createCardNumber(issueNumber, width, markWidth) {
 	return number;
 }
 
-function createCardAssignee(issue, width, markWidth) {
-  
+function createCardAssignee(issueHandlerId, width, markWidth) {
+  var assignee = new createjs.Text(nameToHandlerId[issueHandlerId], "12px Arial", "#000000");
+  assignee.x = 5;
+  assignee.y += markWidth + 3;
+  return assignee;
 }
 
 function createCardSummary(issueText, width, markWidth, number) {

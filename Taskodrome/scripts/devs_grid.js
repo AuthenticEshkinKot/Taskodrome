@@ -16,6 +16,10 @@ var parentWidth = { value : null }, parentHeight;
 
 var bugsToSend = [];
 
+var developersNames = [];
+
+var nameToHandlerId = [];
+
 function init() {
 	myPanel = new createjs.Stage("panel");
 
@@ -65,6 +69,8 @@ function onPressUp(evt) {
       selectedCard.value.status = '50';
     }
     
+    selectedCard.value.handler_id = handler_id;
+
     bugsToSend.push({ handler_id : handler_id, bug_id : bug_id });
     
     if (bugsToSend.length == 1) {
@@ -170,6 +176,8 @@ function getUsersRaw() {
 function sortIssues() {
   var users = getUsersRaw();
 	users.sort( function (a, b) { if(a.name > b.name) return 1; else return -1; });
+
+  nameToHandlerId = createUsernamesMap(users);
 	
 	issues = [];
 	developersNames = [];
@@ -186,4 +194,13 @@ function sortIssues() {
 		var index = idsIndexes[issues_raw[i].handler_id];
 		issues[index].splice(issues[index].length, 0, issues_raw[i]);
 	}
+}
+
+function createUsernamesMap(users) {
+  var ret = [];
+  for(var i = 0; i != users.length; ++i) {
+    ret[users[i].id] = users[i].name;
+  }
+
+  return ret;
 }
