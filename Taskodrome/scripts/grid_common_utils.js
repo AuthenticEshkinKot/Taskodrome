@@ -21,7 +21,7 @@ function getIssuesRaw() {
     ret[i] = { id : el.getAttribute("id"),
       summary : el.getAttribute("summary"),
       status : el.getAttribute("status"),
-      number : el.getAttribute("number"),
+      handler_id : el.getAttribute("handler_id"),
       topColor: el.getAttribute("topColor"),
       bottomColor: el.getAttribute("bottomColor"),
       updateTime: el.getAttribute("updateTime")
@@ -29,31 +29,6 @@ function getIssuesRaw() {
   }
   
   return ret;
-}
-
-function sortByNumbers(input_issues) {
-	for(var i = 0; i < input_issues.length; ++i)
-	{
-		var arr = input_issues[i];
-		for(var k = 0; k < arr.length - 1; ++k)
-		{
-			var nextIndex = k + 1;
-			if(arr[k].number > arr[nextIndex].number)
-			{
-				var found = false;
-				for(var p = 0; p <= k && !found; ++p)
-				{
-					if(arr[p].number > arr[nextIndex].number)
-					{
-						found = true;
-						var val = arr[nextIndex]; 
-						arr.splice(nextIndex, 1);
-						arr.splice(p, 0, val);
-					}
-				}
-			}
-		}
-	}
 }
 
 function getTemperatureColor(updateTime) {

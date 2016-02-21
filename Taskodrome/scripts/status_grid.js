@@ -5,19 +5,7 @@ var myPanel_st;
 
 var statusList = ["New", "Feedback", "Acknowledged", "Confirmed", "Assigned", "Resolved", "Closed"];
 
-/*var newIssues = [{ summary : "build project", number : 42, topColor: '#F79E3E', bottomColor: '#F79E0E' }, { summary : "rebuild project", number : 43, topColor: '#F21A3E', bottomColor: '#A79F0E' }, { summary : "you know, what to do", number : 44, topColor: '#19513E', bottomColor: '#A7513E'}];
-
-var fbkIssues = [{ summary : "work 1", number : 12, topColor: '#A09EFF', bottomColor: '#AA000E' }, { summary : "work 2", number : 81, topColor: '#77F40A', bottomColor: '#22FABB' }, { summary : "work 3", number : 3, topColor: '#BF317F', bottomColor: '#AA1134' }];
-
-var ackIssues = [{ summary : "fix linux kernel", number : 7, topColor: '#FF2509', bottomColor: '#34FA12' }, { summary : "fix previous fix", number : 8, topColor: '#CCAC12', bottomColor: '#FE1C02' }];
-
-var assignedIssues = [{ summary : "fix ШINDOШS kernel", number : 51, topColor: '#CF013E', bottomColor: '#323ACF' }, { summary : "bug with old games on win7 and higher", number : 55, topColor: '#000012', bottomColor: '#FE0000' }];
-
-var resolvedIssues = [{ summary : "fix the kernel", number : 20, topColor: '#CF013E', bottomColor: '#323ACF' }];
-
-var closedIssues = [{ summary : "bug with old games on win8 and higher", number : 23, topColor: '#000012', bottomColor: '#FE0000' }];*/
-
-var issues_st = [];// = [newIssues, fbkIssues, ackIssues, confirmedIssues, assignedIssues, resolvedIssues, closedIssues];
+var issues_st = [];
 
 var cardDescArray_st = [];
 var selectedCard_st = { value : null };
@@ -55,8 +43,6 @@ function draw_st() {
 	panelCanvas.width = parentWidth_st.value;
 	panelCanvas.height = parentHeight_st;
 
-	//sortByNumbers(issues_st);
-
 	createTable(issues_st, cardDescArray_st, statusList, myPanel_st, "panel_st", "st-grid", selectedCardMousePos_st, selectedCard_st, selectedCardSourceIndex_st, columnWidth_st, parentWidth_st, parentWidth_st.value, parentHeight_st, onPressUp_st);
 	myPanel_st.update();
 }
@@ -76,7 +62,7 @@ function onPressUp_st(evt) {
 		selectedCard_st.value.status = status;
 		selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
     
-    var handler_id = selectedCard_st.value.number;
+    var handler_id = selectedCard_st.value.handler_id;
     var bug_id = selectedCard_st.value.id;    
     bugsToSend_st.push({ handler_id : handler_id, bug_id : bug_id, status : status });
     
