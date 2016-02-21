@@ -92,7 +92,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
   }
 }
 
-function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, colParams, onPressUp) {	
+function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, colParams, onPressUp) {
 	var textHeight = 10;
 	cardDescArray.length = 0;
 	
@@ -113,7 +113,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
 				height : cardHeight
 			}
 			
-			var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp);			
+			var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp);
 			cards.push(card);
 			
 			CardDesc = {
@@ -282,7 +282,7 @@ function createCardSummary(issueText, width, markWidth, number) {
 	summary.x = width / 2;
 	summary.textAlign = "center";
 	summary.lineWidth = width - 4;
-	summary.y = number.getBounds().height + markWidth + 3;
+	summary.y = 2 * number.getBounds().height + markWidth;
 		
 	while (--sz != 7 && summary.getBounds().width > summary.lineWidth)
 	{
