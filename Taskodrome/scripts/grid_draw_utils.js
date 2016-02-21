@@ -152,6 +152,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 	var topMark = createCardTopMark(issue.topColor, position.width, markWidth);
 	var bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
 	var number = createCardNumber(issue.id, position.width, markWidth);
+  var assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
 	var summary = createCardSummary(issue.summary, position.width, markWidth, number);
 	
 	if(summary.y + summary.getBounds().height + 10 > position.height) {
@@ -274,6 +275,10 @@ function createCardNumber(issueNumber, width, markWidth) {
 	number.x = width - number.getBounds().width - 5;
 	number.y += markWidth + 3;
 	return number;
+}
+
+function createCardAssignee(issue, width, markWidth) {
+  
 }
 
 function createCardSummary(issueText, width, markWidth, number) {

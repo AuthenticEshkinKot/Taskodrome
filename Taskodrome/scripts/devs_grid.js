@@ -3,19 +3,7 @@ var V_PADDING_CORRECTION = 20;
 
 var myPanel;
 
-/*var developersNames = ["MAN", "Petya", "Linus", "Bill", "Steve"];
-
-var vasyaIssues = [{ summary : "build project", number : 42, topColor: '#F79E3E', bottomColor: '#F79E0E' }, { summary : "rebuild project", number : 43, topColor: '#F21A3E', bottomColor: '#A79F0E' }, { summary : "you know, what to do", number : 44, topColor: '#19513E', bottomColor: '#A7513E'}];
-
-var petyaIssues = [{ summary : "work 1", number : 12, topColor: '#A09EFF', bottomColor: '#AA000E' }, { summary : "work 2", number : 81, topColor: '#77F40A', bottomColor: '#22FABB' }, { summary : "work 3", number : 3, topColor: '#BF317F', bottomColor: '#AA1134' }];
-
-var linusIssues = [{ summary : "fix linux kernel", number : 7, topColor: '#FF2509', bottomColor: '#34FA12' }, { summary : "fix previous fix", number : 8, topColor: '#CCAC12', bottomColor: '#FE1C02' }];
-
-var billIssues = [{ summary : "fix ШINDOШS kernel", number : 51, topColor: '#CF013E', bottomColor: '#323ACF' }, { summary : "bug with old games on win7 and higher", number : 55, topColor: '#000012', bottomColor: '#FE0000' }];
-
-var steveIssues = [];*/
-
-var issues = [];//[vasyaIssues, petyaIssues, linusIssues, billIssues, steveIssues];
+var issues = [];
 
 var cardDescArray = [];
 var selectedCard = { value : null };
@@ -51,8 +39,6 @@ function draw() {
 	var panelCanvas = document.getElementById("panel");
 	panelCanvas.width = parentWidth.value;
 	panelCanvas.height = parentHeight;
-	
-	//sortByNumbers(issues);
 	
 	createTable(issues, cardDescArray, developersNames, myPanel, "panel", "dev-grid", selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, parentWidth.value, parentHeight, onPressUp);
 	myPanel.update();
@@ -194,10 +180,10 @@ function sortIssues() {
 		developersNames[i] = users[i].name;
 		issues[i] = [];
 		idsIndexes[users[i].id] = i;
-	}	
+	}
 	
 	for(var i = 0; i != issues_raw.length; ++i) {
-		var index = idsIndexes[issues_raw[i].number];	
+		var index = idsIndexes[issues_raw[i].handler_id];
 		issues[index].splice(issues[index].length, 0, issues_raw[i]);
 	}
 }
