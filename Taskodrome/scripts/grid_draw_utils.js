@@ -263,7 +263,7 @@ function createCardTopMark(markColor, cardWidth, markWidth) {
 	var mark = new createjs.Shape();
 	mark.graphics.setStrokeStyle(1);
 	mark.graphics.beginStroke(markColor); 
-	mark.graphics.beginFill(markColor);	
+	mark.graphics.beginFill(markColor);
 	mark.graphics.drawRect(1, 1, cardWidth - 2, markWidth);
 	return mark;
 }
@@ -272,16 +272,41 @@ function createCardBottomMark(markColor, cardWidth, cardHeight, markWidth) {
 	var mark = new createjs.Shape();
 	mark.graphics.setStrokeStyle(1);
 	mark.graphics.beginStroke(markColor); 
-	mark.graphics.beginFill(markColor);	
+	mark.graphics.beginFill(markColor);
 	mark.graphics.drawRect(1, cardHeight - 1 - markWidth, cardWidth - 2, markWidth);
 	return mark;
 }
 
 function createCardNumber(issueNumber, width, markWidth) {
-	var number = new createjs.Text(issueNumber, "12px Arial", "#000000");
-	number.x = width - number.getBounds().width - 5;
-	number.y += markWidth + 3;
-	return number;
+  var cont = new createjs.Container();
+  var numberColor = "#0000FF";
+  var number = new createjs.Text(issueNumber, "12px Arial", numberColor);
+  number.x = width - number.getBounds().width - 5;
+  number.y += markWidth + 3;
+
+  var underline = new createjs.Shape();
+  underline.graphics.beginStroke(numberColor).setStrokeStyle(1)
+            .moveTo(number.x, number.y + number.getMeasuredHeight() + 1)
+            .lineTo(number.x + number.getMeasuredWidth(), number.y + number.getMeasuredHeight() + 1);
+
+  var hit = new createjs.Shape();
+  var ext = 5;
+  hit.graphics.beginFill("#000")
+              .drawRect(-ext, -ext, 2 * ext + number.getMeasuredWidth(), 2 * ext + number.getMeasuredHeight());
+  number.hitArea = hit;
+
+  var listener = number.on("pressup", handleInteraction, null, false, { id : issueNumber });
+  number.on("pressmove", function off() { number.off("pressup", listener) }, null, true);
+
+  cont.addChild(number);
+  cont.addChild(underline);
+
+  return cont;
+}
+
+function handleInteraction(event, data) {
+  var address = getPathToMantisFile(window, "view.php") + "?id=" + data.id;
+  window.open(address);
 }
 
 function createCardAssignee(issueHandlerId, width, markWidth) {
