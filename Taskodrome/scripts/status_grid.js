@@ -26,8 +26,6 @@ function statusInit() {
   parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
   parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height")) - V_PADDING_CORRECTION;
 
-  security_token_st = getSecurityToken_st();
-
   sortIssues_st();
 
   draw_st();
@@ -91,27 +89,28 @@ function sendRequest_st(bugIndex)
   requestToken.onreadystatechange = function() {
     if (requestToken.readyState == 4) {
       if(requestToken.status == 200) {
-        page_text = requestToken.responseText;
+        var page_text = requestToken.responseText;
 
+        var xmlDoc;
         if (window.DOMParser)
         {
-          parser = new DOMParser();
+          var parser = new DOMParser();
           xmlDoc = parser.parseFromString(page_text, "text/xml");
         }
         else // Internet Explorer
         {
           xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-          xmlDoc.async=false;
+          xmlDoc.async = false;
           xmlDoc.loadXML(page_text);
         }
 
-        security_token_st = 0;
+        var security_token = 0;
         inputs = xmlDoc.getElementsByTagName("input");        
         for(var i = 0, n = inputs.length; i < n; i++)
         {
           if (inputs[i].getAttribute("name") == "bug_update_token")
           {
-            security_token_st = inputs[i].getAttribute("value");
+            security_token = inputs[i].getAttribute("value");
           }
         }
 
@@ -137,7 +136,7 @@ function sendRequest_st(bugIndex)
           }
         }
 
-        var bug_update_token = security_token_st;
+        var bug_update_token = security_token;
         var handler_id = bugsToSend_st[bugIndex].handler_id;
         var bug_id = bugsToSend_st[bugIndex].bug_id;
         var status = bugsToSend_st[bugIndex].status;
@@ -151,10 +150,6 @@ function sendRequest_st(bugIndex)
   var status = bugsToSend_st[bugIndex].status;
   var parameters = "id=" + bug_id + "&new_status=" + status;
   requestToken.send(parameters);
-}
-
-function getSecurityToken_st() {
-  return document.getElementsByClassName("token_update")[0].getAttribute("token");
 }
 
 function sortIssues_st() {

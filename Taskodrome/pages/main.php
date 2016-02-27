@@ -75,9 +75,6 @@
 
     print $users;
 
-    print '<p hidden="true" class="token_assign" token="'.form_security_token("bug_assign").'"/>';
-    print '<p hidden="true" class="token_update" token="'.form_security_token("bug_update").'"/>';
-
     print '<section class="tabs">
     <input id="tab_1" type="radio" name="tab" />
     <input id="tab_2" type="radio" name="tab" />
