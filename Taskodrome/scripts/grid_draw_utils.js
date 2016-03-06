@@ -295,8 +295,14 @@ function createCardNumber(issueNumber, width, markWidth) {
               .drawRect(-ext, -ext, 2 * ext + number.getMeasuredWidth(), 2 * ext + number.getMeasuredHeight());
   number.hitArea = hit;
 
-  var listener = number.on("pressup", handleInteraction, null, false, { id : issueNumber });
-  number.on("pressmove", function off() { number.off("pressup", listener) }, null, true);
+  var pressup_listener = number.on("pressup", handleInteraction, null, false, { id : issueNumber });
+  number.on("mousedown", function save_crd(evt) { number.startX = evt.stageX; number.startY = evt.stageY } );
+  var pressmove_listener = number.on("pressmove", function off(evt) {
+    if (Math.abs(evt.stageX - number.startX) > 2 || Math.abs(evt.stageY - number.startY) > 2) {
+      number.off("pressup", pressup_listener);
+      number.off("pressmove", pressmove_listener);
+    }
+  });
 
   cont.addChild(number);
   cont.addChild(underline);
