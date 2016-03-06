@@ -13,7 +13,7 @@ function fullRedraw() {
 }
 
 function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gridName, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
-	var colNumber = issues.length;
+	var colNumber = columnHeaders.length;
 	var colWidth = (width - 2 * H_OFFSET) / colNumber;
 	if(colWidth < MIN_COL_WIDTH) {
 		colWidth = MIN_COL_WIDTH;

@@ -75,6 +75,12 @@
 
     print $users;
 
+    $status_order = null;
+    foreach( plugin_config_get("status_board_order") as $t_value ) {
+      $status_order .= $t_value.';';
+    }
+    print '<p hidden="true" class="status_board_order" value="'.$status_order.'"/>';
+
     print '<section class="tabs">
     <input id="tab_1" type="radio" name="tab" />
     <input id="tab_2" type="radio" name="tab" />

@@ -3,7 +3,7 @@ var V_PADDING_CORRECTION = 20;
 
 var myPanel_st;
 
-var statusList = ["New", "Feedback", "Acknowledged", "Confirmed", "Assigned", "Resolved", "Closed"];
+var statusList = [];
 
 var issues_st = [];
 
@@ -18,6 +18,9 @@ var parentWidth_st = { value : null }, parentHeight_st;
 
 var bugsToSend_st = [];
 
+var statusByColumns = [];
+var columnByStatus = [];
+
 function statusInit() {
   myPanel_st = new createjs.Stage("panel_st");
 
@@ -26,6 +29,7 @@ function statusInit() {
   parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
   parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height")) - V_PADDING_CORRECTION;
 
+  createColumnStatusMap();
   sortIssues_st();
 
   draw_st();
@@ -152,9 +156,44 @@ function sendRequest_st(bugIndex)
   requestToken.send(parameters);
 }
 
+function createColumnStatusMap() {
+  var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
+  statusList = statusString.split(';', 7);
+
+  if (statusList[statusList.length - 1] == '')
+  {
+    statusList.pop();
+  }
+
+  for (var i = 0; i != statusList.length; ++i) {
+    var status = '100';
+    switch(statusList[i])
+    {
+      case 'New': status = '10'; break;
+      case 'Feedback': status = '20'; break;
+      case 'Acknowledged': status = '30'; break;
+      case 'Confirmed': status = '40'; break;
+      case 'Assigned': status = '50'; break;
+      case 'Resolved': status = '80'; break;
+      case 'Closed': status = '90'; break;
+      default: status = '100'; break;
+    }
+    statusByColumns[i] = status;
+  }
+
+  for (var i = 0; i != 91; ++i) {
+    columnByStatus[i] = statusList.length;
+  }
+
+  for (var i = 0; i != statusByColumns.length; ++i) {
+    var index = parseInt(statusByColumns[i]);
+    columnByStatus[index] = i;
+  }
+}
+
 function sortIssues_st() {
   issues_st = [];
-  for(var i = 0; i != 7; ++i) {
+  for(var i = 0; i != statusList.length + 1; ++i) {
     issues_st[i] = [];
   }
 
@@ -166,7 +205,7 @@ function sortIssues_st() {
 }
 
 function getStatusByColumn_st(columnIndex) {
-  switch(columnIndex)
+  /*switch(columnIndex)
   {
     case 0: return '10';
     case 1: return '20';
@@ -176,11 +215,12 @@ function getStatusByColumn_st(columnIndex) {
     case 5: return '80';
     case 6: return '90';
     default: return '90';
-  }
+  }*/
+  return statusByColumns[columnIndex];
 }
 
 function getColumnByStatus_st(status) {
-  switch(status)
+  /*switch(status)
   {
     case '10': return 0;
     case '20': return 1;
@@ -190,5 +230,6 @@ function getColumnByStatus_st(status) {
     case '80': return 5;
     case '90': return 6;
     default: return 6;
-  }
+  }*/
+  return columnByStatus[parseInt(status)];
 }
