@@ -23,7 +23,6 @@ print_manage_menu();
 <?php $t_field = 'status_board_order'; ?>
 <td class="category">
   <?php echo plugin_lang_get( $t_field . '_label' ) ?><br>
-
 </td>
 <td>
 <input name="<?php echo $t_field; ?>" size="75" value="<?php
@@ -43,6 +42,25 @@ print_manage_menu();
 </td>
 </tr>
 
+<tr <?php echo helper_alternate_class() ?>>
+<?php $t_field = 'cooldown_period'; ?>
+<td class="category">
+  <?php echo plugin_lang_get( $t_field . '_label' ) ?><br>
+</td>
+<td>
+Days:&nbsp
+<input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
+echo plugin_config_get( $t_field . '_days' ); ?>"/>
+<br>
+Hours:
+<input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
+echo plugin_config_get( $t_field . '_hours' ); ?>"/>
+<br>
+<span class="small"><?php
+  echo plugin_lang_get( $t_field . '_hint' );
+?></span>
+</td>
+</tr>
 
 <tr>
   <td class="center" colspan="3">

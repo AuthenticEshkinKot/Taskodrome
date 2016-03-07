@@ -62,6 +62,7 @@
       $issues_array_html = $issues_array_html . '/>';
     }
 
+    print '<div id="taskodrome_data" hidden="true">';
     print $issues_array_html;
 
     $users = '';
@@ -80,6 +81,9 @@
       $status_order .= $t_value.';';
     }
     print '<p hidden="true" class="status_board_order" value="'.$status_order.'"/>';
+    print '<p hidden="true" id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"/>';
+    print '<p hidden="true" id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"/>';
+    print '</div>';
 
     print '<section class="tabs">
     <br>
