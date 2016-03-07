@@ -30,7 +30,7 @@ function init() {
 
   sortIssues();
   draw();
-}
+};
 
 function draw() {
   myPanel.clear();
@@ -47,7 +47,7 @@ function draw() {
              selectedCardSourceIndex, columnWidth, parentWidth,
              parentWidth.value, parentHeight, onPressUp);
   myPanel.update();
-}
+};
 
 function onPressUp(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
@@ -84,7 +84,7 @@ function onPressUp(evt) {
   selectedCard.value = null;
 
   fullRedraw();
-}
+};
 
 function sendRequest(bugIndex)
 {
@@ -97,13 +97,14 @@ function sendRequest(bugIndex)
   address = address + "?id=" + bugsToSend[bugIndex].bug_id;
   requestToken.open("GET", address, true);
   requestToken.timeout = HTTP_REQUEST_TIMEOUT;
-  requestToken.ontimeout = function ()
-                            {
-                              console.log("sendRequest ERROR: timed out");
-                              trySendNextBug(bugIndex);
-                            };
 
-  requestToken.onreadystatechange = function() {
+  function tokenOnTimeout() {
+    console.log("sendRequest ERROR: timed out");
+    trySendNextBug(bugIndex);
+  };
+  requestToken.ontimeout = tokenOnTimeout;
+
+  function tokenOnReadyStateChange() {
     if (requestToken.readyState == 4 && requestToken.status == 200) {
       console.log("requestToken OK");
 
@@ -137,13 +138,14 @@ function sendRequest(bugIndex)
       requestAssign.open("POST", address, true);
       requestAssign.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       requestAssign.timeout = HTTP_REQUEST_TIMEOUT;
-      requestAssign.ontimeout = function ()
-                                {
-                                  console.log("requestToken.onreadystatechange ERROR: timed out");
-                                  trySendNextBug(bugIndex);
-                                };
 
-      requestAssign.onreadystatechange = function() {
+      function reqAssignOnTimeout() {
+        console.log("requestToken.onreadystatechange ERROR: timed out");
+        trySendNextBug(bugIndex);
+      };
+      requestAssign.ontimeout = reqAssignOnTimeout;
+
+      function reqAssignOnReadyStateChange() {
         if (requestAssign.readyState == 4 && requestAssign.status == 200) {
           console.log("requestAssign OK");
           trySendNextBug(bugIndex);
@@ -162,7 +164,8 @@ function sendRequest(bugIndex)
           console.log("requestAssign.onreadystatechange UNKNOWN: readyState=" + requestAssign.readyState
                 + " status=" + requestAssign.status);
         }
-      }
+      };
+      requestAssign.onreadystatechange = reqAssignOnReadyStateChange;
 
       var bug_assign_token = security_token;
       var handler_id = bugsToSend[bugIndex].handler_id;
@@ -185,10 +188,11 @@ function sendRequest(bugIndex)
       console.log("requestToken.onreadystatechange UNKNOWN: readyState=" + requestToken.readyState
                 + " status=" + requestToken.status);
     }
-  }
+  };
 
+  requestToken.onreadystatechange = tokenOnReadyStateChange;
   requestToken.send(null);
-}
+};
 
 function trySendNextBug(index)
 {
@@ -200,7 +204,7 @@ function trySendNextBug(index)
   {
     bugsToSend.length = 0;
   }
-}
+};
 
 function getUsersRaw() {
   var ret = [];
@@ -214,11 +218,14 @@ function getUsersRaw() {
   }
 
   return ret;
-}
+};
 
 function sortIssues() {
   var users = getUsersRaw();
-  users.sort( function (a, b) { if(a.name > b.name) return 1; else return -1; });
+  function sorter(a, b) {
+    if(a.name > b.name) return 1; else return -1;
+  };
+  users.sort( sorter );
 
   nameToHandlerId = createUsernamesMap(users);
 
@@ -237,7 +244,7 @@ function sortIssues() {
     var index = idsIndexes[issues_raw[i].handler_id];
     issues[index].splice(issues[index].length, 0, issues_raw[i]);
   }
-}
+};
 
 function createUsernamesMap(users) {
   var ret = [];
@@ -246,4 +253,4 @@ function createUsernamesMap(users) {
   }
 
   return ret;
-}
+};

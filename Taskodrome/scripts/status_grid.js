@@ -33,7 +33,7 @@ function statusInit() {
   sortIssues_st();
 
   draw_st();
-}
+};
 
 function draw_st() {
   myPanel_st.clear();
@@ -50,7 +50,7 @@ function draw_st() {
               selectedCardSourceIndex_st, columnWidth_st, parentWidth_st,
               parentWidth_st.value, parentHeight_st, onPressUp_st);
   myPanel_st.update();
-}
+};
 
 function onPressUp_st(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, issues_st, H_OFFSET, columnWidth_st.value);
@@ -81,7 +81,7 @@ function onPressUp_st(evt) {
   selectedCard_st.value = null;
 
   fullRedraw();
-}
+};
 
 function sendRequest_st(bugIndex)
 {
@@ -90,7 +90,7 @@ function sendRequest_st(bugIndex)
   requestToken.open("POST", address, true);
   requestToken.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-  requestToken.onreadystatechange = function() {
+  function tokenOnReadyStateChange() {
     if (requestToken.readyState == 4) {
       if(requestToken.status == 200) {
         var page_text = requestToken.responseText;
@@ -123,7 +123,7 @@ function sendRequest_st(bugIndex)
         requestUpdate.open("POST", address, true);
         requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        requestUpdate.onreadystatechange = function() {
+        function reqUpdateOnReadyStateChanged() {
           var index = bugIndex;
 
           if (requestUpdate.readyState == 4) {
@@ -138,7 +138,8 @@ function sendRequest_st(bugIndex)
               }
             }
           }
-        }
+        };
+        requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
 
         var bug_update_token = security_token;
         var handler_id = bugsToSend_st[bugIndex].handler_id;
@@ -148,13 +149,14 @@ function sendRequest_st(bugIndex)
         requestUpdate.send(parameters);
       }
     }
-  }
+  };
+  requestToken.onreadystatechange = tokenOnReadyStateChange;
 
   var bug_id = bugsToSend_st[bugIndex].bug_id;
   var status = bugsToSend_st[bugIndex].status;
   var parameters = "id=" + bug_id + "&new_status=" + status;
   requestToken.send(parameters);
-}
+};
 
 function createColumnStatusMap() {
   var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
@@ -189,7 +191,7 @@ function createColumnStatusMap() {
     var index = parseInt(statusByColumns[i]);
     columnByStatus[index] = i;
   }
-}
+};
 
 function sortIssues_st() {
   issues_st = [];
@@ -202,7 +204,7 @@ function sortIssues_st() {
     var posIndex = issues_st[columnIndex].length;
     issues_st[columnIndex][posIndex] = issues_raw[i];
   }
-}
+};
 
 function getStatusByColumn_st(columnIndex) {
   /*switch(columnIndex)
@@ -217,7 +219,7 @@ function getStatusByColumn_st(columnIndex) {
     default: return '90';
   }*/
   return statusByColumns[columnIndex];
-}
+};
 
 function getColumnByStatus_st(status) {
   /*switch(status)
@@ -232,4 +234,4 @@ function getColumnByStatus_st(status) {
     default: return 6;
   }*/
   return columnByStatus[parseInt(status)];
-}
+};

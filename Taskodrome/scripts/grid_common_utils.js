@@ -10,7 +10,7 @@ function getColorByStatus(issueStatus) {
 		case '90': return '#C9CCC4';
 		default: return '#000000';
 	}
-}
+};
 
 function getIssuesRaw() {
   var ret = [];
@@ -29,13 +29,13 @@ function getIssuesRaw() {
   }
   
   return ret;
-}
+};
 
 function getTemperatureColor(updateTime) {
 	var colorPeriod = cooldown_period / 4;
 	var currentTime = (new Date().getTime()) / 1000;
 	var timeFromUpdate = currentTime - updateTime;
-	
+
 	if(timeFromUpdate <= colorPeriod) {
 		var green = Math.round((timeFromUpdate / colorPeriod) * 255);
 		var greenStr = green.toString(16);
@@ -89,12 +89,12 @@ function getTemperatureColor(updateTime) {
 	{
 		return '#0000FF';
 	}
-}
+};
 
 function setHrefMark(window, mark) {
 	var href = window.location.href;
 	var mark_index = href.lastIndexOf("#");
-	
+
 	if(mark_index == -1) {
 		window.location.href = href + "#" + mark;
 	}
@@ -102,18 +102,18 @@ function setHrefMark(window, mark) {
 	{
 		window.location.href = href.substr(0, mark_index + 1) + mark;
 	}
-}
+};
 
 function getPathToMantisFile(window, filename) {
 	var protocol = window.location.protocol;
 	var hostname = window.location.hostname;
-	
+
 	var path = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"));
-	
+
 	var result = protocol + "//" + hostname + path + "/" + filename;
-	
+
 	return result;
-}
+};
 
 function computeColumnIndex(x, issues_in, firstColumnX_in, columnWidth_in) {
 	for(var i = 0; i < issues_in.length; ++i) {
@@ -122,9 +122,9 @@ function computeColumnIndex(x, issues_in, firstColumnX_in, columnWidth_in) {
 			return i;
 		}
 	}
-	
+
 	return -1;
-}
+};
 
 function openBoard(board) {
   setHrefMark(window, board);
@@ -154,4 +154,4 @@ function openBoard(board) {
     document.getElementById("href_sg").setAttribute("href", "javascript:openBoard(\'sg\')");
     document.getElementById("href_dg").removeAttribute("href");
   }
-}
+};

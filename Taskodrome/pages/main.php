@@ -58,20 +58,21 @@
       $issues_array_html = $issues_array_html . 'handler_id="'.$t_row->handler_id.'" ';
       $issues_array_html = $issues_array_html . 'topColor="#0000FF" ';
       $issues_array_html = $issues_array_html . 'bottomColor="#FF0000" ';
-      $issues_array_html = $issues_array_html . 'updateTime="'.$t_row->last_updated.'" ';
-      $issues_array_html = $issues_array_html . '/>';
+      $issues_array_html = $issues_array_html . 'updateTime="'.$t_row->last_updated.'"';
+      $issues_array_html = $issues_array_html . '></p>';
     }
 
-    print '<div id="taskodrome_data" hidden="true">';
+    print '<div id="taskodrome_data" hidden="true">
+    ';
     print $issues_array_html;
 
     $users = '';
     $user_number = count($user_array);
     for( $i=0; $i != $user_number; $i++ ) {
       $users = $users . '<p hidden="true" class="user_data" ';
-      $users = $users . 'name="'.$user_array[$i]->name.'"';
+      $users = $users . 'name="'.$user_array[$i]->name.'" ';
       $users = $users . 'id="'.$user_array[$i]->id.'"';
-      $users = $users . '/>';
+      $users = $users . '></p>';
     }
 
     print $users;
@@ -80,9 +81,9 @@
     foreach( plugin_config_get("status_board_order") as $t_value ) {
       $status_order .= $t_value.';';
     }
-    print '<p hidden="true" class="status_board_order" value="'.$status_order.'"/>';
-    print '<p hidden="true" id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"/>';
-    print '<p hidden="true" id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"/>';
+    print '<p hidden="true" class="status_board_order" value="'.$status_order.'"></p>';
+    print '<p hidden="true" id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
+    print '<p hidden="true" id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
     print '</div>';
 
     print '<section class="tabs">

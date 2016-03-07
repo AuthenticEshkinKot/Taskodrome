@@ -10,14 +10,14 @@ function fullRedraw() {
   draw();
   sortIssues_st();
   draw_st();
-}
+};
 
 function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gridName, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
 	var colNumber = columnHeaders.length;
 	var colWidth = (width - 2 * H_OFFSET) / colNumber;
 	if(colWidth < MIN_COL_WIDTH) {
 		colWidth = MIN_COL_WIDTH;
-		
+
 		var tableWidth = colWidth * colNumber + 2 * H_OFFSET;
 		if(tableWidth > parentWidth.value)
 		{
@@ -26,36 +26,36 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 			document.getElementById(panelName).width = tableWidth;
 		}
 	}
-	
+
 	var colHeight = height - 2 * V_OFFSET;
-	
+
 	columnWidth.value = colWidth;
-	
+
 	if(colWidth <= 0 || colHeight <= 0) {
 		return null;
 	}
-	
+
 	var columns = createColumns(columnHeaders, colNumber, colWidth, colHeight);	
-	
+
 	var ColParams = {
 		width : colWidth,
 		height : colHeight
 	}
-	
+
 	var cardHorOffset = 15;
 	var cardVerOffset = 10;	
-	
+
 	var cardWidth = colWidth - 2 * cardHorOffset;
 	var cardHeight = colHeight / 5 - 2 * cardVerOffset;	
-	
+
 	if(cardWidth <= 0 || cardHeight <= 0) {
 		return null;
 	}
-	
+
 	var isStatusGrid = (gridName == "st-grid") ? true : false;
 
 	var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, ColParams, onPressUp, isStatusGrid);
-	
+
 	if(cards != null)
 	{
 		if(ColParams.height > colHeight)
@@ -71,42 +71,42 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 			
 			height += add;
 		}
-		
+
 		document.getElementById(gridName).style.height = (document.getElementById(panelName).height + V_PADDING_CORRECTION) + "px";
 	}
 	else
 		return null;
-		
+
 	panel.addChild(columns);
-	
+
 	for(var i = 0; i < cards.length; ++i)
 	{
 		panel.addChild(cards[i]);
 	}
-	
+
 	var outerLine = createOuterLine(width, height);
 	panel.addChild(outerLine);
-  
+
   if (createjs.Ticker.hasEventListener("tick") == false)
   {
     createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
   }
-}
+};
 
 function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, cardHorOffset, cardVerOffset, colParams, onPressUp, isStatusGrid) {
 	var textHeight = 10;
 	cardDescArray.length = 0;
-	
+
 	var cards = [];
-	
+
 	for(var i = 0; i < colNumber; ++i) {
 		var issuesNumber = issues[i].length;
 		var x = cardHorOffset + (H_OFFSET + i * colParams.width);
-		
+
 		var cardDescs = [];
 		var y = V_OFFSET + textHeight + cardVerOffset;
-		
+
 		for(var k = 0; k < issuesNumber; ++k) {
 			position = {
 				x : x,
@@ -114,43 +114,43 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
 				width : cardWidth,
 				height : cardHeight
 			}
-			
+
 			var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid);
 			cards.push(card);
-			
+
 			CardDesc = {
 				x : x,
 				y : position.y,
 				issueGroupIndex : i,
 				issueIndex : k
 			}
-			
+
 			if(y + position.height > colParams.height)
 			{
 				colParams.height += y + position.height - colParams.height;
 			}
-			
+
 			y += position.height + 2 * cardVerOffset;
-			
+
 			cardDescs.push(CardDesc);
 		}
-		
+
 		cardDescArray.push(cardDescs);
 	}
-	
+
 	return cards;
-}
+};
 
 function createCard(panel, position, issues, issue, selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid) {
 	var card = new createjs.Container();
-	
+
 	var back = createCardBack(position.width, position.height);	
-	
+
 	var markWidth = 6;
-	
+
 	issue.topColor = getColorByStatus(issue.status);
 	issue.bottomColor = getTemperatureColor(issue.updateTime);
-	
+
 	var topMark = createCardTopMark(issue.topColor, position.width, markWidth);
 	var bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
 	var number = createCardNumber(issue.id, position.width, markWidth);
@@ -158,59 +158,61 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
     var assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
   }
 	var summary = createCardSummary(issue.summary, position.width, markWidth, number);
-	
+
 	if(summary.y + summary.getBounds().height + 10 > position.height) {
 		var add = summary.y + summary.getBounds().height + 10 - position.height;
 		position.height += add;
-		
+
 		back = createCardBack(position.width, position.height);
 		topMark = createCardTopMark(issue.topColor, position.width, markWidth);
 		bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
 	}
-	
-	card.on("mousedown", function(evt) {
-		//console.log("mousedown");
+
+  function cardOnMousedown(evt) {
+    //console.log("mousedown");
 		//console.log("mouse X = " + evt.stageX);
 		//console.log("mouse Y = " + evt.stageY);
-		
+
 		panel.removeChild(card);
 		panel.addChild(card);
-		
+
 		var boolSuccess = false;
 		var cardX = card.x;
 		var cardY = card.y;
 		selectedCardMousePos.X = evt.stageX - card.x;
 		selectedCardMousePos.Y = evt.stageY - card.y;
-		
+
 		for(var i = 0; i < cardDescArray.length && !boolSuccess; ++i) {
 			if(cardDescArray[i].length > 0 && cardDescArray[i][0].x == cardX) {
 				for(var k = 0; k < cardDescArray[i].length && !boolSuccess; ++k) {
 					if(cardDescArray[i][k].y == cardY) {
 						boolSuccess = true;
-						
+
 						selectedCard.value = issues[i][k];
-						selectedCardSourceIndex.value = { i, k };
-						
+						selectedCardSourceIndex.value = { i : i, k : k };
+
 						//console.log("Found! issues array index = " + i + " issue index = " + k + " selectedCard.id = " + selectedCard.id);
 					}
 				}
 			}
 		}
-	});
+  };	
+	card.on("mousedown", cardOnMousedown);
 
-	card.on("pressmove", function(evt) {
-		card.x = evt.stageX - selectedCardMousePos.X;
+  function cardOnPressmove(evt) {
+    card.x = evt.stageX - selectedCardMousePos.X;
 		card.y = evt.stageY - selectedCardMousePos.Y;
-		
+
     update = true;
     stageToUpdate = panel;
-	});
-	
+  };
+	card.on("pressmove", cardOnPressmove);
+
 	card.on("pressup", onPressUp);
-	
+
 	card.x = position.x;
 	card.y = position.y;
-	
+
 	card.addChild(back);
 	card.addChild(topMark);
 	card.addChild(bottomMark);
@@ -219,11 +221,11 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
     card.addChild(assignee);
   }
 	card.addChild(summary);
-	
+
 	card.tickEnabled = false;
-	
+
 	return card;
-}
+};
 
 function createColumns(columnNames, number, width, height) {
 	var columns = new createjs.Container();
@@ -236,7 +238,7 @@ function createColumns(columnNames, number, width, height) {
 		line.graphics.moveTo(startX, V_OFFSET);
 		line.graphics.lineTo(startX, height + V_OFFSET);
 		columns.addChild(line);
-		
+
 		var text = new createjs.Text(columnNames[i], "12px Arial", "#000000");
 		text.x = startX + width / 2;
 		text.y = V_OFFSET;
@@ -244,11 +246,11 @@ function createColumns(columnNames, number, width, height) {
 		text.lineWidth = width;
 		columns.addChild(text);
 	}
-	
+
 	columns.tickEnabled = false;
-	
+
 	return columns;
-}
+};
 
 function createCardBack(width, height) {
 	var back = new createjs.Shape();
@@ -257,7 +259,7 @@ function createCardBack(width, height) {
 	back.graphics.beginFill("#F0F5FF"); 
 	back.graphics.drawRect(0, 0, width, height);
 	return back;
-}
+};
 
 function createCardTopMark(markColor, cardWidth, markWidth) {
 	var mark = new createjs.Shape();
@@ -266,7 +268,7 @@ function createCardTopMark(markColor, cardWidth, markWidth) {
 	mark.graphics.beginFill(markColor);
 	mark.graphics.drawRect(1, 1, cardWidth - 2, markWidth);
 	return mark;
-}
+};
 
 function createCardBottomMark(markColor, cardWidth, cardHeight, markWidth) {
 	var mark = new createjs.Shape();
@@ -275,7 +277,7 @@ function createCardBottomMark(markColor, cardWidth, cardHeight, markWidth) {
 	mark.graphics.beginFill(markColor);
 	mark.graphics.drawRect(1, cardHeight - 1 - markWidth, cardWidth - 2, markWidth);
 	return mark;
-}
+};
 
 function createCardNumber(issueNumber, width, markWidth) {
   var cont = new createjs.Container();
@@ -296,31 +298,37 @@ function createCardNumber(issueNumber, width, markWidth) {
   number.hitArea = hit;
 
   var pressup_listener = number.on("pressup", handleInteraction, null, false, { id : issueNumber });
-  number.on("mousedown", function save_crd(evt) { number.startX = evt.stageX; number.startY = evt.stageY } );
-  var pressmove_listener = number.on("pressmove", function off(evt) {
+  function save_crd(evt) {
+    number.startX = evt.stageX;
+    number.startY = evt.stageY;
+  };
+  number.on("mousedown", save_crd);
+
+  function off(evt) {
     if (Math.abs(evt.stageX - number.startX) > 2 || Math.abs(evt.stageY - number.startY) > 2) {
       number.off("pressup", pressup_listener);
       number.off("pressmove", pressmove_listener);
     }
-  });
+  };
+  var pressmove_listener = number.on("pressmove", off);
 
   cont.addChild(number);
   cont.addChild(underline);
 
   return cont;
-}
+};
 
 function handleInteraction(event, data) {
   var address = getPathToMantisFile(window, "view.php") + "?id=" + data.id;
   window.open(address);
-}
+};
 
 function createCardAssignee(issueHandlerId, width, markWidth) {
   var assignee = new createjs.Text(nameToHandlerId[issueHandlerId], "12px Arial", "#000000");
   assignee.x = 5;
   assignee.y += markWidth + 3;
   return assignee;
-}
+};
 
 function createCardSummary(issueText, width, markWidth, number) {
 	var sz = 12;
@@ -329,14 +337,14 @@ function createCardSummary(issueText, width, markWidth, number) {
 	summary.textAlign = "center";
 	summary.lineWidth = width - 4;
 	summary.y = 2 * number.getBounds().height + markWidth;
-		
+
 	while (--sz != 7 && summary.getBounds().width > summary.lineWidth)
 	{
 		summary.font = sz + "px Arial";
 	}
-	
+
 	return summary;
-}
+};
 
 function createOuterLine(width, height) {
 	var line = new createjs.Shape();
@@ -349,11 +357,11 @@ function createOuterLine(width, height) {
 	line.graphics.lineTo(0, 0);
 	line.tickEnabled = false;
 	return line;
-}
+};
 
 function tick(event) {
   if(update) {
     update = false;
     stageToUpdate.update();
   }
-}
+};
