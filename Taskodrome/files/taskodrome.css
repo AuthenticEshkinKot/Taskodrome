@@ -12,55 +12,18 @@ div.grid {
   width: 100%;
 }
 
-.tabs label {
-  border: 1px solid white;
-  color: #555;
-  cursor: pointer;
-  display: none;
-  float: left;
-  width: 150px;
-  height: 45px;
-  line-height: 45px;
-  position: relative;
-  top: 2px;
-  text-align: center;
-  margin: 10px 5px 5px 0px;
-}
-
-.tabs input {
-  position: absolute;
-  left: -9999px;
-}
-
-#tab_1:checked  ~ #tab_l1,
-#tab_2:checked  ~ #tab_l2 {
-  background: #fff;
-  border-color: black;
-  top: 0;
-  z-index: 3;
-}
-
 .tabs_cont {
   background: #fff;
   position: relative;
-  z-index: 2;
   height: 230px;
 }
 
 .tabs_cont > div {
   position: absolute;
   left: -9999px;
-  top: 0;
   opacity: 0;
   width: 100%;
   -moz-transition: opacity .5s ease-in-out;
   -webkit-transition: opacity .5s ease-in-out;
   transition: opacity .5s ease-in-out;
-}
-
-#tab_1:checked ~ .tabs_cont #tab_c1,
-#tab_2:checked ~ .tabs_cont #tab_c2 {
-  position: static;
-  left: 0;
-  opacity: 1;
 }

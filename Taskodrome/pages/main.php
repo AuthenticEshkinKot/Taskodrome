@@ -82,12 +82,14 @@
     print '<p hidden="true" class="status_board_order" value="'.$status_order.'"/>';
 
     print '<section class="tabs">
-    <input id="tab_1" type="radio" name="tab" />
-    <input id="tab_2" type="radio" name="tab" />
+    <br>
 
-    <label for="tab_1" id="tab_l1">' . plugin_lang_get("assignment_board") . '</label>
-    <label for="tab_2" id="tab_l2">' . plugin_lang_get("status_board") . '</label>
-    <div style="clear:both"></div>
+    <span id="span_dg" class="bracket-link">
+    [ <a id="href_dg" href="javascript:openBoard(\'dg\')" >' . plugin_lang_get("assignment_board") . '</a> ]
+    </span>
+    <span id="span_sg" class="bracket-link">
+    [ <a id="href_sg" href="javascript:openBoard(\'sg\')" >' . plugin_lang_get("status_board") . '</a> ]
+    </span>
 
     <div class="tabs_cont">
     <div id="tab_c1">
