@@ -37,7 +37,10 @@ class TaskodromePlugin extends MantisPlugin
 
       "status_board_order" => array(
         "New", "Feedback", "Acknowledged", "Confirmed", "Assigned", "Resolved", "Closed"
-      )
+      ),
+
+      "cooldown_period_days" => 14,
+      "cooldown_period_hours" => 0
     );
   }
 

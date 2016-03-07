@@ -1,11 +1,12 @@
 var issues_raw;
+var cooldown_period;
 
 function onLoadOpening() {
-  var mark_index = window.location.href.lastIndexOf("#");
+  var markIndex = window.location.href.lastIndexOf("#");
   
-  if(mark_index != -1)
+  if(markIndex != -1)
   {
-    var prevGrid = window.location.href.substr(mark_index + 1, 2);
+    var prevGrid = window.location.href.substr(markIndex + 1, 2);
     openBoard(prevGrid);
   }
   else
@@ -14,11 +15,19 @@ function onLoadOpening() {
   }
 }
 
+function getCooldownPeriod() {
+  var cooldownPeriodDays = document.getElementById("cooldown_period_days").getAttribute("value");
+  var cooldownPeriodHours = document.getElementById("cooldown_period_hours").getAttribute("value");
+  return cooldownPeriodHours * 3600 + cooldownPeriodDays * 86400;
+}
+
 function pageOnLoad() {
   onLoadOpening();
 
   issues_raw = getIssuesRaw();
   
+  cooldown_period = getCooldownPeriod();
+
   init();
   statusInit();
 }
