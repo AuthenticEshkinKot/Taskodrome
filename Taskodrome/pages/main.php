@@ -51,15 +51,15 @@
     for( $i=0; $i < $t_rows; $i++ ) {
       $t_row = $p_rows[$i];
 
-      $issues_array_html = $issues_array_html . '<p hidden="true" class="issue_data" ';
-      $issues_array_html = $issues_array_html . 'id="'.$t_row->id.'" ';
-      $issues_array_html = $issues_array_html . 'summary="'.$t_row->summary.'" ';
-      $issues_array_html = $issues_array_html . 'status="'.$t_row->status.'" ';
-      $issues_array_html = $issues_array_html . 'handler_id="'.$t_row->handler_id.'" ';
-      $issues_array_html = $issues_array_html . 'topColor="#0000FF" ';
-      $issues_array_html = $issues_array_html . 'bottomColor="#FF0000" ';
-      $issues_array_html = $issues_array_html . 'updateTime="'.$t_row->last_updated.'"';
-      $issues_array_html = $issues_array_html . '></p>';
+      $issues_array_html .= '<p hidden="true" class="issue_data" ';
+      $issues_array_html .= 'id="'.$t_row->id.'" ';
+      $issues_array_html .= 'summary="'.$t_row->summary.'" ';
+      $issues_array_html .= 'status="'.$t_row->status.'" ';
+      $issues_array_html .=  'handler_id="'.$t_row->handler_id.'" ';
+      $issues_array_html .=  'topColor="#0000FF" ';
+      $issues_array_html .= 'bottomColor="#FF0000" ';
+      $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
+      $issues_array_html .=  '></p>';
     }
 
     print '<div id="taskodrome_data" hidden="true">
@@ -69,10 +69,10 @@
     $users = '';
     $user_number = count($user_array);
     for( $i=0; $i != $user_number; $i++ ) {
-      $users = $users . '<p hidden="true" class="user_data" ';
-      $users = $users . 'name="'.$user_array[$i]->name.'" ';
-      $users = $users . 'id="'.$user_array[$i]->id.'"';
-      $users = $users . '></p>';
+      $users .= '<p hidden="true" class="user_data" ';
+      $users .= 'name="'.$user_array[$i]->name.'" ';
+      $users .= 'id="'.$user_array[$i]->id.'"';
+      $users .= '></p>';
     }
 
     print $users;
