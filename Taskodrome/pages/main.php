@@ -56,11 +56,11 @@
       $issues_array_html .= 'id="'.$t_row->id.'" ';
       $issues_array_html .= 'summary="'.$t_row->summary.'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
-      $issues_array_html .=  'handler_id="'.$t_row->handler_id.'" ';
-      $issues_array_html .=  'topColor="#0000FF" ';
+      $issues_array_html .= 'handler_id="'.$t_row->handler_id.'" ';
+      $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
-      $issues_array_html .=  '></p>';
+      $issues_array_html .= '></p>';
 
       $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ));
 
