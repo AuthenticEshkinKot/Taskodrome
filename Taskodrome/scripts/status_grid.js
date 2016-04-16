@@ -54,8 +54,11 @@ function draw_st() {
 
 function onPressUp_st(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, issues_st, H_OFFSET, columnWidth_st.value);
+  var currStatus = getStatusByColumn_st(selectedCardSourceIndex_st.value.i);
+  var newStatus = getStatusByColumn_st(newColumnIndex);
 
-  if(newColumnIndex == -1) {
+  if(newColumnIndex == -1
+    || !isStatusAllowed(selectedCard_st.value.id, currStatus, newStatus)) {
     newColumnIndex = selectedCardSourceIndex_st.value.i;
   }
 
@@ -218,7 +221,13 @@ function getStatusByColumn_st(columnIndex) {
     case 6: return '90';
     default: return '90';
   }*/
-  return statusByColumns[columnIndex];
+  if (columnIndex >= 0) {
+    return statusByColumns[columnIndex];
+  }
+  else
+  {
+    return '90';
+  }
 };
 
 function getColumnByStatus_st(status) {
