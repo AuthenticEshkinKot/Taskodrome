@@ -52,7 +52,8 @@ function draw() {
 function onPressUp(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
 
-  if(newColumnIndex == -1) {
+  if(newColumnIndex == -1
+    || !isStatusAllowed(selectedCard.value.id, selectedCard.value.status, '50')) {
     newColumnIndex = selectedCardSourceIndex.value.i;
   }
 

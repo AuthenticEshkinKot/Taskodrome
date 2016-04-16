@@ -155,3 +155,28 @@ function openBoard(board) {
     document.getElementById("href_dg").removeAttribute("href");
   }
 };
+
+function getStatusesAllowanceMap() {
+  var ret = [];
+
+  var array = document.getElementsByClassName("status_pair");
+  for(var i = 0; i != array.length; ++i) {
+    var el = array[i];
+    var id = el.getAttribute("id");
+    ret[id] = [];
+
+    var src_status = el.getAttribute("src_status").split(';');
+    src_status.pop();
+
+    var dst_status = el.getAttribute("dst_status").split(';');
+    dst_status.pop();
+
+    for (var s_i = 0; s_i != src_status.length; ++s_i) {
+      var dst_status_per_src = dst_status[s_i].split(',');
+      dst_status_per_src.pop();
+      ret[id][src_status[s_i]] = dst_status_per_src;
+    }
+  }
+
+  return ret;
+};
