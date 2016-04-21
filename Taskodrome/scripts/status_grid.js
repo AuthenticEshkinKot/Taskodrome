@@ -53,6 +53,8 @@ function draw_st() {
 };
 
 function onPressUp_st(evt) {
+  setHrefMark(window, "sg");
+
   var newColumnIndex = computeColumnIndex(evt.stageX, issues_st, H_OFFSET, columnWidth_st.value);
   var currStatus = getStatusByColumn_st(selectedCardSourceIndex_st.value.i);
   var newStatus = getStatusByColumn_st(newColumnIndex);

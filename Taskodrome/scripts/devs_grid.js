@@ -50,6 +50,8 @@ function draw() {
 };
 
 function onPressUp(evt) {
+  setHrefMark(window, "dg");
+
   var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
 
   if(newColumnIndex == -1
