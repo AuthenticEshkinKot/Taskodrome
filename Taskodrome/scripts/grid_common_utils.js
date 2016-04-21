@@ -128,31 +128,13 @@ function computeColumnIndex(x, issues_in, firstColumnX_in, columnWidth_in) {
 
 function openBoard(board) {
   setHrefMark(window, board);
-  var tab_c1 = document.getElementById("tab_c1");
-  var tab_c2 = document.getElementById("tab_c2");
 
   if (board == "sg") {
-    tab_c1.style.opacity = "0";
-    tab_c1.style.left = "-9999px";
-    tab_c1.style.position = "absolute";
-
-    tab_c2.style.opacity = "1";
-    tab_c2.style.left = "0";
-    tab_c2.style.position = "static";
-
-    document.getElementById("href_dg").setAttribute("href", "javascript:openBoard(\'dg\')");
-    document.getElementById("href_sg").removeAttribute("href");
+    document.getElementById("radio_sg").checked = true;
+    document.getElementById("radio_dg").checked = false;
   } else {
-    tab_c2.style.opacity = "0";
-    tab_c2.style.left = "-9999px";
-    tab_c2.style.position = "absolute";
-
-    tab_c1.style.opacity = "1";
-    tab_c1.style.left = "0";
-    tab_c1.style.position = "static";
-
-    document.getElementById("href_sg").setAttribute("href", "javascript:openBoard(\'sg\')");
-    document.getElementById("href_dg").removeAttribute("href");
+    document.getElementById("radio_dg").checked = true;
+    document.getElementById("radio_sg").checked = false;
   }
 };
 

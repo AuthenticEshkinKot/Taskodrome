@@ -19,11 +19,43 @@ div.grid {
 }
 
 .tabs_cont > div {
-  position: absolute;
-  left: -9999px;
-  opacity: 0;
+  position: static;
+  left: 0;
+  opacity: 1;
   width: 100%;
   -moz-transition: opacity .5s ease-in-out;
   -webkit-transition: opacity .5s ease-in-out;
   transition: opacity .5s ease-in-out;
+}
+
+input {
+  display: none;
+}
+
+#radio_dg:checked ~ .tabs_cont #tab_c2,
+#radio_sg:checked ~ .tabs_cont #tab_c1 {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+#radio_dg:checked ~ .tabs_cont #tab_c1,
+#radio_sg:checked ~ .tabs_cont #tab_c2 {
+  position: static;
+  left: 0;
+  opacity: 1;
+}
+
+#radio_dg:checked ~ #label_dg,
+#radio_sg:checked ~ #label_sg {
+  color: purple;
+}
+
+.radio_label {
+  text-decoration: underline;
+  color: blue;
+}
+
+.radio_label:hover {
+  color: red;
 }

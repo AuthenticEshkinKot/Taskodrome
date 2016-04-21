@@ -123,12 +123,11 @@
     print '<section class="tabs">
     <br>
 
-    <span id="span_dg" class="bracket-link">
-    [ <a id="href_dg" href="javascript:openBoard(\'dg\')" >' . plugin_lang_get("assignment_board") . '</a> ]
-    </span>
-    <span id="span_sg" class="bracket-link">
-    [ <a id="href_sg" href="javascript:openBoard(\'sg\')" >' . plugin_lang_get("status_board") . '</a> ]
-    </span>
+    <input type="radio" id="radio_dg" name="group" >
+    <input type="radio" id="radio_sg" name="group" >
+
+    [ <label id="label_dg" class="radio_label" for="radio_dg" >' . plugin_lang_get("assignment_board") . '</label> ]
+    [ <label id="label_sg" class="radio_label" for="radio_sg" >' . plugin_lang_get("status_board") . '</label> ]
 
     <div class="tabs_cont">
     <div id="tab_c1">
@@ -140,8 +139,6 @@
     </div>
     ';
 
-    html_page_bottom();
-
     print '</div>';
 
     print '<div id="tab_c2">
@@ -151,9 +148,9 @@
     </div>
     ';
 
-    html_page_bottom();
-
     print '</div>';
+
+    html_page_bottom();
 
     print '</div>
     </section>
