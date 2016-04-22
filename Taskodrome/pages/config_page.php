@@ -16,7 +16,9 @@ print_manage_menu();
 <table class="width60" align="center">
 
 <tr>
-  <td class="form-title" colspan="2"><?php echo plugin_lang_get( 'config_title' ) ?></td>
+  <td class="form-title" colspan="2">
+    <?php echo plugin_lang_get( 'title' ) . ': ' . plugin_lang_get( 'config' ) ?>
+  </td>
 </tr>
 
 <tr <?php echo helper_alternate_class() ?>>

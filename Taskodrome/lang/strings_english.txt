@@ -12,11 +12,11 @@ $s_plugin_Taskodrome_board = 'Taskodrome';
 $s_plugin_Taskodrome_assignment_board = 'Assignment board';
 $s_plugin_Taskodrome_status_board = 'Status board';
 
-$s_plugin_Taskodrome_config_title = 'Taskodrome Configuration';
+$s_plugin_Taskodrome_config = 'Configuration';
 
 $s_plugin_Taskodrome_default_value = 'Default value:<br>%s<br>';
 
 $s_plugin_Taskodrome_status_board_order_label = 'Status board order';
 
 $s_plugin_Taskodrome_cooldown_period_label = 'Cooldown period';
-$s_plugin_Taskodrome_cooldown_period_hint = 'Cooldown period is a sum of this values (e.g. period of 1 day and 7 hours equals to 31 hours)';
+$s_plugin_Taskodrome_cooldown_period_hint = 'Cooldown period is a sum of this values (e.g., period of 1 day and 7 hours equals to 31 hours)';
