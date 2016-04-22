@@ -54,8 +54,7 @@ function onPressUp(evt) {
 
   var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
 
-  if(newColumnIndex == -1
-    || !isStatusAllowed(selectedCard.value.id, selectedCard.value.status, '50')) {
+  if(newColumnIndex == -1) {
     newColumnIndex = selectedCardSourceIndex.value.i;
   }
 
@@ -65,16 +64,16 @@ function onPressUp(evt) {
 
     selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 
-    var handler_id = user_ids[newColumnIndex];
-    var bug_id = selectedCard.value.id;
-
-    if(handler_id != 0)
+    if(selectedCard.value.handler_id == 0 && selectedCard.value.status != 80
+    && selectedCard.value.status != 90)
     {
       selectedCard.value.status = '50';
     }
 
+    var handler_id = user_ids[newColumnIndex];
     selectedCard.value.handler_id = handler_id;
 
+    var bug_id = selectedCard.value.id;
     bugsToSend.push({ handler_id : handler_id, bug_id : bug_id });
 
     if (bugsToSend.length == 1) {
@@ -117,7 +116,7 @@ function sendRequest(bugIndex)
       if (window.DOMParser)
       {
         var parser = new DOMParser();
-        xmlDoc = parser.parseFromString(page_text, "text/xml");
+        xmlDoc = parser.parseFromString(page_text, "text/html");
       }
       else // Internet Explorer
       {
@@ -127,17 +126,22 @@ function sendRequest(bugIndex)
       }
 
       var security_token = 0;
+      var last_updated = 0;
       inputs = xmlDoc.getElementsByTagName("input");
       for(var i = 0, n = inputs.length; i < n; i++)
       {
-        if (inputs[i].getAttribute("name") == "bug_assign_token")
+        if (inputs[i].getAttribute("name") == "bug_update_token")
         {
           security_token = inputs[i].getAttribute("value");
+        }
+        else if (inputs[i].getAttribute("name") == "last_updated")
+        {
+          last_updated = inputs[i].getAttribute("value");
         }
       }
 
       var requestAssign = new XMLHttpRequest();
-      var address = getPathToMantisFile(window, "bug_assign.php");
+      var address = getPathToMantisFile(window, "bug_update.php");
       requestAssign.open("POST", address, true);
       requestAssign.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       requestAssign.timeout = HTTP_REQUEST_TIMEOUT;
@@ -170,11 +174,12 @@ function sendRequest(bugIndex)
       };
       requestAssign.onreadystatechange = reqAssignOnReadyStateChange;
 
-      var bug_assign_token = security_token;
+      var bug_update_token = security_token;
       var handler_id = bugsToSend[bugIndex].handler_id;
       var bug_id = bugsToSend[bugIndex].bug_id;
-      var parameters = "bug_assign_token=" + bug_assign_token + "&handler_id=" +
-                        handler_id + "&bug_id=" + bug_id;
+      var parameters = "bug_update_token=" + bug_update_token + "&handler_id=" +
+                        handler_id + "&bug_id=" + bug_id + "&action_type=assign" +
+                        "&last_updated=" + last_updated;
       requestAssign.send(parameters);
     }
     else if (requestToken.readyState == 0 || requestToken.status == 404) {

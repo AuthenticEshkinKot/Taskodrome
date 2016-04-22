@@ -123,9 +123,9 @@
     </div>
     ';
 
-    print '</div>';
-
     html_page_bottom();
+
+    print '</div>';
 
     print '</div>
     </section>

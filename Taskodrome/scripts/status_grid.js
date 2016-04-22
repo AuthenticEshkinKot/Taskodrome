@@ -104,7 +104,7 @@ function sendRequest_st(bugIndex)
         if (window.DOMParser)
         {
           var parser = new DOMParser();
-          xmlDoc = parser.parseFromString(page_text, "text/xml");
+          xmlDoc = parser.parseFromString(page_text, "text/html");
         }
         else // Internet Explorer
         {
@@ -114,12 +114,17 @@ function sendRequest_st(bugIndex)
         }
 
         var security_token = 0;
+        var last_updated = 0;
         inputs = xmlDoc.getElementsByTagName("input");        
         for(var i = 0, n = inputs.length; i < n; i++)
         {
           if (inputs[i].getAttribute("name") == "bug_update_token")
           {
             security_token = inputs[i].getAttribute("value");
+          }
+          else if (inputs[i].getAttribute("name") == "last_updated")
+          {
+            last_updated = inputs[i].getAttribute("value");
           }
         }
 
@@ -150,7 +155,9 @@ function sendRequest_st(bugIndex)
         var handler_id = bugsToSend_st[bugIndex].handler_id;
         var bug_id = bugsToSend_st[bugIndex].bug_id;
         var status = bugsToSend_st[bugIndex].status;
-        var parameters = "bug_update_token=" + bug_update_token + "&handler_id=" + handler_id + "&bug_id=" + bug_id + "&status=" + status;
+        var parameters = "bug_update_token=" + bug_update_token
+        + "&handler_id=" + handler_id + "&bug_id=" + bug_id
+        + "&status=" + status + "&last_updated=" + last_updated;
         requestUpdate.send(parameters);
       }
     }

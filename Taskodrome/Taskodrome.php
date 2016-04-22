@@ -13,7 +13,7 @@ class TaskodromePlugin extends MantisPlugin
 
     $this->version = "0.1";
     $this->requires = array(
-      "MantisCore" => "1.2.9",
+      "MantisCore" => "1.3.0",
     );
 
     $this->author = "Maxim Kuzmin";
