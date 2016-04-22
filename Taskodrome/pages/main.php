@@ -8,31 +8,6 @@
 
 <?php
   html_page_top( plugin_lang_get( 'board' ) );
-
-  /**
-  * requires current_user_api
-  */
-  require_once( 'current_user_api.php' );
-  /**
-   * requires bug_api
-  */
-  require_once( 'bug_api.php' );
-	/**
-	 * requires string_api
-	 */
-	require_once( 'string_api.php' );
-	/**
-	 * requires date_api
-	 */
-	require_once( 'date_api.php' );
-	/**
-	 * requires icon_api
-	 */
-	require_once( 'icon_api.php' );
-	/**
-	 * requires columns_api
-	 */
-	require_once( 'columns_api.php' );
 	
 	$f_page_number		= gpc_get_int( 'page_number', 1 );
 	
@@ -166,13 +141,13 @@
 		
 		$user_array = array();
 		$p_project_id = null;
-		$t_current_user = auth_get_current_user_id();
 
 		if( null === $p_project_id ) {
 			$p_project_id = helper_get_current_project();
 		}
 
 		if( $p_project_id === ALL_PROJECTS ) {
+      $t_current_user = auth_get_current_user_id();
 			$t_projects = user_get_accessible_projects( $t_current_user );
 
 			# Get list of users having access level for all accessible projects
@@ -194,7 +169,6 @@
 			$t_users = project_get_all_user_rows( $p_project_id, DEVELOPER );
 		}
 
-		$t_display = array();
 		$t_show_realname = ( ON == config_get( 'show_realname' ) );
 		$t_sort_by_last_name = ( ON == config_get( 'sort_by_last_name' ) );
 		foreach( $t_users as $t_key => $t_user ) {
@@ -210,23 +184,17 @@
 				}
 			}
 
-			$t_display[] = $t_user_name;
+      $user = new User();
+			$user->id = $t_user['id'];
+			$user->name = $t_user_name;
+      array_push($user_array, $user);
 		}
 
-		$t_count = count( $t_users );
-		for( $i = 0; $i < $t_count; $i++ ) {
-			$t_row = $t_users[$i];
-			$user = new User();
-			$user->id = $t_row['id'];
-			$user->name = $t_display[$i];
-			array_push($user_array, $user);
-		}
-    
     $user = new User();
     $user->id = 0;
 		$user->name = " ";
     array_push($user_array, $user);
-		
+
 		return $user_array;
 	}
 
