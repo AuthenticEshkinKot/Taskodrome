@@ -156,11 +156,9 @@
 				$t_project_users_list = project_get_all_user_rows( $t_project_id, DEVELOPER );
 				# Do a 'smart' merge of the project's user list, into an
 				# associative array (to remove duplicates)
-				# Use a while loop for better performance
-				$i = 0;
-				while( isset( $t_project_users_list[$i] ) ) {
-					$t_users[ $t_project_users_list[$i]['id'] ] = $t_project_users_list[$i];
-					$i++;
+				# Use a foreach loop for correctness
+				foreach( $t_project_users_list as $t_key => $t_user ) {
+					$t_users[ $t_user['id'] ] = $t_user;
 				}
 				unset( $t_project_users_list );
 			}
