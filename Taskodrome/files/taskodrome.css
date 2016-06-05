@@ -28,7 +28,11 @@ div.grid {
   transition: opacity .5s ease-in-out;
 }
 
-input {
+#radio_dg {
+  display: none;
+}
+
+#radio_sg {
   display: none;
 }
 
