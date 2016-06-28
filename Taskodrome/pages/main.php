@@ -29,7 +29,7 @@
 
       $issues_array_html .= '<p hidden="true" class="issue_data" ';
       $issues_array_html .= 'id="'.$t_row->id.'" ';
-      $issues_array_html .= 'summary="'.$t_row->summary.'" ';
+      $issues_array_html .= 'summary="'.htmlentities($t_row->summary).'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
       $issues_array_html .= 'handler_id="'.$t_row->handler_id.'" ';
       $issues_array_html .= 'topColor="#0000FF" ';
