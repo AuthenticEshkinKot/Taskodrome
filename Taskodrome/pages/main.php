@@ -20,18 +20,41 @@
   function write_bug_rows( $p_rows )
   {
     $user_array = get_user_array();
+    $alive_user_ids = array();
     $issues_array_html = '';
     $allowed_statuses_html = '';
+
+    print '<div id="taskodrome_data" hidden="true">
+    ';
+
+    $users = '';
+    $user_number = count($user_array);
+    for( $i=0; $i != $user_number; $i++ ) {
+      $users .= '<p hidden="true" class="user_data" ';
+      $users .= 'name="'.$user_array[$i]->name.'" ';
+      $users .= 'id="'.$user_array[$i]->id.'"';
+      $users .= '></p>';
+
+      $alive_user_ids[$user_array[$i]->id] = 1;
+    }
+
+    print $users;
 
     $t_rows = count( $p_rows );
     for( $i=0; $i < $t_rows; $i++ ) {
       $t_row = $p_rows[$i];
 
+      $handler_id = $t_row->handler_id;
+      if (!array_key_exists($t_row->handler_id, $alive_user_ids))
+      {
+        $handler_id = 0;
+      }
+
       $issues_array_html .= '<p hidden="true" class="issue_data" ';
       $issues_array_html .= 'id="'.$t_row->id.'" ';
       $issues_array_html .= 'summary="'.htmlentities($t_row->summary).'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
-      $issues_array_html .= 'handler_id="'.$t_row->handler_id.'" ';
+      $issues_array_html .= 'handler_id="'.$handler_id.'" ';
       $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
@@ -70,21 +93,8 @@
       $allowed_statuses_html .= '></p>';
     }
 
-    print '<div id="taskodrome_data" hidden="true">
-    ';
     print $issues_array_html;
     print $allowed_statuses_html;
-
-    $users = '';
-    $user_number = count($user_array);
-    for( $i=0; $i != $user_number; $i++ ) {
-      $users .= '<p hidden="true" class="user_data" ';
-      $users .= 'name="'.$user_array[$i]->name.'" ';
-      $users .= 'id="'.$user_array[$i]->id.'"';
-      $users .= '></p>';
-    }
-
-    print $users;
 
     $status_order = null;
     foreach( plugin_config_get("status_board_order") as $t_value ) {
