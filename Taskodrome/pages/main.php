@@ -8,14 +8,14 @@
 
 <?php
   html_page_top( plugin_lang_get( 'board' ) );
-	
-	$f_page_number		= gpc_get_int( 'page_number', 1 );
-	
-	$t_per_page = null;
-	$t_bug_count = null;
-	$t_page_count = null;
-	
-	$rows = filter_get_bug_rows( $f_page_number, $t_per_page, $t_page_count, $t_bug_count, null, null, null, true );
+
+  $f_page_number = gpc_get_int( 'page_number', 1 );
+
+  $t_per_page = null;
+  $t_bug_count = null;
+  $t_page_count = null;
+
+  $rows = filter_get_bug_rows( $f_page_number, $t_per_page, $t_page_count, $t_bug_count, null, null, null, true );
 
   function write_bug_rows( $p_rows )
   {
@@ -142,73 +142,73 @@
     ';
   }
 
-	function get_user_array()
-	{
-		class User {
-			public $id;
-			public $name;
-		}
-		
-		$user_array = array();
-		$p_project_id = null;
+  function get_user_array()
+  {
+    class User {
+      public $id;
+      public $name;
+    }
 
-		if( null === $p_project_id ) {
-			$p_project_id = helper_get_current_project();
-		}
+    $user_array = array();
+    $p_project_id = null;
 
-		if( $p_project_id === ALL_PROJECTS ) {
+    if( null === $p_project_id ) {
+      $p_project_id = helper_get_current_project();
+    }
+
+    if( $p_project_id === ALL_PROJECTS ) {
       $t_current_user = auth_get_current_user_id();
-			$t_projects = user_get_accessible_projects( $t_current_user );
+      $t_projects = user_get_accessible_projects( $t_current_user );
 
-			# Get list of users having access level for all accessible projects
-			$t_users = array();
-			foreach( $t_projects as $t_project_id ) {
-				$t_project_users_list = project_get_all_user_rows( $t_project_id, DEVELOPER );
-				# Do a 'smart' merge of the project's user list, into an
-				# associative array (to remove duplicates)
-				# Use a while loop for better performance
-				$i = 0;
-				while( isset( $t_project_users_list[$i] ) ) {
-					$t_users[ $t_project_users_list[$i]['id'] ] = $t_project_users_list[$i];
-					$i++;
-				}
-				unset( $t_project_users_list );
-			}
-			unset( $t_projects );
-		} else {
-			$t_users = project_get_all_user_rows( $p_project_id, DEVELOPER );
-		}
+      # Get list of users having access level for all accessible projects
+      $t_users = array();
+      foreach( $t_projects as $t_project_id ) {
+        $t_project_users_list = project_get_all_user_rows( $t_project_id, DEVELOPER );
+        # Do a 'smart' merge of the project's user list, into an
+        # associative array (to remove duplicates)
+        # Use a while loop for better performance
+        $i = 0;
+        while( isset( $t_project_users_list[$i] ) ) {
+          $t_users[ $t_project_users_list[$i]['id'] ] = $t_project_users_list[$i];
+          $i++;
+        }
+        unset( $t_project_users_list );
+      }
+      unset( $t_projects );
+    } else {
+      $t_users = project_get_all_user_rows( $p_project_id, DEVELOPER );
+    }
 
-		$t_show_realname = ( ON == config_get( 'show_realname' ) );
-		$t_sort_by_last_name = ( ON == config_get( 'sort_by_last_name' ) );
-		foreach( $t_users as $t_key => $t_user ) {
-			$t_user_name = string_attribute( $t_user['username'] );
-			$t_sort_name = utf8_strtolower( $t_user_name );
-			if( $t_show_realname && ( $t_user['realname'] <> '' ) ) {
-				$t_user_name = string_attribute( $t_user['realname'] );
-				if( $t_sort_by_last_name ) {
-					$t_sort_name_bits = explode( ' ', utf8_strtolower( $t_user_name ), 2 );
-					$t_sort_name = ( isset( $t_sort_name_bits[1] ) ? $t_sort_name_bits[1] . ', ' : '' ) . $t_sort_name_bits[0];
-				} else {
-					$t_sort_name = utf8_strtolower( $t_user_name );
-				}
-			}
+    $t_show_realname = ( ON == config_get( 'show_realname' ) );
+    $t_sort_by_last_name = ( ON == config_get( 'sort_by_last_name' ) );
+    foreach( $t_users as $t_key => $t_user ) {
+      $t_user_name = string_attribute( $t_user['username'] );
+      $t_sort_name = utf8_strtolower( $t_user_name );
+      if( $t_show_realname && ( $t_user['realname'] <> '' ) ) {
+        $t_user_name = string_attribute( $t_user['realname'] );
+        if( $t_sort_by_last_name ) {
+          $t_sort_name_bits = explode( ' ', utf8_strtolower( $t_user_name ), 2 );
+          $t_sort_name = ( isset( $t_sort_name_bits[1] ) ? $t_sort_name_bits[1] . ', ' : '' ) . $t_sort_name_bits[0];
+        } else {
+          $t_sort_name = utf8_strtolower( $t_user_name );
+        }
+      }
 
       $user = new User();
-			$user->id = $t_user['id'];
-			$user->name = $t_user_name;
+      $user->id = $t_user['id'];
+      $user->name = $t_user_name;
       array_push($user_array, $user);
-		}
+    }
 
     $user = new User();
     $user->id = 0;
-		$user->name = " ";
+    $user->name = " ";
     array_push($user_array, $user);
 
-		return $user_array;
-	}
+    return $user_array;
+  }
 
-	write_bug_rows( $rows );
-	
-	
+  write_bug_rows( $rows );
+
+
 ?>
