@@ -12,16 +12,16 @@ print_manage_menu();
 ?>
 
 <div id="taskodrome-config-div" class="form-container">
-	<form id="taskodrome-config-form" action="<?php echo plugin_page( 'config' )?>" method="post">
-		<fieldset>
-			<legend>
+  <form id="taskodrome-config-form" action="<?php echo plugin_page( 'config' )?>" method="post">
+    <fieldset>
+      <legend>
         <span>
           <?php echo plugin_lang_get( 'title' ) . ': ' . plugin_lang_get( 'config' ) ?>
         </span>
       </legend>
-			<?php echo form_security_field( 'plugin_format_config_edit' ) ?>
+      <?php echo form_security_field( 'plugin_format_config_edit' ) ?>
       <?php $t_field = 'status_board_order'; ?>
-			<div class="field-container">
+      <div class="field-container">
         <label>
           <span>
             <?php echo plugin_lang_get( $t_field . '_label' ) ?>
@@ -46,12 +46,12 @@ print_manage_menu();
             echo trim( $t_encoded, ';' );
           ?>"</input>
         </span>
-				<span class="label-style"></span>
-			</div>
+        <span class="label-style"></span>
+      </div>
 
-			<div class="field-container">
+      <div class="field-container">
         <?php $t_field = 'cooldown_period'; ?>
-				<label>
+        <label>
           <span><?php echo plugin_lang_get( $t_field . '_label' ) ?><br></span>
           <span class="small"><?php
             echo plugin_lang_get( $t_field . '_hint' );
@@ -68,14 +68,14 @@ print_manage_menu();
             echo plugin_config_get( $t_field . '_hours' ); ?>"/>
           <br>
         </span>
-				<span class="label-style"></span>
-			</div>
+        <span class="label-style"></span>
+      </div>
 
-			<span class="submit-button">
-				<input type="submit" class="button" value="<?php echo lang_get( 'change_configuration' )?>" />
-			</span>
-		</fieldset>
-	</form>
+      <span class="submit-button">
+        <input type="submit" class="button" value="<?php echo lang_get( 'change_configuration' )?>" />
+      </span>
+    </fieldset>
+  </form>
 </div>
 
 <?php
