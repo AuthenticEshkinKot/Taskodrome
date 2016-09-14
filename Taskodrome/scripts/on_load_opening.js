@@ -18,7 +18,7 @@ function onLoadOpening() {
 
 function isIndexInArray(array, index) {
   return array.length > index && array[index] != null;
-}
+};
 
 function isStatusAllowed(id, src_status, dst_status) {
   return isIndexInArray(allowed_statuses_map, id)
