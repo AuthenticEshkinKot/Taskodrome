@@ -60,7 +60,7 @@
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
       $issues_array_html .= '></p>';
 
-      $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ));
+      $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), 0, true, false, $t_row->project_id);
 
       $allowed_statuses_html .= '<p hidden="true" class="status_pair" ';
       $allowed_statuses_html .= 'id="' . $t_row->id . '" ';
