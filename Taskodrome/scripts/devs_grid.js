@@ -112,29 +112,7 @@ function sendRequest(bugIndex)
       console.log("requestToken OK");
 
       var page_text = requestToken.responseText;
-
-      var xmlDoc;
-      if (window.DOMParser)
-      {
-        var parser = new DOMParser();
-        xmlDoc = parser.parseFromString(page_text, "text/xml");
-      }
-      else // Internet Explorer
-      {
-        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-        xmlDoc.async = false;
-        xmlDoc.loadXML(page_text);
-      }
-
-      var security_token = 0;
-      inputs = xmlDoc.getElementsByTagName("input");
-      for(var i = 0, n = inputs.length; i < n; i++)
-      {
-        if (inputs[i].getAttribute("name") == "bug_assign_token")
-        {
-          security_token = inputs[i].getAttribute("value");
-        }
-      }
+      var security_token = getValueByName(page_text, "bug_assign_token");
 
       var requestAssign = new XMLHttpRequest();
       var address = getPathToMantisFile(window, "bug_assign.php");
@@ -256,4 +234,14 @@ function createUsernamesMap(users) {
   }
 
   return ret;
+};
+
+function getValueByName(page_text, name) {
+  var prefix = 'name="' + name + '" value="';
+  var src_string = page_text.match(new RegExp('.*' + prefix + '.*'))[0];
+  //console.log(src_string);
+  var start_index = src_string.indexOf(prefix) + prefix.length;
+  var res = src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
+  //console.log(res);
+  return res;
 };

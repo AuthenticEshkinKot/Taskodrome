@@ -99,29 +99,7 @@ function sendRequest_st(bugIndex)
     if (requestToken.readyState == 4) {
       if(requestToken.status == 200) {
         var page_text = requestToken.responseText;
-
-        var xmlDoc;
-        if (window.DOMParser)
-        {
-          var parser = new DOMParser();
-          xmlDoc = parser.parseFromString(page_text, "text/xml");
-        }
-        else // Internet Explorer
-        {
-          xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-          xmlDoc.async = false;
-          xmlDoc.loadXML(page_text);
-        }
-
-        var security_token = 0;
-        inputs = xmlDoc.getElementsByTagName("input");        
-        for(var i = 0, n = inputs.length; i < n; i++)
-        {
-          if (inputs[i].getAttribute("name") == "bug_update_token")
-          {
-            security_token = inputs[i].getAttribute("value");
-          }
-        }
+        var security_token = getValueByName_st(page_text, "bug_update_token");
 
         var requestUpdate = new XMLHttpRequest();
         var address = getPathToMantisFile(window, "bug_update.php");
@@ -209,6 +187,16 @@ function sortIssues_st() {
     var posIndex = issues_st[columnIndex].length;
     issues_st[columnIndex][posIndex] = issues_raw[i];
   }
+};
+
+function getValueByName_st(page_text, name) {
+  var prefix = 'name="' + name + '" value="';
+  var src_string = page_text.match(new RegExp('.*' + prefix + '.*'))[0];
+  //console.log(src_string);
+  var start_index = src_string.indexOf(prefix) + prefix.length;
+  var res = src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
+  //console.log(res);
+  return res;
 };
 
 function getStatusByColumn_st(columnIndex) {
