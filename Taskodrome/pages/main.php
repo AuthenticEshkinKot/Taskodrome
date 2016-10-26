@@ -30,7 +30,7 @@
     $users = '';
     $user_number = count($user_array);
     for( $i=0; $i != $user_number; $i++ ) {
-      $users .= '<p hidden="true" class="user_data" ';
+      $users .= '<p class="user_data" ';
       $users .= 'name="'.$user_array[$i]->name.'" ';
       $users .= 'id="'.$user_array[$i]->id.'"';
       $users .= '></p>';
@@ -50,7 +50,7 @@
         $handler_id = 0;
       }
 
-      $issues_array_html .= '<p hidden="true" class="issue_data" ';
+      $issues_array_html .= '<p class="issue_data" ';
       $issues_array_html .= 'id="'.$t_row->id.'" ';
       $issues_array_html .= 'summary="'.htmlentities($t_row->summary).'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
@@ -62,7 +62,7 @@
 
       $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
 
-      $allowed_statuses_html .= '<p hidden="true" class="status_pair" ';
+      $allowed_statuses_html .= '<p class="status_pair" ';
       $allowed_statuses_html .= 'id="' . $t_row->id . '" ';
 
       $src_status_str = '';
@@ -100,9 +100,9 @@
     foreach( plugin_config_get("status_board_order") as $t_value ) {
       $status_order .= $t_value.';';
     }
-    print '<p hidden="true" class="status_board_order" value="'.$status_order.'"></p>';
-    print '<p hidden="true" id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
-    print '<p hidden="true" id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
+    print '<p class="status_board_order" value="'.$status_order.'"></p>';
+    print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
+    print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
     print '</div>';
 
     print '<section class="tabs">
