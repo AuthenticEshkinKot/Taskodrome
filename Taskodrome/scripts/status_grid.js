@@ -89,52 +89,42 @@ function onPressUp_st(evt) {
   fullRedraw();
 };
 
-function sendRequest_st(bugIndex)
-{
+function sendRequest_st(bugIndex) {
   var requestToken = new XMLHttpRequest();
   var address = getPathToMantisFile(window, "bug_change_status_page.php");
   requestToken.open("POST", address, true);
   requestToken.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
   function tokenOnReadyStateChange() {
-    if (requestToken.readyState == 4) {
-      if(requestToken.status == 200) {
-        var page_text = requestToken.responseText;
-        var security_token = getValueByName_st(page_text, "bug_update_token");
-        var last_updated = getValueByName_st(page_text, "last_updated");
+    if (requestToken.readyState == 4 && requestToken.status == 200) {
+      var page_text = requestToken.responseText;
+      var security_token = getValueByName_st(page_text, "bug_update_token");
+      var last_updated = getValueByName_st(page_text, "last_updated");
 
-        var requestUpdate = new XMLHttpRequest();
-        var address = getPathToMantisFile(window, "bug_update.php");
-        requestUpdate.open("POST", address, true);
-        requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      var requestUpdate = new XMLHttpRequest();
+      var address = getPathToMantisFile(window, "bug_update.php");
+      requestUpdate.open("POST", address, true);
+      requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        function reqUpdateOnReadyStateChanged() {
-          var index = bugIndex;
-
-          if (requestUpdate.readyState == 4) {
-            if(requestUpdate.status == 200) {
-              if(index < bugsToSend_st.length - 1)
-              {
-                sendRequest_st(index + 1);
-              }
-              else if(bugsToSend_st.length > 0)
-              {
-                bugsToSend_st.length = 0;
-              }
-            }
+      function reqUpdateOnReadyStateChanged() {
+        if (requestUpdate.readyState == 4 && requestUpdate.status == 200) {
+          if(bugIndex < bugsToSend_st.length - 1) {
+            sendRequest_st(bugIndex + 1);
+          } else if(bugsToSend_st.length > 0) {
+            bugsToSend_st.length = 0;
           }
-        };
-        requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
+        }
+      };
+      requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
 
-        var bug_update_token = security_token;
-        var handler_id = bugsToSend_st[bugIndex].handler_id;
-        var bug_id = bugsToSend_st[bugIndex].bug_id;
-        var status = bugsToSend_st[bugIndex].status;
-        var parameters = "bug_update_token=" + bug_update_token
-        + "&handler_id=" + handler_id + "&bug_id=" + bug_id
-        + "&status=" + status + "&last_updated=" + last_updated;
-        requestUpdate.send(parameters);
-      }
+      var bug_update_token = security_token;
+      var handler_id = bugsToSend_st[bugIndex].handler_id;
+      var bug_id = bugsToSend_st[bugIndex].bug_id;
+      var status = bugsToSend_st[bugIndex].status;
+      var parameters = "bug_update_token=" + bug_update_token
+      + "&handler_id=" + handler_id + "&bug_id=" + bug_id
+      + "&status=" + status + "&last_updated=" + last_updated;
+      requestUpdate.send(parameters);
     }
   };
   requestToken.onreadystatechange = tokenOnReadyStateChange;
@@ -149,15 +139,13 @@ function createColumnStatusMap() {
   var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
   statusList = statusString.split(';', 7);
 
-  if (statusList[statusList.length - 1] == '')
-  {
+  if (statusList[statusList.length - 1] == '') {
     statusList.pop();
   }
 
   for (var i = 0; i != statusList.length; ++i) {
     var status = '100';
-    switch(statusList[i])
-    {
+    switch(statusList[i]) {
       case 'New': status = '10'; break;
       case 'Feedback': status = '20'; break;
       case 'Acknowledged': status = '30'; break;
@@ -217,9 +205,7 @@ function getStatusByColumn_st(columnIndex) {
   }*/
   if (columnIndex >= 0) {
     return statusByColumns[columnIndex];
-  }
-  else
-  {
+  } else {
     return '90';
   }
 };

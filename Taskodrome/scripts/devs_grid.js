@@ -68,8 +68,7 @@ function onPressUp(evt) {
     selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 
     if(selectedCard.value.handler_id == 0 && selectedCard.value.status != 80
-    && selectedCard.value.status != 90)
-    {
+    && selectedCard.value.status != 90) {
       selectedCard.value.status = '50';
     }
 
@@ -91,8 +90,7 @@ function onPressUp(evt) {
   fullRedraw();
 };
 
-function sendRequest(bugIndex)
-{
+function sendRequest(bugIndex) {
   console.log("----");
   console.log("bugIndex = " + bugIndex);
 
@@ -133,8 +131,7 @@ function sendRequest(bugIndex)
         if (requestAssign.readyState == 4 && requestAssign.status == 200) {
           console.log("requestAssign OK");
           trySendNextBug(bugIndex);
-        }
-        else if (requestAssign.readyState == 0 || requestAssign.status == 404) {
+        } else if (requestAssign.readyState == 0 || requestAssign.status == 404) {
           requestAssign.onreadystatechange = null;
           requestAssign.abort();
 
@@ -142,9 +139,7 @@ function sendRequest(bugIndex)
                 + " status=" + requestAssign.status);
 
           trySendNextBug(bugIndex);
-        }
-        else
-        {
+        } else {
           console.log("requestAssign.onreadystatechange UNKNOWN: readyState=" + requestAssign.readyState
                 + " status=" + requestAssign.status);
         }
@@ -158,8 +153,7 @@ function sendRequest(bugIndex)
                         handler_id + "&bug_id=" + bug_id + "&action_type=assign" +
                         "&last_updated=" + last_updated;
       requestAssign.send(parameters);
-    }
-    else if (requestToken.readyState == 0 || requestToken.status == 404) {
+    } else if (requestToken.readyState == 0 || requestToken.status == 404) {
       requestToken.onreadystatechange = null;
       requestToken.abort();
 
@@ -167,9 +161,7 @@ function sendRequest(bugIndex)
                 + " status=" + requestToken.status);
 
       trySendNextBug(bugIndex);
-    }
-    else
-    {
+    } else {
       console.log("requestToken.onreadystatechange UNKNOWN: readyState=" + requestToken.readyState
                 + " status=" + requestToken.status);
     }
@@ -179,14 +171,10 @@ function sendRequest(bugIndex)
   requestToken.send(null);
 };
 
-function trySendNextBug(index)
-{
-  if(index < bugsToSend.length - 1)
-  {
+function trySendNextBug(index) {
+  if(index < bugsToSend.length - 1) {
     sendRequest(index + 1);
-  }
-  else if(bugsToSend.length > 0)
-  {
+  } else if(bugsToSend.length > 0) {
     bugsToSend.length = 0;
   }
 };

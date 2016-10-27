@@ -1,6 +1,5 @@
 function getColorByStatus(issueStatus) {
-  switch(issueStatus)
-  {
+  switch(issueStatus) {
     case '10': return '#FCBDBD';
     case '20': return '#E3B7EB';
     case '30': return '#FFCD85';
@@ -43,54 +42,36 @@ function getTemperatureColor(updateTime) {
   if(timeFromUpdate <= colorPeriod) {
     var green = Math.round((timeFromUpdate / colorPeriod) * 255);
     var greenStr = green.toString(16);
-    if (greenStr.length == 2)
-    {
+    if (greenStr.length == 2) {
       return '#FF' + greenStr + '00';
-    }
-    else
-    {
+    } else {
       return '#FF0' + greenStr + '00';
     }
   } else if(timeFromUpdate <= 2 * colorPeriod ) {
     var blue = Math.round(((timeFromUpdate - colorPeriod) / colorPeriod) * 255);
     var blueStr = blue.toString(16);
-    if (blueStr.length == 2)
-    {
+    if (blueStr.length == 2) {
       return '#FFFF' + blueStr;
-    }
-    else
-    {
+    } else {
       return '#FFFF0' + blueStr;
     }
-  }
-  else if( timeFromUpdate <= 3 * colorPeriod )
-  {
+  } else if( timeFromUpdate <= 3 * colorPeriod ) {
     var red = Math.round(( 1 - ( (timeFromUpdate - 2 * colorPeriod) / colorPeriod)) * 255);
     var redStr = red.toString(16);
-    if (redStr.length == 2)
-    {
+    if (redStr.length == 2) {
       return '#' + redStr + 'FFFF';
-    }
-    else
-    {
+    } else {
       return '#0' + redStr + 'FFFF';
     }
-  }
-  else if( timeFromUpdate <= 4 * colorPeriod )
-  {
+  } else if( timeFromUpdate <= 4 * colorPeriod ) {
     var green = Math.round(( 1 - ( (timeFromUpdate - 3 * colorPeriod) / colorPeriod)) * 255);
     var greenStr = green.toString(16);
-    if (greenStr.length == 2)
-    {
+    if (greenStr.length == 2) {
       return '#00' + greenStr + 'FF';
-    }
-    else
-    {
+    } else {
       return '#000' + greenStr + 'FF';
     }
-  }
-  else
-  {
+  } else {
     return '#0000FF';
   }
 };
@@ -101,9 +82,7 @@ function setHrefMark(window, mark) {
 
   if(mark_index == -1) {
     window.location.href = href + "#" + mark;
-  }
-  else
-  {
+  } else {
     window.location.href = href.substr(0, mark_index + 1) + mark;
   }
 };
