@@ -23,6 +23,7 @@ var columnByStatus = [];
 
 function statusInit() {
   myPanel_st = new createjs.Stage("panel_st");
+  myPanel_st.enableMouseOver(4);
 
   var parentDiv = document.getElementById("st-grid");
 
