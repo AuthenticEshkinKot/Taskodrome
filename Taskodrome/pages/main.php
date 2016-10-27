@@ -58,6 +58,10 @@
       $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
+      $issues_array_html .= 'description="'.$t_row->description.'"';
+      $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'"';
+      $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'"';
+      $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'"';
       $issues_array_html .= '></p>';
 
       $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);

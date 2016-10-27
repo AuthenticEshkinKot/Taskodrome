@@ -3,8 +3,12 @@ var V_OFFSET = 20;
 
 var MIN_COL_WIDTH = 140;
 
+var POPUP_PAUSE = 600;
+
 var update = false;
 var stageToUpdate;
+
+var popupPause = 0;
 
 function fullRedraw() {
   draw();
@@ -196,6 +200,11 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
         }
       }
     }
+
+    if (popupCard != null) {
+      panel.removeChild(popupCard);
+      popupCard = null;
+    }
   };
   card.on("mousedown", cardOnMousedown);
 
@@ -209,6 +218,20 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.on("pressmove", cardOnPressmove);
 
   card.on("pressup", onPressUp);
+
+  function cardOnRollover(evt) {
+    popupCard = createPopupCard(evt.stageX, evt.stageY, issue.description, issue.severity, issue.priority, issue.reproducibility);
+    popupPause = POPUP_PAUSE;
+    stageToUpdate = panel;
+  };
+  card.on("rollover", cardOnRollover);
+
+  function cardOnRollout(evt) {
+    panel.removeChild(popupCard);
+    popupCard = null;
+    update = true;
+  };
+  card.on("rollout", cardOnRollout);
 
   card.x = position.x;
   card.y = position.y;
@@ -225,6 +248,95 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.tickEnabled = false;
 
   return card;
+};
+
+function createPopupCard(x, y, descriptionText, severityText, priorityText, reproducibilityText) {
+  var card = new createjs.Container();
+  var font = "12px Arial";
+  var color = "#000000";
+  var height = 0;
+  var width = 0;
+  var offset = 8;
+
+  var description = createDescription(descriptionText, 12 + offset);
+  description.x = offset;
+  description.y = offset;
+  width = description.getBounds().width + 2 * offset;
+  height += description.getBounds().height + offset;
+
+  var severity = createHeaderTextPair("Severity: ", severityText, 12 + offset);
+  severity.x = offset;
+  severity.y = Math.round(height);
+  width = Math.max(severity.getBounds().width + 2 * offset, width);
+  height += severity.getBounds().height;
+
+  var priority = createHeaderTextPair("Priority: ", priorityText, 12 + offset);
+  priority.x = offset;
+  priority.y = Math.round(height);
+  width = Math.max(priority.getBounds().width + 2 * offset, width);
+  height += priority.getBounds().height;
+
+  var reproducibility = createHeaderTextPair("Reproducibility: ", reproducibilityText, 12 + offset);
+  reproducibility.x = offset;
+  reproducibility.y = Math.round(height);
+  width = Math.max(reproducibility.getBounds().width + 2 * offset, width);
+  height += reproducibility.getBounds().height;
+
+  var back = createCardBack(width, height);
+
+  card.addChild(back);
+  card.addChild(description);
+  card.addChild(severity);
+  card.addChild(priority);
+  card.addChild(reproducibility);
+
+  card.x = x;
+  card.y = y;
+
+  card.tickEnabled = false;
+  card.mouseEnabled = false;
+
+  return card;
+};
+
+function createDescription(text, lineHeigth) {
+  var desc = new createjs.Container();
+  var font = "12px Arial";
+  var color = "#000000";
+
+  var newlineIndex = text.search(/[\r\n]/);
+  if (newlineIndex == -1) {
+    newlineIndex = text.length;
+  }
+
+  var firstLine = createHeaderTextPair("Description: ", text.substring(0, newlineIndex), lineHeigth);
+
+  var restLines = new createjs.Text(text.substring(newlineIndex + 1), font, color);
+  restLines.lineHeight = lineHeigth;
+  restLines.y = firstLine.getBounds().height;
+
+  desc.addChild(firstLine);
+  desc.addChild(restLines);
+
+  return desc;
+};
+
+function createHeaderTextPair(header, text, lineHeigth) {
+  var res = new createjs.Container();
+  var font = "12px Arial";
+  var color = "#000000";
+
+  var headerC = new createjs.Text(header, "bold " + font, color);
+  headerC.lineHeight = lineHeigth;
+
+  var textC = new createjs.Text(text, font, color);
+  headerC.lineHeight = lineHeigth;
+  textC.x = headerC.getBounds().width;
+
+  res.addChild(headerC);
+  res.addChild(textC);
+
+  return res;
 };
 
 function createColumns(columnNames, number, width, height) {
@@ -363,5 +475,15 @@ function tick(event) {
   if(update) {
     update = false;
     stageToUpdate.update();
+  }
+
+  if (popupCard != null) {
+    if (popupPause == 0) {
+      stageToUpdate.addChild(popupCard);
+      update = true;
+      popupPause = -1;
+    } else if (popupPause > 0) {
+      popupPause -= Math.min(event.delta, popupPause);
+    }
   }
 };

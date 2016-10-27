@@ -20,8 +20,11 @@ var developersNames = [];
 
 var nameToHandlerId = [];
 
+var popupCard = null;
+
 function init() {
   myPanel = new createjs.Stage("panel");
+  myPanel.enableMouseOver(4);
 
   var parentDiv = document.getElementById("dev-grid");
 
