@@ -5,13 +5,10 @@ var allowed_statuses_map;
 function onLoadOpening() {
   var markIndex = window.location.href.lastIndexOf("#");
 
-  if(markIndex != -1)
-  {
+  if(markIndex != -1) {
     var prevGrid = window.location.href.substr(markIndex + 1, 2);
     openBoard(prevGrid);
-  }
-  else
-  {
+  } else {
     openBoard("dg");
   }
 };
