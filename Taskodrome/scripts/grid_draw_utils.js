@@ -31,8 +31,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
     colWidth = MIN_COL_WIDTH;
 
     var tableWidth = colWidth * colNumber + 2 * H_OFFSET;
-    if(tableWidth > parentWidth.value)
-    {
+    if(tableWidth > parentWidth.value) {
       width = tableWidth;
       parentWidth.value = tableWidth;
       document.getElementById(panelName).width = tableWidth;
@@ -65,10 +64,8 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 
   var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, ColParams, onPressUp, isStatusGrid);
 
-  if(cards != null)
-  {
-    if(ColParams.height > colHeight)
-    {
+  if(cards != null) {
+    if(ColParams.height > colHeight) {
       var add = ColParams.height - colHeight;
       colHeight += add;
       document.getElementById(panelName).height += add;
@@ -82,22 +79,19 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
     }
 
     document.getElementById(gridName).style.height = (document.getElementById(panelName).height + V_PADDING_CORRECTION) + "px";
-  }
-  else
+  } else
     return null;
 
   panel.addChild(columns);
 
-  for(var i = 0; i < cards.length; ++i)
-  {
+  for(var i = 0; i < cards.length; ++i) {
     panel.addChild(cards[i]);
   }
 
   var outerLine = createOuterLine(width, height);
   panel.addChild(outerLine);
 
-  if (createjs.Ticker.hasEventListener("tick") == false)
-  {
+  if (createjs.Ticker.hasEventListener("tick") == false) {
     createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
   }
@@ -134,8 +128,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
         issueIndex : k
       }
 
-      if(y + position.height > colParams.height)
-      {
+      if(y + position.height > colParams.height) {
         colParams.height += y + position.height - colParams.height;
       }
 
@@ -163,9 +156,11 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   var topMark = createCardTopMark(issue.topColor, position.width, markWidth);
   var bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
   var number = createCardNumber(issue.id, position.width, markWidth);
+  var assignee = null;
   if (isStatusGrid) {
-    var assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
+    assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
   }
+
   var summary = createCardSummary(issue.summary, position.width, markWidth, number);
 
   if(summary.y + summary.getBounds().height + 10 > position.height) {
@@ -449,8 +444,7 @@ function createCardSummary(issueText, width, markWidth, number) {
   summary.lineWidth = width - 4;
   summary.y = 2 * number.getBounds().height + markWidth;
 
-  while (--sz != 7 && summary.getBounds().width > summary.lineWidth)
-  {
+  while (--sz != 7 && summary.getBounds().width > summary.lineWidth) {
     summary.font = sz + "px " + FONT_FAMILY;
   }
 
