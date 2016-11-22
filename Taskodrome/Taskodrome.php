@@ -18,7 +18,7 @@ class TaskodromePlugin extends MantisPlugin
 
     $this->author = "Maxim Kuzmin";
     $this->contact = "maxriderg@gmail.com";
-    $this->url = "https://github.com/AuthenticEshkinKot/Taskodrome";
+    $this->url = "https://github.com/mantisbt-plugins/Taskodrome";
   }
 
   public function hooks()
