@@ -220,7 +220,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.on("pressup", onPressUp);
 
   function cardOnRollover(evt) {
-    popupCard = createPopupCard(evt.stageX, evt.stageY, issue.description, issue.severity, issue.priority, issue.reproducibility);
+    popupCard = createPopupCard(evt.stageX, evt.stageY, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
     popupPause = POPUP_PAUSE;
     stageToUpdate = panel;
   };
@@ -250,7 +250,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   return card;
 };
 
-function createPopupCard(x, y, descriptionText, severityText, priorityText, reproducibilityText) {
+function createPopupCard(x, y, descriptionText, severityText, priorityText, reproducibilityText, isStatusGrid) {
   var card = new createjs.Container();
   var height = 0;
   var width = 0;
@@ -288,8 +288,18 @@ function createPopupCard(x, y, descriptionText, severityText, priorityText, repr
   card.addChild(priority);
   card.addChild(reproducibility);
 
-  card.x = x;
-  card.y = y;
+  var rootCanvas;
+  if (isStatusGrid)
+  {
+    rootCanvas = myPanel_st.canvas;
+  }
+  else
+  {
+    rootCanvas = myPanel.canvas;
+  }
+
+  card.x = Math.min(rootCanvas.width - width - 2, x);
+  card.y = Math.min(rootCanvas.height - height - 2, y);
 
   card.tickEnabled = false;
   card.mouseEnabled = false;
