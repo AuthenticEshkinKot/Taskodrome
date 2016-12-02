@@ -220,7 +220,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.on("pressup", onPressUp);
 
   function cardOnRollover(evt) {
-    popupCard = createPopupCard(evt.stageX, evt.stageY, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
+    popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
     popupPause = POPUP_PAUSE;
     stageToUpdate = panel;
   };
@@ -250,43 +250,11 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   return card;
 };
 
-function createPopupCard(x, y, descriptionText, severityText, priorityText, reproducibilityText, isStatusGrid) {
+function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorityText, reproducibilityText, isStatusGrid) {
   var card = new createjs.Container();
   var height = 0;
   var width = 0;
   var offset = 8;
-
-  var description = createDescription(descriptionText, 12 + offset);
-  description.x = offset;
-  description.y = offset;
-  width = description.getBounds().width + 2 * offset;
-  height += description.getBounds().height + offset;
-
-  var severity = createHeaderTextPair("Severity: ", severityText, 12 + offset);
-  severity.x = offset;
-  severity.y = Math.round(height);
-  width = Math.max(severity.getBounds().width + 2 * offset, width);
-  height += severity.getBounds().height;
-
-  var priority = createHeaderTextPair("Priority: ", priorityText, 12 + offset);
-  priority.x = offset;
-  priority.y = Math.round(height);
-  width = Math.max(priority.getBounds().width + 2 * offset, width);
-  height += priority.getBounds().height;
-
-  var reproducibility = createHeaderTextPair("Reproducibility: ", reproducibilityText, 12 + offset);
-  reproducibility.x = offset;
-  reproducibility.y = Math.round(height);
-  width = Math.max(reproducibility.getBounds().width + 2 * offset, width);
-  height += reproducibility.getBounds().height;
-
-  var back = createCardBack(width, height);
-
-  card.addChild(back);
-  card.addChild(description);
-  card.addChild(severity);
-  card.addChild(priority);
-  card.addChild(reproducibility);
 
   var rootCanvas;
   if (isStatusGrid)
@@ -298,6 +266,55 @@ function createPopupCard(x, y, descriptionText, severityText, priorityText, repr
     rootCanvas = myPanel.canvas;
   }
 
+  var POPUP_MAX_WIDTH = Math.round(rootCanvas.width / 3.5);
+  var maxWidth = Math.max(POPUP_MAX_WIDTH, cardWidth);
+
+  var description = createHeaderTextPair("Description: ", descriptionText, 12 + offset, maxWidth - 2 * offset);
+  description.x = offset;
+  description.y = offset;
+  width = description.getBounds().width + 2 * offset;
+  height += description.getBounds().height + offset;
+
+  var severity = createHeaderTextPair("Severity: ", severityText, 12 + offset);
+  severity.x = offset;
+  severity.y = Math.round(height);
+  width = Math.max(severity.getBounds().width + 2 * offset, width);
+  maxWidth = Math.max(severity.getBounds().width + 2 * offset, maxWidth);
+  height += severity.getBounds().height;
+
+  var priority = createHeaderTextPair("Priority: ", priorityText, 12 + offset);
+  priority.x = offset;
+  priority.y = Math.round(height);
+  width = Math.max(priority.getBounds().width + 2 * offset, width);
+  maxWidth = Math.max(priority.getBounds().width + 2 * offset, maxWidth);
+  height += priority.getBounds().height;
+
+  var reproducibility = createHeaderTextPair("Reproducibility: ", reproducibilityText, 12 + offset);
+  reproducibility.x = offset;
+  reproducibility.y = Math.round(height);
+  width = Math.max(reproducibility.getBounds().width + 2 * offset, width);
+  maxWidth = Math.max(reproducibility.getBounds().width + 2 * offset, maxWidth);
+  height += reproducibility.getBounds().height;
+
+  if (width > maxWidth)
+  {
+    height -= description.getBounds().height;
+
+    description = createHeaderTextPair("Description: ", descriptionText, 12 + offset, width - 2 * offset);
+    description.x = offset;
+    description.y = offset;
+    width = Math.max(description.getBounds().width + 2 * offset, width);
+    height += description.getBounds().height;
+  }
+
+  var back = createCardBack(width, height);
+
+  card.addChild(back);
+  card.addChild(description);
+  card.addChild(severity);
+  card.addChild(priority);
+  card.addChild(reproducibility);
+
   card.x = Math.min(rootCanvas.width - width - 2, x);
   card.y = Math.min(rootCanvas.height - height - 2, y);
 
@@ -307,27 +324,7 @@ function createPopupCard(x, y, descriptionText, severityText, priorityText, repr
   return card;
 };
 
-function createDescription(text, lineHeigth) {
-  var desc = new createjs.Container();
-
-  var newlineIndex = text.search(/[\r\n]/);
-  if (newlineIndex == -1) {
-    newlineIndex = text.length;
-  }
-
-  var firstLine = createHeaderTextPair("Description: ", text.substring(0, newlineIndex), lineHeigth);
-
-  var restLines = new createjs.Text(text.substring(newlineIndex + 1), FONT, FONT_COLOR);
-  restLines.lineHeight = lineHeigth;
-  restLines.y = firstLine.getBounds().height;
-
-  desc.addChild(firstLine);
-  desc.addChild(restLines);
-
-  return desc;
-};
-
-function createHeaderTextPair(header, text, lineHeigth) {
+function createHeaderTextPair(header, text, lineHeigth, maxLineWidth) {
   var res = new createjs.Container();
 
   var headerC = new createjs.Text(header, "bold " + FONT, FONT_COLOR);
@@ -335,7 +332,10 @@ function createHeaderTextPair(header, text, lineHeigth) {
 
   var textC = new createjs.Text(text, FONT, FONT_COLOR);
   headerC.lineHeight = lineHeigth;
-  textC.x = headerC.getBounds().width;
+  var headerWidth = headerC.getBounds().width;
+  textC.x = headerWidth;
+  textC.lineHeight = lineHeigth;
+  textC.lineWidth = maxLineWidth - headerWidth;
 
   res.addChild(headerC);
   res.addChild(textC);
