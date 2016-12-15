@@ -1,16 +1,3 @@
-function getColorByStatus(issueStatus) {
-  switch(issueStatus) {
-    case '10': return '#FCBDBD';
-    case '20': return '#E3B7EB';
-    case '30': return '#FFCD85';
-    case '40': return '#FFF494';
-    case '50': return '#C2DFFF';
-    case '80': return '#D2F5B0';
-    case '90': return '#C9CCC4';
-    default: return '#000000';
-  }
-};
-
 function getIssuesRaw() {
   var ret = [];
   var array = document.getElementsByClassName("issue_data");
@@ -144,4 +131,17 @@ function getStatusesAllowanceMap() {
   }
 
   return ret;
+};
+
+function getStatusColors(issueStatus) {
+  var statusColorMap = document.getElementsByClassName("status_color_map")[0].getAttribute("value");
+  var pairs = statusColorMap.split(';');
+
+  var res = [];
+  for (var i = 0, l = pairs.length; i != l - 1; ++i) {
+    var pair = pairs[i].split(':');
+    res[pair[0]] = pair[1];
+  }
+
+  return res;
 };
