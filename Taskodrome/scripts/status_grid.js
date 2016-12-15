@@ -25,6 +25,9 @@ function statusInit() {
   myPanel_st = new createjs.Stage("panel_st");
   myPanel_st.enableMouseOver(4);
 
+  statusList = getStatusList_st();
+  statusColorMap = getStatusColors();
+
   var parentDiv = document.getElementById("st-grid");
 
   parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
@@ -133,26 +136,16 @@ function sendRequest_st(bugIndex) {
 };
 
 function createColumnStatusMap() {
-  var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
-  statusList = statusString.split(';', 7);
+  var statusCodes = getStatusCodes_st();
 
   if (statusList[statusList.length - 1] == '') {
     statusList.pop();
   }
 
   for (var i = 0; i != statusList.length; ++i) {
-    var status = '100';
-    switch(statusList[i]) {
-      case 'New': status = '10'; break;
-      case 'Feedback': status = '20'; break;
-      case 'Acknowledged': status = '30'; break;
-      case 'Confirmed': status = '40'; break;
-      case 'Assigned': status = '50'; break;
-      case 'Resolved': status = '80'; break;
-      case 'Closed': status = '90'; break;
-      default: status = '100'; break;
-    }
-    statusByColumns[i] = status;
+    var status = statusList[i];
+    var statusNameL = status.toLowerCase();
+    statusByColumns[i] = statusCodes[statusNameL];
   }
 
   for (var i = 0; i != 91; ++i) {
@@ -189,17 +182,6 @@ function getValueByName_st(page_text, name) {
 };
 
 function getStatusByColumn_st(columnIndex) {
-  /*switch(columnIndex)
-  {
-    case 0: return '10';
-    case 1: return '20';
-    case 2: return '30';
-    case 3: return '40';
-    case 4: return '50';
-    case 5: return '80';
-    case 6: return '90';
-    default: return '90';
-  }*/
   if (columnIndex >= 0) {
     return statusByColumns[columnIndex];
   } else {
@@ -208,16 +190,25 @@ function getStatusByColumn_st(columnIndex) {
 };
 
 function getColumnByStatus_st(status) {
-  /*switch(status)
-  {
-    case '10': return 0;
-    case '20': return 1;
-    case '30': return 2;
-    case '40': return 3;
-    case '50': return 4;
-    case '80': return 5;
-    case '90': return 6;
-    default: return 6;
-  }*/
   return columnByStatus[parseInt(status)];
+};
+
+function getStatusList_st() {
+  var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
+  var res = statusString.split(';');
+  res = res.splice(0, res.length - 1);
+  return res;
+};
+
+function getStatusCodes_st() {
+  var statusNameMap = document.getElementsByClassName("status_name_map")[0].getAttribute("value");
+  var pairs = statusNameMap.split(';');
+
+  var res = [];
+  for (var i = 0, l = pairs.length; i != l - 1; ++i) {
+    var pair = pairs[i].split(':');
+    res[pair[1].toLowerCase()] = pair[0];
+  }
+
+  return res;
 };

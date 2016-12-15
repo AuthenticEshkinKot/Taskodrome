@@ -18,6 +18,8 @@ var stageToUpdate;
 
 var popupPause = 0;
 
+var statusColorMap = [];
+
 function fullRedraw() {
   draw();
   sortIssues_st();
@@ -489,4 +491,8 @@ function tick(event) {
       popupPause -= Math.min(event.delta, popupPause);
     }
   }
+};
+
+function getColorByStatus(issueStatus) {
+  return statusColorMap[issueStatus];
 };

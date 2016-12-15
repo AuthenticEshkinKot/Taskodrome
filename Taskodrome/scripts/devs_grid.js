@@ -26,6 +26,8 @@ function init() {
   myPanel = new createjs.Stage("panel");
   myPanel.enableMouseOver(4);
 
+  statusColorMap = getStatusColors();
+
   var parentDiv = document.getElementById("dev-grid");
 
   parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
