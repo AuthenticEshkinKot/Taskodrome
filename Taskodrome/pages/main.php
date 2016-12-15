@@ -40,6 +40,8 @@
 
     print $users;
 
+    $t_all_statuses = array();
+    $t_status_colors = array();
     $t_rows = count( $p_rows );
     for( $i=0; $i < $t_rows; $i++ ) {
       $t_row = $p_rows[$i];
@@ -64,7 +66,7 @@
       $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'"';
       $issues_array_html .= '></p>';
 
-      $t_all_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
+      $t_row_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
 
       $allowed_statuses_html .= '<p class="status_pair" ';
       $allowed_statuses_html .= 'id="' . $t_row->id . '" ';
@@ -72,12 +74,14 @@
       $src_status_str = '';
       $dst_status_str = '';
 
-      foreach( $t_all_statuses as $src_status => $src_st ) {
-        $src_status_str .= $src_status . ';';
+      foreach( $t_row_statuses as $src_status_code => $src_status_name ) {
+        $t_all_statuses[$src_status_code] = $src_status_name;
+        $t_status_colors[$src_status_code] = get_status_color($src_status_code);
+        $src_status_str .= $src_status_code . ';';
 
         $t_enum_list = get_status_option_list(
           access_get_project_level( $t_row->project_id ),
-          $src_status,
+          $src_status_code,
           true,
           (  bug_is_user_reporter( $t_row->id, auth_get_current_user_id() )
           && access_has_bug_level( config_get( 'report_bug_threshold' ), $t_row->id )
@@ -99,6 +103,18 @@
 
     print $issues_array_html;
     print $allowed_statuses_html;
+
+    $status_name_map = null;
+    foreach( $t_all_statuses as $src_status_code => $src_status_name ) {
+      $status_name_map .= $src_status_code.':'.$src_status_name.';';
+    }
+    print '<p class="status_name_map" value="'.$status_name_map.'"></p>';
+
+    $status_color_map = null;
+    foreach( $t_status_colors as $src_status_code => $src_status_color ) {
+      $status_color_map .= $src_status_code.':'.$src_status_color.';';
+    }
+    print '<p class="status_color_map" value="'.$status_color_map.'"></p>';
 
     $status_order = null;
     foreach( plugin_config_get("status_board_order") as $t_value ) {
