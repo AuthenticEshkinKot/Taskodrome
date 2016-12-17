@@ -30,15 +30,13 @@ class TaskodromePlugin extends MantisPlugin
 
   public function config()
   {
+    $status_list = explode(',', lang_get( 'status_enum_string' ));
+    foreach( $status_list as $key => $value ) {
+      $status_list[$key] = substr($value, strpos($value, ':') + 1);
+    }
     return array(
-      "status_board_order_default" => array(
-        "New", "Feedback", "Acknowledged", "Confirmed", "Assigned", "Resolved", "Closed"
-      ),
-
-      "status_board_order" => array(
-        "New", "Feedback", "Acknowledged", "Confirmed", "Assigned", "Resolved", "Closed"
-      ),
-
+      "status_board_order_default" => $status_list,
+      "status_board_order" => $status_list,
       "cooldown_period_days" => 14,
       "cooldown_period_hours" => 0
     );
