@@ -13,6 +13,7 @@ $s_plugin_Taskodrome_assignment_board = 'Assignment board';
 $s_plugin_Taskodrome_status_board = 'Status board';
 
 $s_plugin_Taskodrome_config = 'Configuration';
+$s_plugin_Taskodrome_config_title = 'Taskodrome Plugin Configuration';
 
 $s_plugin_Taskodrome_default_value = 'Default value:<br>%s<br>';
 

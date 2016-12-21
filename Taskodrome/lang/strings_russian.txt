@@ -13,6 +13,7 @@ $s_plugin_Taskodrome_assignment_board = 'Доска исполнителей';
 $s_plugin_Taskodrome_status_board = 'Доска статусов';
 
 $s_plugin_Taskodrome_config = 'Настройка';
+$s_plugin_Taskodrome_config_title = 'Настройка плагина Taskodrome';
 
 $s_plugin_Taskodrome_default_value = 'По умолчанию:<br>%s<br>';
 
