@@ -1,0 +1,22 @@
+<?php
+
+# Copyright (c) 2015 Maxim Kuzmin
+# Licensed under the Apache license
+
+$s_plugin_Taskodrome_ = '';
+$s_plugin_Taskodrome_title = 'Taskodrome';
+$s_plugin_Taskodrome_description = 'Плагин для управления задачами';
+
+$s_plugin_Taskodrome_board = 'Taskodrome';
+
+$s_plugin_Taskodrome_assignment_board = 'Доска исполнителей';
+$s_plugin_Taskodrome_status_board = 'Доска статусов';
+
+$s_plugin_Taskodrome_config = 'Настройка';
+
+$s_plugin_Taskodrome_default_value = 'По умолчанию:<br>%s<br>';
+
+$s_plugin_Taskodrome_status_board_order_label = 'Порядок статусов';
+
+$s_plugin_Taskodrome_cooldown_period_label = 'Период "остывания" задачи';
+$s_plugin_Taskodrome_cooldown_period_hint = 'Период "остывания" равен сумме этих величин (т.е., "1 день; 7 часов" дают период, равный 31 часу)';
