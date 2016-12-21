@@ -6,7 +6,7 @@
 auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
 
-html_page_top( lang_get( 'plugin_format_title' ) );
+html_page_top( plugin_lang_get( 'config_title' ) );
 
 print_manage_menu();
 ?>
