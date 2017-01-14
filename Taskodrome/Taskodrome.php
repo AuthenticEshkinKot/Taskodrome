@@ -13,7 +13,7 @@ class TaskodromePlugin extends MantisPlugin
 
     $this->version = "0.1";
     $this->requires = array(
-      "MantisCore" => "1.3.0",
+      "MantisCore" => "2.0.0",
     );
 
     $this->author = "Maxim Kuzmin";
@@ -40,13 +40,5 @@ class TaskodromePlugin extends MantisPlugin
       "cooldown_period_days" => 14,
       "cooldown_period_hours" => 0
     );
-  }
-
-  public function menu($event)
-  {
-    $links = array();
-    $links[] = '<a href="' . plugin_page("main") . '">' . plugin_lang_get("board") . '</a>';
-
-    return $links;
   }
 }

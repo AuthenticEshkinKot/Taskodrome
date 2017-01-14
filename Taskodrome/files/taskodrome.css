@@ -15,7 +15,7 @@ div.grid {
 .tabs_cont {
   background: #fff;
   position: relative;
-  height: 230px;
+  height: auto;
 }
 
 .tabs_cont > div {

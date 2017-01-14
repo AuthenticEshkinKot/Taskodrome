@@ -7,7 +7,13 @@
 <script type="text/javascript" src="./plugins/Taskodrome/scripts/on_load_opening.js"></script>
 
 <?php
-  html_page_top( plugin_lang_get( 'board' ) );
+
+  html_robots_noindex();
+
+  layout_page_header_begin(plugin_lang_get( 'board' ));
+  layout_page_header_end();
+
+  layout_page_begin( __FILE__ );
 
   $f_page_number = gpc_get_int( 'page_number', 1 );
 
@@ -153,8 +159,6 @@
     </div>
     ';
 
-    html_page_bottom();
-
     print '</div>';
 
     print '</div>
@@ -227,6 +231,7 @@
   }
 
   write_bug_rows( $rows );
+  layout_page_end();
 
 
 ?>

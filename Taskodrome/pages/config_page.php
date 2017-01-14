@@ -6,77 +6,96 @@
 auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
 
-html_page_top( plugin_lang_get( 'config_title' ) );
+layout_page_header( plugin_lang_get( 'config_title' ) );
 
-print_manage_menu();
+layout_page_begin( 'manage_overview_page.php' );
+
+print_manage_menu( 'manage_plugin_page.php' );
 ?>
 
-<div id="taskodrome-config-div" class="form-container">
-  <form id="taskodrome-config-form" action="<?php echo plugin_page( 'config' )?>" method="post">
-    <fieldset>
-      <legend>
-        <span>
-          <?php echo plugin_lang_get( 'title' ) . ': ' . plugin_lang_get( 'config' ) ?>
-        </span>
-      </legend>
-      <?php echo form_security_field( 'plugin_format_config_edit' ) ?>
-      <?php $t_field = 'status_board_order'; ?>
-      <div class="field-container">
-        <label>
-          <span>
-            <?php echo plugin_lang_get( $t_field . '_label' ) ?>
-            <br>
-          </span>
-          <span>
-            <br />
-            <span class="small">
-              <?php printf( plugin_lang_get( 'default_value' ),
-                string_attribute( implode( ';', plugin_config_get('status_board_order_default') ) ));
-              ?>
-            </span>
-          </span>
-        </label>
-        <span class="input">
-          <input name="<?php echo $t_field; ?>" size="85" type="text" value="<?php
-            $t_config = plugin_config_get( $t_field );
-            $t_encoded = '';
-            foreach( $t_config as $t_value ) {
-              $t_encoded .= "$t_value;";
-            }
-            echo trim( $t_encoded, ';' );
-          ?>"</input>
-        </span>
-        <span class="label-style"></span>
-      </div>
+<div class="col-md-12 col-xs-12">
+  <div class="space-10"></div>
 
-      <div class="field-container">
-        <?php $t_field = 'cooldown_period'; ?>
-        <label>
-          <span><?php echo plugin_lang_get( $t_field . '_label' ) ?><br></span>
-          <span class="small"><?php
-            echo plugin_lang_get( $t_field . '_hint' );
-            ?>
-          </span>
-        </label>
-        <span class="input">
-          <?php echo plugin_lang_get( $t_field . '_days' ) ?>:
-          <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
-            echo plugin_config_get( $t_field . '_days' ); ?>"/>
-          <br>
-          <?php echo plugin_lang_get( $t_field . '_hours' ) ?>:
-          <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
-            echo plugin_config_get( $t_field . '_hours' ); ?>"/>
-          <br>
-        </span>
-        <span class="label-style"></span>
-      </div>
+  <div class="form-container">
 
-      <span class="submit-button">
-        <input type="submit" class="button" value="<?php echo lang_get( 'change_configuration' )?>" />
-      </span>
-    </fieldset>
-  </form>
+    <form id="taskodrome-config-form" action="<?php echo plugin_page( 'config' )?>" method="post">
+    <?php echo form_security_field( 'plugin_format_config_edit' ) ?>
+
+      <div class="widget-box widget-color-blue2">
+        <div class="widget-header widget-header-small">
+          <h4 class="widget-title lighter">
+            <i class="ace-icon fa fa-text-width"></i>
+            <?php echo plugin_lang_get( 'title' ) . ': ' . plugin_lang_get( 'config' )?>
+          </h4>
+        </div>
+
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped">
+                <tr>
+                  <?php $t_field = 'status_board_order'; ?>
+                  <th class="category width-40">
+                    <span>
+                      <?php echo plugin_lang_get( $t_field . '_label' )?>
+                    </span>
+                    </br>
+                    <span class="small">
+                      <?php printf( plugin_lang_get( 'default_value' ),
+                      string_attribute( implode( ';', plugin_config_get( $t_field . '_default') ) ));
+                    ?>
+                    </span>
+                  </th>
+                  <td class="center" width="20%">
+                    <span class="input">
+                      <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
+                        $t_config = plugin_config_get( $t_field );
+                        $t_encoded = '';
+                        foreach( $t_config as $t_value ) {
+                          $t_encoded .= "$t_value;";
+                        }
+                        echo trim( $t_encoded, ';' );
+                      ?>"</input>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <?php $t_field = 'cooldown_period'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center">
+                    <table class="table">
+                      <tr>
+                        <td>
+                          <?php echo plugin_lang_get( $t_field . '_days' )?>:&nbsp
+                          <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
+                          echo plugin_config_get( $t_field . '_days' ); ?>"/>
+                        </td>
+                        <td>
+                          <?php echo plugin_lang_get( $t_field . '_hours' )?>:&nbsp
+                          <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
+                          echo plugin_config_get( $t_field . '_hours' ); ?>"/>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="widget-toolbox padding-8 clearfix">
+            <input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'change_configuration' )?>" />
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <?php
-html_page_bottom();
+layout_page_end();
