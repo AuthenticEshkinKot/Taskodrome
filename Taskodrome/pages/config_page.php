@@ -37,7 +37,7 @@ print_manage_menu();
           </span>
         </label>
         <span class="input">
-          <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
+          <input name="<?php echo $t_field; ?>" size="85" type="text" value="<?php
             $t_config = plugin_config_get( $t_field );
             $t_encoded = '';
             foreach( $t_config as $t_value ) {
@@ -59,11 +59,11 @@ print_manage_menu();
           </span>
         </label>
         <span class="input">
-          Days:&nbsp
+          <?php echo plugin_lang_get( $t_field . '_days' ) ?>:
           <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
             echo plugin_config_get( $t_field . '_days' ); ?>"/>
           <br>
-          Hours:
+          <?php echo plugin_lang_get( $t_field . '_hours' ) ?>:
           <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
             echo plugin_config_get( $t_field . '_hours' ); ?>"/>
           <br>
