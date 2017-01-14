@@ -50,11 +50,11 @@ print_manage_menu();
   <?php echo plugin_lang_get( $t_field . '_label' ) ?><br>
 </td>
 <td>
-Days:&nbsp
+<?php echo plugin_lang_get( $t_field . '_days' )?>:&nbsp
 <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
 echo plugin_config_get( $t_field . '_days' ); ?>"/>
 <br>
-Hours:
+<?php echo plugin_lang_get( $t_field . '_hours' )?>:
 <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
 echo plugin_config_get( $t_field . '_hours' ); ?>"/>
 <br>

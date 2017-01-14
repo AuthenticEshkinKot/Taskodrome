@@ -21,3 +21,5 @@ $s_plugin_Taskodrome_status_board_order_label = 'Порядок статусов
 
 $s_plugin_Taskodrome_cooldown_period_label = 'Период "остывания" задачи';
 $s_plugin_Taskodrome_cooldown_period_hint = 'Период "остывания" равен сумме этих величин (т.е., "1 день; 7 часов" дают период, равный 31 часу)';
+$s_plugin_Taskodrome_cooldown_period_days = 'Дни';
+$s_plugin_Taskodrome_cooldown_period_hours = 'Часы';
