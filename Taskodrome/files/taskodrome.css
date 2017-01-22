@@ -2,7 +2,8 @@ div.grid {
   position: relative; 
   padding: 0px; 
   left: -6px;
-  height: 500px; 
+  height: auto;
+  min-height: 500px;
   overflow: auto;
 }
 
@@ -16,6 +17,7 @@ div.grid {
   background: #fff;
   position: relative;
   height: auto;
+  min-height: 230px;
 }
 
 .tabs_cont > div {

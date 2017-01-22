@@ -48,7 +48,7 @@ function draw() {
   panelCanvas.height = parentHeight;
 
   createTable(issues, cardDescArray, developersNames, myPanel, "panel",
-              "dev-grid", selectedCardMousePos, selectedCard,
+              false, selectedCardMousePos, selectedCard,
              selectedCardSourceIndex, columnWidth, parentWidth,
              parentWidth.value, parentHeight, onPressUp);
   myPanel.update();
