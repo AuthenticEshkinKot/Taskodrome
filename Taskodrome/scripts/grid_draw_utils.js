@@ -26,7 +26,7 @@ function fullRedraw() {
   draw_st();
 };
 
-function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gridName, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
+function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isStatusGrid, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
   var colNumber = columnHeaders.length;
   var colWidth = (width - 2 * H_OFFSET) / colNumber;
   if(colWidth < MIN_COL_WIDTH) {
@@ -62,8 +62,6 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
     return null;
   }
 
-  var isStatusGrid = (gridName == "st-grid") ? true : false;
-
   var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, ColParams, onPressUp, isStatusGrid);
 
   if(cards != null) {
@@ -79,8 +77,6 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, gri
 
       height += add;
     }
-
-    document.getElementById(gridName).style.height = (document.getElementById(panelName).height + V_PADDING_CORRECTION) + "px";
   } else
     return null;
 

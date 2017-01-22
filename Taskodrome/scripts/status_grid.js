@@ -50,7 +50,7 @@ function draw_st() {
   panelCanvas.height = parentHeight_st;
 
   createTable(issues_st, cardDescArray_st, statusList, myPanel_st, "panel_st",
-              "st-grid", selectedCardMousePos_st, selectedCard_st,
+              true, selectedCardMousePos_st, selectedCard_st,
               selectedCardSourceIndex_st, columnWidth_st, parentWidth_st,
               parentWidth_st.value, parentHeight_st, onPressUp_st);
   myPanel_st.update();
