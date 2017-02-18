@@ -181,6 +181,9 @@ function trySendNextBug(index) {
 function getUsersRaw() {
   var ret = [];
   var array = document.getElementsByClassName("user_data");
+  if (!checkExistence("getUsersRaw", array)) {
+    return ret;
+  }
 
   for(var i = 0; i != array.length; ++i) {
     var el = array[i];

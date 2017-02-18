@@ -26,6 +26,8 @@ function isStatusAllowed(id, src_status, dst_status) {
 function getCooldownPeriod() {
   var cooldownPeriodDays = document.getElementById("cooldown_period_days").getAttribute("value");
   var cooldownPeriodHours = document.getElementById("cooldown_period_hours").getAttribute("value");
+  console.log("getCooldownPeriod: cooldownPeriodDays - " + cooldownPeriodDays
+  + " cooldownPeriodHours - " + cooldownPeriodHours);
   return cooldownPeriodHours * 3600 + cooldownPeriodDays * 86400;
 };
 
@@ -33,9 +35,7 @@ function pageOnLoad() {
   onLoadOpening();
 
   issues_raw = getIssuesRaw();
-
   cooldown_period = getCooldownPeriod();
-
   allowed_statuses_map = getStatusesAllowanceMap();
 
   init();
