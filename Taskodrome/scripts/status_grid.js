@@ -171,11 +171,8 @@ function sortIssues_st() {
 function getValueByName_st(page_text, name) {
   var prefix = 'name="' + name + '" value="';
   var src_string = page_text.match(new RegExp('.*' + prefix + '.*'))[0];
-  //console.log(src_string);
   var start_index = src_string.indexOf(prefix) + prefix.length;
-  var res = src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
-  //console.log(res);
-  return res;
+  return src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
 };
 
 function getStatusByColumn_st(columnIndex) {
@@ -191,21 +188,29 @@ function getColumnByStatus_st(status) {
 };
 
 function getStatusList_st() {
+  var ret = [];
   var statusString = document.getElementsByClassName("status_board_order")[0].getAttribute("value");
-  var res = statusString.split(';');
-  res = res.splice(0, res.length - 1);
-  return res;
+  if (!checkExistence("getStatusList_st", statusString)) {
+    return ret;
+  }
+
+  ret = statusString.split(';');
+  ret = ret.splice(0, ret.length - 1);
+  return ret;
 };
 
 function getStatusCodes_st() {
+  var ret = [];
   var statusNameMap = document.getElementsByClassName("status_name_map")[0].getAttribute("value");
+  if (!checkExistence("getStatusCodes_st", statusNameMap)) {
+    return ret;
+  }
   var pairs = statusNameMap.split(';');
 
-  var res = [];
   for (var i = 0, l = pairs.length; i != l - 1; ++i) {
     var pair = pairs[i].split(':');
-    res[pair[1].toLowerCase()] = pair[0];
+    ret[pair[1].toLowerCase()] = pair[0];
   }
 
-  return res;
+  return ret;
 };
