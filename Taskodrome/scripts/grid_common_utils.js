@@ -1,7 +1,10 @@
 function getIssuesRaw() {
   var ret = [];
   var array = document.getElementsByClassName("issue_data");
-  
+  if (!checkExistence("getIssuesRaw", array)) {
+    return ret;
+  }
+
   for(var i = 0; i != array.length; ++i) {
     var el = array[i];
     ret[i] = { id : el.getAttribute("id"),
@@ -110,8 +113,11 @@ function openBoard(board) {
 
 function getStatusesAllowanceMap() {
   var ret = [];
-
   var array = document.getElementsByClassName("status_pair");
+  if (!checkExistence("getStatusesAllowanceMap", array)) {
+    return ret;
+  }
+
   for(var i = 0; i != array.length; ++i) {
     var el = array[i];
     var id = el.getAttribute("id");
@@ -134,14 +140,27 @@ function getStatusesAllowanceMap() {
 };
 
 function getStatusColors(issueStatus) {
+  var ret = [];
   var statusColorMap = document.getElementsByClassName("status_color_map")[0].getAttribute("value");
-  var pairs = statusColorMap.split(';');
-
-  var res = [];
-  for (var i = 0, l = pairs.length; i != l - 1; ++i) {
-    var pair = pairs[i].split(':');
-    res[pair[0]] = pair[1];
+  if (!checkExistence("getStatusColors", statusColorMap)) {
+    return ret;
   }
 
-  return res;
+  var pairs = statusColorMap.split(';');
+
+  for (var i = 0, l = pairs.length; i != l - 1; ++i) {
+    var pair = pairs[i].split(':');
+    ret[pair[0]] = pair[1];
+  }
+
+  return ret;
+};
+
+function checkExistence(functionName, obj) {
+  var exists = (obj != null);
+  console.log(functionName + ": exists - " + exists);
+  if (exists) {
+    console.log(functionName + ": length - " + obj.length);
+  }
+  return exists;
 };
