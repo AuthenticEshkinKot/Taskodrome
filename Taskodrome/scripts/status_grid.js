@@ -1,6 +1,3 @@
-var H_PADDING_CORRECTION = 6;
-var V_PADDING_CORRECTION = 20;
-
 var myPanel_st;
 
 var statusList = [];
@@ -30,8 +27,8 @@ function statusInit() {
 
   var parentDiv = document.getElementById("st-grid");
 
-  parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width")) - H_PADDING_CORRECTION;
-  parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height")) - V_PADDING_CORRECTION;
+  parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   createColumnStatusMap();
   sortIssues_st();
