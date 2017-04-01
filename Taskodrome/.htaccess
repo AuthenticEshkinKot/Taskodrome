@@ -1,3 +1,4 @@
 ## full access to this folder
 order allow,deny
 allow from all
+Require all granted
