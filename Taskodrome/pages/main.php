@@ -1,16 +1,17 @@
-<link rel="stylesheet" type="text/css" href="<?php echo plugin_file( 'taskodrome.css' ) ?>"/>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js"></script>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_common_utils.js"></script>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/grid_draw_utils.js"></script>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/devs_grid.js"></script>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/status_grid.js"></script>
-<script type="text/javascript" src="./plugins/Taskodrome/scripts/on_load_opening.js"></script>
-
 <?php
 
   html_robots_noindex();
 
   layout_page_header_begin(plugin_lang_get( 'board' ));
+
+  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"./plugins/Taskodrome/files/taskodrome.css\"/>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_common_utils.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_draw_utils.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/devs_grid.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/status_grid.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/on_load_opening.js\"></script>\n";
+
   layout_page_header_end();
 
   layout_page_begin( __FILE__ );
