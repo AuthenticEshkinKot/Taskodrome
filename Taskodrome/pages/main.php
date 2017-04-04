@@ -1,13 +1,13 @@
 <?php
   html_page_top( plugin_lang_get( 'board' ) );
 
-  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"./plugins/Taskodrome/files/taskodrome.css\"/>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_common_utils.js\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_draw_utils.js\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/devs_grid.js\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/status_grid.js\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/on_load_opening.js\"></script>\n";
+  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodrome.css')."\" />\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/easeljs-0.8.2.min.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_common_utils.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_draw_utils.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/devs_grid.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/status_grid.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/on_load_opening.js') . "\"></script>\n";
 
   $f_page_number = gpc_get_int( 'page_number', 1 );
 
@@ -59,11 +59,11 @@
       $issues_array_html .= 'handler_id="'.$handler_id.'" ';
       $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
-      $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
-      $issues_array_html .= 'description="'.$t_row->description.'"';
-      $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'"';
-      $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'"';
-      $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'"';
+      $issues_array_html .= 'updateTime="'.$t_row->last_updated.'" ';
+      $issues_array_html .= 'description="'.$t_row->description.'" ';
+      $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'" ';
+      $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'" ';
+      $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
       $issues_array_html .= '></p>';
 
       $t_row_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
