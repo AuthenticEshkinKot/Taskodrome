@@ -1,10 +1,13 @@
-div.grid { 
-  position: relative; 
-  padding: 0px; 
+div.grid {
+  position: relative;
+  padding: 0px;
   left: -6px;
   height: auto;
   min-height: 500px;
   overflow: auto;
+  background-color: #E7F2F8;
+  margin: 6px;
+  border-radius: 3px;
 }
 
 .tabs {
@@ -54,14 +57,13 @@ div.grid {
 
 #radio_dg:checked ~ #label_dg,
 #radio_sg:checked ~ #label_sg {
-  color: purple;
+  font-weight: bolder;
 }
 
 .radio_label {
-  text-decoration: underline;
-  color: blue;
+  color: #4C8FBD;
 }
 
 .radio_label:hover {
-  color: red;
+  text-decoration: underline;
 }
