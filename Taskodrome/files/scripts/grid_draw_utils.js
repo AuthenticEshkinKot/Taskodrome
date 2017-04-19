@@ -4,8 +4,8 @@ var V_OFFSET = 20;
 var CARD_H_OFFSET = 15;
 var CARD_V_OFFSET = 10;
 
-var FONT_COLOR = "#000000"
-var FONT_FAMILY = "Arial"
+var FONT_COLOR = "#393939"
+var FONT_FAMILY = "Open Sans"
 var FONT_SIZE = "12px"
 var FONT = FONT_SIZE + " " + FONT_FAMILY;
 
@@ -347,8 +347,8 @@ function createColumns(columnNames, number, width, height) {
   for(var i = 0; i <= number; ++i) {
     var startX = H_OFFSET + i * width;
     var line = new createjs.Shape();
-    line.graphics.setStrokeStyle(2, 2);
-    line.graphics.beginStroke(createjs.Graphics.getRGB(0,0,0));
+    line.graphics.setStrokeStyle(2);
+    line.graphics.beginStroke("#b3cbd8");
     line.graphics.moveTo(startX, V_OFFSET);
     line.graphics.lineTo(startX, height + V_OFFSET);
     columns.addChild(line);
@@ -369,9 +369,9 @@ function createColumns(columnNames, number, width, height) {
 function createCardBack(width, height) {
   var back = new createjs.Shape();
   back.graphics.setStrokeStyle(1);
-  back.graphics.beginStroke("#000000");
+  back.graphics.beginStroke("#bfd5e1");
   back.graphics.beginFill("#F0F5FF");
-  back.graphics.drawRect(0, 0, width, height);
+  back.graphics.drawRoundRect(0, 0, width, height, 3, 3 ,3, 3);
   return back;
 };
 
@@ -395,7 +395,7 @@ function createCardBottomMark(markColor, cardWidth, cardHeight, markWidth) {
 
 function createCardNumber(issueNumber, width, markWidth) {
   var cont = new createjs.Container();
-  var numberColor = "#0000FF";
+  var numberColor = "#4C8FBD";
   var number = new createjs.Text(issueNumber, FONT, numberColor);
   number.x = width - number.getBounds().width - 5;
   number.y += markWidth + 3;
