@@ -6,7 +6,7 @@ Copy Taskodrome catalogue to mantisbt plugin directory.
 
 # Features
 ## Issue drag'n'drop
-Changing task's assignee or status was never been so easy! Just drag'n'drop - nothing more.
+Changing task's assignee or status has never been so easy! Just drag'n'drop - nothing more.
 
 Assignee:
 ![assignee](Screenshots/assignee.gif)
