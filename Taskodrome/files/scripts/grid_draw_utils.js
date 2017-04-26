@@ -197,9 +197,9 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
       }
     }
 
-    if (popupCard != null) {
-      panel.removeChild(popupCard);
-      popupCard = null;
+    if (m_popupCard != null) {
+      panel.removeChild(m_popupCard);
+      m_popupCard = null;
     }
   };
   card.on("mousedown", cardOnMousedown);
@@ -216,15 +216,15 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.on("pressup", onPressUp);
 
   function cardOnRollover(evt) {
-    popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
+    m_popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
     popupPause = POPUP_PAUSE;
     stageToUpdate = panel;
   };
   card.on("rollover", cardOnRollover);
 
   function cardOnRollout(evt) {
-    panel.removeChild(popupCard);
-    popupCard = null;
+    panel.removeChild(m_popupCard);
+    m_popupCard = null;
     update = true;
   };
   card.on("rollout", cardOnRollout);
@@ -255,11 +255,11 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
   var rootCanvas;
   if (isStatusGrid)
   {
-    rootCanvas = myPanel_st.canvas;
+    rootCanvas = m_mainPanel_st.canvas;
   }
   else
   {
-    rootCanvas = myPanel.canvas;
+    rootCanvas = m_mainPanel.canvas;
   }
 
   var POPUP_MAX_WIDTH = Math.round(rootCanvas.width / 3.5);
@@ -436,7 +436,7 @@ function onIssueIdPressup(event, issue) {
 };
 
 function createCardAssignee(issueHandlerId, width, markWidth) {
-  var assignee = new createjs.Text(nameToHandlerId[issueHandlerId], FONT, FONT_COLOR);
+  var assignee = new createjs.Text(m_nameToHandlerId[issueHandlerId], FONT, FONT_COLOR);
   assignee.x = 5;
   assignee.y += markWidth + 3;
   return assignee;
@@ -476,9 +476,9 @@ function tick(event) {
     stageToUpdate.update();
   }
 
-  if (popupCard != null) {
+  if (m_popupCard != null) {
     if (popupPause == 0) {
-      stageToUpdate.addChild(popupCard);
+      stageToUpdate.addChild(m_popupCard);
       update = true;
       popupPause = -1;
     } else if (popupPause > 0) {
