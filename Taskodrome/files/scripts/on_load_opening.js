@@ -1,6 +1,7 @@
 var issues_raw;
 var cooldown_period;
 var allowed_statuses_map;
+var status_color_map;
 
 function onLoadOpening() {
   var markIndex = window.location.href.lastIndexOf("#");
@@ -37,6 +38,7 @@ function pageOnLoad() {
   issues_raw = getIssuesRaw();
   cooldown_period = getCooldownPeriod();
   allowed_statuses_map = getStatusesAllowanceMap();
+  status_color_map = getStatusColors();
 
   init();
   statusInit();
