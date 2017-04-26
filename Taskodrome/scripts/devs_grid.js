@@ -1,89 +1,90 @@
-var myPanel;
+var m_mainPanel;
 
-var issues = [];
+var m_issues = [];
 
-var cardDescArray = [];
-var selectedCard = { value : null };
-var selectedCardSourceIndex = { value : null };
-var selectedCardMousePos = { X : 0, Y : 0 };
+var m_cardDescArray = [];
+var m_selectedCard = { value : null };
+var m_selectedCardSourceIndex = { value : null };
+var m_selectedCardMousePos = { X : 0, Y : 0 };
 
-var columnWidth = { value : null };
+var m_columnWidth = { value : null };
 
-var parentWidth = { value : null }, parentHeight;
+var m_parentWidth = { value : null };
+var m_parentHeight;
 
-var bugsToSend = [];
+var m_bugsToSend = [];
 
-var developersNames = [];
+var m_developersNames = [];
 
-var nameToHandlerId = [];
+var m_nameToHandlerId = [];
 
-var popupCard = null;
+var m_popupCard = null;
 
 function init() {
-  myPanel = new createjs.Stage("panel");
-  myPanel.enableMouseOver(4);
+  m_mainPanel = new createjs.Stage("panel");
+    m_mainPanel.enableMouseOver(4);
 
   var parentDiv = document.getElementById("dev-grid");
 
-  parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
-  parentHeight = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
+  m_parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  m_parentHeight = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   sortIssues();
   draw();
 };
 
 function draw() {
-  myPanel.clear();
-  myPanel.uncache();
-  myPanel.removeAllChildren();
-  myPanel.removeAllEventListeners();
+  m_mainPanel.clear();
+  m_mainPanel.uncache();
+  m_mainPanel.removeAllChildren();
+  m_mainPanel.removeAllEventListeners();
 
   var panelCanvas = document.getElementById("panel");
-  panelCanvas.width = parentWidth.value;
-  panelCanvas.height = parentHeight;
+  panelCanvas.width = m_parentWidth.value;
+  panelCanvas.height = m_parentHeight;
 
-  createTable(issues, cardDescArray, developersNames, myPanel, "panel",
-              false, selectedCardMousePos, selectedCard,
-             selectedCardSourceIndex, columnWidth, parentWidth,
-             parentWidth.value, parentHeight, onPressUp);
-  myPanel.update();
+  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, "panel",
+              false, m_selectedCardMousePos, m_selectedCard,
+             m_selectedCardSourceIndex, m_columnWidth, m_parentWidth,
+             m_parentWidth.value, m_parentHeight, onPressUp);
+  m_mainPanel.update();
 };
 
 function onPressUp(evt) {
   setHrefMark(window, "dg");
 
-  var newColumnIndex = computeColumnIndex(evt.stageX, issues, H_OFFSET, columnWidth.value);
+  var newColumnIndex = computeColumnIndex(evt.stageX, m_issues, H_OFFSET, m_columnWidth.value);
 
   if(newColumnIndex == -1
     || !isStatusAllowed(selectedCard.value.id, selectedCard.value.status, '50')) {
     newColumnIndex = selectedCardSourceIndex.value.i;
   }
 
-  if(selectedCardSourceIndex.value.i != newColumnIndex) {
-    issues[selectedCardSourceIndex.value.i].splice(selectedCardSourceIndex.value.k, 1);
-    issues[newColumnIndex].splice(issues[newColumnIndex].length, 0, selectedCard.value);
+  if(m_selectedCardSourceIndex.value.i != newColumnIndex) {
+    m_issues[m_selectedCardSourceIndex.value.i].splice(m_selectedCardSourceIndex.value.k, 1);
+    m_issues[newColumnIndex].splice(m_issues[newColumnIndex].length, 0, m_selectedCard.value);
 
-    selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
+    m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 
     var handler_id = user_ids[newColumnIndex];
-    var bug_id = selectedCard.value.id;
+    var bug_id = m_selectedCard.value.id;
 
     if(handler_id != 0) {
-      selectedCard.value.status = '50';
+      m_selectedCard.value.status = '50';
     }
 
-    selectedCard.value.handler_id = handler_id;
+    m_selectedCard.value.handler_id = handler_id;
 
     bugsToSend.push({ handler_id : handler_id, bug_id : bug_id });
 
-    if (bugsToSend.length == 1) {
+    if (m_bugsToSend.length == 1) {
       sendRequest(0);
     }
 
     setHrefMark(window, "dg");
   }
 
-  selectedCard.value = null;
+  m_selectedCard.value = null;
 
   fullRedraw();
 };
@@ -95,7 +96,7 @@ function sendRequest(bugIndex) {
   var HTTP_REQUEST_TIMEOUT = 4000;
   var requestToken = new XMLHttpRequest();
   var address = getPathToMantisFile(window, "view.php");
-  address = address + "?id=" + bugsToSend[bugIndex].bug_id;
+  address = address + "?id=" + m_bugsToSend[bugIndex].bug_id;
   requestToken.open("GET", address, true);
   requestToken.timeout = HTTP_REQUEST_TIMEOUT;
 
@@ -144,8 +145,8 @@ function sendRequest(bugIndex) {
       requestAssign.onreadystatechange = reqAssignOnReadyStateChange;
 
       var bug_assign_token = security_token;
-      var handler_id = bugsToSend[bugIndex].handler_id;
-      var bug_id = bugsToSend[bugIndex].bug_id;
+      var handler_id = m_bugsToSend[bugIndex].handler_id;
+      var bug_id = m_bugsToSend[bugIndex].bug_id;
       var parameters = "bug_assign_token=" + bug_assign_token + "&handler_id=" +
                         handler_id + "&bug_id=" + bug_id;
       requestAssign.send(parameters);
@@ -168,10 +169,10 @@ function sendRequest(bugIndex) {
 };
 
 function trySendNextBug(index) {
-  if(index < bugsToSend.length - 1) {
+  if(index < m_bugsToSend.length - 1) {
     sendRequest(index + 1);
-  } else if(bugsToSend.length > 0) {
-    bugsToSend.length = 0;
+  } else if(m_bugsToSend.length > 0) {
+    m_bugsToSend.length = 0;
   }
 };
 
@@ -199,22 +200,22 @@ function sortIssues() {
   };
   users.sort( sorter );
 
-  nameToHandlerId = createUsernamesMap(users);
+  m_nameToHandlerId = createUsernamesMap(users);
 
-  issues = [];
-  developersNames = [];
+  m_issues = [];
+  m_developersNames = [];
   user_ids = [];
   var idsIndexes = [];
   for(var i = 0; i != users.length; ++i) {
     user_ids[i] = users[i].id;
-    developersNames[i] = users[i].name;
-    issues[i] = [];
+    m_developersNames[i] = users[i].name;
+    m_issues[i] = [];
     idsIndexes[users[i].id] = i;
   }
 
   for(var i = 0; i != issues_raw.length; ++i) {
     var index = idsIndexes[issues_raw[i].handler_id];
-    issues[index].splice(issues[index].length, 0, issues_raw[i]);
+    m_issues[index].splice(m_issues[index].length, 0, issues_raw[i]);
   }
 };
 

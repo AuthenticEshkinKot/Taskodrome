@@ -1,33 +1,34 @@
-var myPanel_st;
+var m_mainPanel_st;
 
 var statusList = [];
 
-var issues_st = [];
+var m_issues_st = [];
 
-var cardDescArray_st = [];
-var selectedCard_st = { value : null };
-var selectedCardSourceIndex_st = { value : null };
-var selectedCardMousePos_st = { X : 0, Y : 0 };
+var m_cardDescArray_st = [];
+var m_selectedCard_st = { value : null };
+var m_selectedCardSourceIndex_st = { value : null };
+var m_selectedCardMousePos_st = { X : 0, Y : 0 };
 
-var columnWidth_st = { value : null };
+var m_columnWidth_st = { value : null };
 
-var parentWidth_st = { value : null }, parentHeight_st;
+var m_parentWidth_st = { value : null };
+var m_parentHeight_st;
 
-var bugsToSend_st = [];
+var m_bugsToSend_st = [];
 
-var statusByColumns = [];
-var columnByStatus = [];
+var m_statusByColumns = [];
+var m_columnByStatus = [];
 
 function statusInit() {
-  myPanel_st = new createjs.Stage("panel_st");
-  myPanel_st.enableMouseOver(4);
+  m_mainPanel_st = new createjs.Stage("panel_st");
+  m_mainPanel_st.enableMouseOver(4);
 
   statusList = getStatusList_st();
 
   var parentDiv = document.getElementById("st-grid");
 
-  parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
-  parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
+  m_parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  m_parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   createColumnStatusMap();
   sortIssues_st();
@@ -36,54 +37,54 @@ function statusInit() {
 };
 
 function draw_st() {
-  myPanel_st.clear();
-  myPanel_st.uncache();
-  myPanel_st.removeAllChildren();
-  myPanel_st.removeAllEventListeners();
+  m_mainPanel_st.clear();
+  m_mainPanel_st.uncache();
+  m_mainPanel_st.removeAllChildren();
+  m_mainPanel_st.removeAllEventListeners();
 
   var panelCanvas = document.getElementById("panel_st");
-  panelCanvas.width = parentWidth_st.value;
-  panelCanvas.height = parentHeight_st;
+  panelCanvas.width = m_parentWidth_st.value;
+  panelCanvas.height = m_parentHeight_st;
 
-  createTable(issues_st, cardDescArray_st, statusList, myPanel_st, "panel_st",
-              true, selectedCardMousePos_st, selectedCard_st,
-              selectedCardSourceIndex_st, columnWidth_st, parentWidth_st,
-              parentWidth_st.value, parentHeight_st, onPressUp_st);
-  myPanel_st.update();
+  createTable(m_issues_st, m_cardDescArray_st, statusList, m_mainPanel_st, "panel_st",
+              true, m_selectedCardMousePos_st, m_selectedCard_st,
+              m_selectedCardSourceIndex_st, m_columnWidth_st, m_parentWidth_st,
+              m_parentWidth_st.value, m_parentHeight_st, onPressUp_st);
+  m_mainPanel_st.update();
 };
 
 function onPressUp_st(evt) {
   setHrefMark(window, "sg");
 
-  var newColumnIndex = computeColumnIndex(evt.stageX, issues_st, H_OFFSET, columnWidth_st.value);
-  var currStatus = getStatusByColumn_st(selectedCardSourceIndex_st.value.i);
+  var newColumnIndex = computeColumnIndex(evt.stageX, m_issues_st, H_OFFSET, m_columnWidth_st.value);
+  var currStatus = getStatusByColumn_st(m_selectedCardSourceIndex_st.value.i);
   var newStatus = getStatusByColumn_st(newColumnIndex);
 
   if(newColumnIndex == -1
-    || !isStatusAllowed(selectedCard_st.value.id, currStatus, newStatus)) {
-    newColumnIndex = selectedCardSourceIndex_st.value.i;
+    || !isStatusAllowed(m_selectedCard_st.value.id, currStatus, newStatus)) {
+    newColumnIndex = m_selectedCardSourceIndex_st.value.i;
   }
 
-  if(selectedCardSourceIndex_st.value.i != newColumnIndex) {
-    issues_st[selectedCardSourceIndex_st.value.i].splice(selectedCardSourceIndex_st.value.k, 1);
-    issues_st[newColumnIndex].splice(issues_st[newColumnIndex].length, 0, selectedCard_st.value);
+  if(m_selectedCardSourceIndex_st.value.i != newColumnIndex) {
+    m_issues_st[m_selectedCardSourceIndex_st.value.i].splice(m_selectedCardSourceIndex_st.value.k, 1);
+    m_issues_st[newColumnIndex].splice(m_issues_st[newColumnIndex].length, 0, m_selectedCard_st.value);
 
     var status = getStatusByColumn_st(newColumnIndex);
-    selectedCard_st.value.status = status;
-    selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
+    m_selectedCard_st.value.status = status;
+    m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
 
-    var handler_id = selectedCard_st.value.handler_id;
-    var bug_id = selectedCard_st.value.id;
-    bugsToSend_st.push({ handler_id : handler_id, bug_id : bug_id, status : status });
+    var handler_id = m_selectedCard_st.value.handler_id;
+    var bug_id = m_selectedCard_st.value.id;
+    m_bugsToSend_st.push({ handler_id : handler_id, bug_id : bug_id, status : status });
 
-    if (bugsToSend_st.length == 1) {
+    if (m_bugsToSend_st.length == 1) {
       sendRequest_st(0);
     }
 
     setHrefMark(window, "sg");
   }
 
-  selectedCard_st.value = null;
+  m_selectedCard_st.value = null;
 
   fullRedraw();
 };
@@ -106,27 +107,29 @@ function sendRequest_st(bugIndex) {
 
       function reqUpdateOnReadyStateChanged() {
         if (requestUpdate.readyState == 4 && requestUpdate.status == 200) {
-          if(bugIndex < bugsToSend_st.length - 1) {
+          if(bugIndex < m_bugsToSend_st.length - 1) {
             sendRequest_st(bugIndex + 1);
-          } else if(bugsToSend_st.length > 0) {
-            bugsToSend_st.length = 0;
+          } else if(m_bugsToSend_st.length > 0) {
+            m_bugsToSend_st.length = 0;
           }
         }
       };
       requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
 
       var bug_update_token = security_token;
-      var handler_id = bugsToSend_st[bugIndex].handler_id;
-      var bug_id = bugsToSend_st[bugIndex].bug_id;
-      var status = bugsToSend_st[bugIndex].status;
-      var parameters = "bug_update_token=" + bug_update_token + "&handler_id=" + handler_id + "&bug_id=" + bug_id + "&status=" + status;
+      var handler_id = m_bugsToSend_st[bugIndex].handler_id;
+      var bug_id = m_bugsToSend_st[bugIndex].bug_id;
+      var status = m_bugsToSend_st[bugIndex].status;
+      var parameters = "bug_update_token=" + bug_update_token
+      + "&handler_id=" + handler_id + "&bug_id=" + bug_id
+      + "&status=" + status;
       requestUpdate.send(parameters);
     }
   };
   requestToken.onreadystatechange = tokenOnReadyStateChange;
 
-  var bug_id = bugsToSend_st[bugIndex].bug_id;
-  var status = bugsToSend_st[bugIndex].status;
+  var bug_id = m_bugsToSend_st[bugIndex].bug_id;
+  var status = m_bugsToSend_st[bugIndex].status;
   var parameters = "id=" + bug_id + "&new_status=" + status;
   requestToken.send(parameters);
 };
@@ -141,29 +144,29 @@ function createColumnStatusMap() {
   for (var i = 0; i != statusList.length; ++i) {
     var status = statusList[i];
     var statusNameL = status.toLowerCase();
-    statusByColumns[i] = statusCodes[statusNameL];
+    m_statusByColumns[i] = statusCodes[statusNameL];
   }
 
   for (var i = 0; i != 91; ++i) {
-    columnByStatus[i] = statusList.length;
+    m_columnByStatus[i] = statusList.length;
   }
 
-  for (var i = 0; i != statusByColumns.length; ++i) {
-    var index = parseInt(statusByColumns[i]);
-    columnByStatus[index] = i;
+  for (var i = 0; i != m_statusByColumns.length; ++i) {
+    var index = parseInt(m_statusByColumns[i]);
+    m_columnByStatus[index] = i;
   }
 };
 
 function sortIssues_st() {
-  issues_st = [];
+  m_issues_st = [];
   for(var i = 0; i != statusList.length + 1; ++i) {
-    issues_st[i] = [];
+    m_issues_st[i] = [];
   }
 
   for(var i = 0; i != issues_raw.length; ++i) {
     var columnIndex = getColumnByStatus_st(issues_raw[i].status);
-    var posIndex = issues_st[columnIndex].length;
-    issues_st[columnIndex][posIndex] = issues_raw[i];
+    var posIndex = m_issues_st[columnIndex].length;
+    m_issues_st[columnIndex][posIndex] = issues_raw[i];
   }
 };
 
@@ -176,14 +179,14 @@ function getValueByName_st(page_text, name) {
 
 function getStatusByColumn_st(columnIndex) {
   if (columnIndex >= 0) {
-    return statusByColumns[columnIndex];
+    return m_statusByColumns[columnIndex];
   } else {
     return '90';
   }
 };
 
 function getColumnByStatus_st(status) {
-  return columnByStatus[parseInt(status)];
+  return m_columnByStatus[parseInt(status)];
 };
 
 function getStatusList_st() {
