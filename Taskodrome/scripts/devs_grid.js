@@ -23,8 +23,6 @@ function init() {
   myPanel = new createjs.Stage("panel");
   myPanel.enableMouseOver(4);
 
-  statusColorMap = getStatusColors();
-
   var parentDiv = document.getElementById("dev-grid");
 
   parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
@@ -232,9 +230,7 @@ function createUsernamesMap(users) {
 function getValueByName(page_text, name) {
   var prefix = 'name="' + name + '" value="';
   var src_string = page_text.match(new RegExp('.*' + prefix + '.*'))[0];
-  //console.log(src_string);
   var start_index = src_string.indexOf(prefix) + prefix.length;
   var res = src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
-  //console.log(res);
   return res;
 };

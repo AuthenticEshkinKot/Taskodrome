@@ -18,8 +18,6 @@ var stageToUpdate;
 
 var popupPause = 0;
 
-var statusColorMap = [];
-
 function fullRedraw() {
   draw();
   sortIssues_st();
@@ -411,7 +409,7 @@ function createCardNumber(issueNumber, width, markWidth) {
               .drawRect(-ext, -ext, 2 * ext + number.getMeasuredWidth(), 2 * ext + number.getMeasuredHeight());
   number.hitArea = hit;
 
-  var pressup_listener = number.on("pressup", handleInteraction, null, false, { id : issueNumber });
+  var pressup_listener = number.on("pressup", onIssueIdPressup, null, false, { id : issueNumber });
   function save_crd(evt) {
     number.startX = evt.stageX;
     number.startY = evt.stageY;
@@ -432,8 +430,8 @@ function createCardNumber(issueNumber, width, markWidth) {
   return cont;
 };
 
-function handleInteraction(event, data) {
-  var address = getPathToMantisFile(window, "view.php") + "?id=" + data.id;
+function onIssueIdPressup(event, issue) {
+  var address = getPathToMantisFile(window, "view.php") + "?id=" + issue.id;
   window.open(address);
 };
 
@@ -490,5 +488,5 @@ function tick(event) {
 };
 
 function getColorByStatus(issueStatus) {
-  return statusColorMap[issueStatus];
+  return status_color_map[issueStatus];
 };

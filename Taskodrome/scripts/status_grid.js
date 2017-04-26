@@ -23,7 +23,6 @@ function statusInit() {
   myPanel_st.enableMouseOver(4);
 
   statusList = getStatusList_st();
-  statusColorMap = getStatusColors();
 
   var parentDiv = document.getElementById("st-grid");
 
