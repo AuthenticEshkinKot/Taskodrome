@@ -17,7 +17,8 @@ function getIssuesRaw() {
       description: el.getAttribute("description"),
       severity: el.getAttribute("severity"),
       priority: el.getAttribute("priority"),
-      reproducibility: el.getAttribute("reproducibility")
+      reproducibility: el.getAttribute("reproducibility"),
+      version: el.getAttribute("version")
     };
   }
   
