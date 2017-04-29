@@ -3,14 +3,14 @@ var m_mainPanel;
 var m_issues = [];
 
 var m_cardDescArray = [];
-var m_selectedCard = { value : null };
-var m_selectedCardSourceIndex = { value : null };
-var m_selectedCardMousePos = { X : 0, Y : 0 };
+var m_selectedCard = { value : null,
+                       mousePos : { X : 0, Y : 0 },
+                       sourceIndex : null };
 
 var m_columnWidth = { value : null };
 
-var m_parentWidth = { value : null };
-var m_parentHeight;
+var m_parentSize = { width : null,
+                     height : null };
 
 var m_bugsToSend = [];
 
@@ -26,8 +26,8 @@ function init() {
 
   var parentDiv = document.getElementById("dev-grid");
 
-  m_parentWidth.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
-  m_parentHeight = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
+  m_parentSize.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  m_parentSize.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   sortIssues();
   draw();
@@ -40,13 +40,11 @@ function draw() {
   m_mainPanel.removeAllEventListeners();
 
   var panelCanvas = document.getElementById("panel");
-  panelCanvas.width = m_parentWidth.value;
-  panelCanvas.height = m_parentHeight;
+  panelCanvas.width = m_parentSize.width;
+  panelCanvas.height = m_parentSize.height;
 
   createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, "panel",
-              false, m_selectedCardMousePos, m_selectedCard,
-             m_selectedCardSourceIndex, m_columnWidth, m_parentWidth,
-             m_parentWidth.value, m_parentHeight, onPressUp);
+              false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth);
   m_mainPanel.update();
 };
 
@@ -56,11 +54,11 @@ function onPressUp(evt) {
   var newColumnIndex = computeColumnIndex(evt.stageX, m_issues, H_OFFSET, m_columnWidth.value);
 
   if(newColumnIndex == -1) {
-    newColumnIndex = selectedCardSourceIndex.value.i;
+    newColumnIndex = m_selectedCard.sourceIndex.i;
   }
 
-  if(m_selectedCardSourceIndex.value.i != newColumnIndex) {
-    m_issues[m_selectedCardSourceIndex.value.i].splice(m_selectedCardSourceIndex.value.k, 1);
+  if(m_selectedCard.sourceIndex.i != newColumnIndex) {
+    m_issues[m_selectedCard.sourceIndex.i].splice(m_selectedCard.sourceIndex.k, 1);
     m_issues[newColumnIndex].splice(m_issues[newColumnIndex].length, 0, m_selectedCard.value);
 
     m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
