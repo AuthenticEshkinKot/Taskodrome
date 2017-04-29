@@ -1,6 +1,6 @@
 var m_mainPanel_st;
 
-var statusList = [];
+var m_statusList = [];
 
 var m_issues_st = [];
 
@@ -23,7 +23,7 @@ function statusInit() {
   m_mainPanel_st = new createjs.Stage("panel_st");
   m_mainPanel_st.enableMouseOver(4);
 
-  statusList = getStatusList_st();
+  m_statusList = getStatusList_st();
 
   var parentDiv = document.getElementById("st-grid");
 
@@ -46,7 +46,7 @@ function draw_st() {
   panelCanvas.width = m_parentWidth_st.value;
   panelCanvas.height = m_parentHeight_st;
 
-  createTable(m_issues_st, m_cardDescArray_st, statusList, m_mainPanel_st, "panel_st",
+  createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, "panel_st",
               true, m_selectedCardMousePos_st, m_selectedCard_st,
               m_selectedCardSourceIndex_st, m_columnWidth_st, m_parentWidth_st,
               m_parentWidth_st.value, m_parentHeight_st, onPressUp_st);
@@ -138,18 +138,18 @@ function sendRequest_st(bugIndex) {
 function createColumnStatusMap() {
   var statusCodes = getStatusCodes_st();
 
-  if (statusList[statusList.length - 1] == '') {
-    statusList.pop();
+  if (m_statusList[m_statusList.length - 1] == '') {
+    m_statusList.pop();
   }
 
-  for (var i = 0; i != statusList.length; ++i) {
-    var status = statusList[i];
+  for (var i = 0; i != m_statusList.length; ++i) {
+    var status = m_statusList[i];
     var statusNameL = status.toLowerCase();
     m_statusByColumns[i] = statusCodes[statusNameL];
   }
 
   for (var i = 0; i != 91; ++i) {
-    m_columnByStatus[i] = statusList.length;
+    m_columnByStatus[i] = m_statusList.length;
   }
 
   for (var i = 0; i != m_statusByColumns.length; ++i) {
@@ -160,14 +160,14 @@ function createColumnStatusMap() {
 
 function sortIssues_st() {
   m_issues_st = [];
-  for(var i = 0; i != statusList.length + 1; ++i) {
+  for(var i = 0; i != m_statusList.length + 1; ++i) {
     m_issues_st[i] = [];
   }
 
-  for(var i = 0; i != issues_raw.length; ++i) {
-    var columnIndex = getColumnByStatus_st(issues_raw[i].status);
+  for(var i = 0; i != m_issues_raw.length; ++i) {
+    var columnIndex = getColumnByStatus_st(m_issues_raw[i].status);
     var posIndex = m_issues_st[columnIndex].length;
-    m_issues_st[columnIndex][posIndex] = issues_raw[i];
+    m_issues_st[columnIndex][posIndex] = m_issues_raw[i];
   }
 };
 

@@ -214,9 +214,9 @@ function sortIssues() {
     idsIndexes[users[i].id] = i;
   }
 
-  for(var i = 0; i != issues_raw.length; ++i) {
-    var index = idsIndexes[issues_raw[i].handler_id];
-    m_issues[index].splice(m_issues[index].length, 0, issues_raw[i]);
+  for(var i = 0; i != m_issues_raw.length; ++i) {
+    var index = idsIndexes[m_issues_raw[i].handler_id];
+    m_issues[index].splice(m_issues[index].length, 0, m_issues_raw[i]);
   }
 };
 
