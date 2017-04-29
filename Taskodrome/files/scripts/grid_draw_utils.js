@@ -24,56 +24,50 @@ function fullRedraw() {
   draw_st();
 };
 
-function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isStatusGrid, selectedCardMousePos, selectedCard, selectedCardSourceIndex, columnWidth, parentWidth, width, height, onPressUp) {
+function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut) {
   var colNumber = columnHeaders.length;
-  var colWidth = (width - 2 * H_OFFSET) / colNumber;
-  if(colWidth < MIN_COL_WIDTH) {
-    colWidth = MIN_COL_WIDTH;
+  var colSize = {
+    width : 0,
+    height : 0
+  }
+  colSize.width = (parentSize.width - 2 * H_OFFSET) / colNumber;
+  if(colSize.width < MIN_COL_WIDTH) {
+    colSize.width = MIN_COL_WIDTH;
 
-    var tableWidth = colWidth * colNumber + 2 * H_OFFSET;
-    if(tableWidth > parentWidth.value) {
-      width = tableWidth;
-      parentWidth.value = tableWidth;
+    var tableWidth = colSize.width * colNumber + 2 * H_OFFSET;
+    if(tableWidth > parentSize.width) {
+      parentSize.width = tableWidth;
       document.getElementById(panelName).width = tableWidth;
     }
   }
 
-  var colHeight = height - 2 * V_OFFSET;
+  columnWidthOut.value = colSize.width;
 
-  columnWidth.value = colWidth;
+  colSize.height = parentSize.height - 2 * V_OFFSET;
 
-  if(colWidth <= 0 || colHeight <= 0) {
+  if(colSize.width <= 0 || colSize.height <= 0) {
     return null;
   }
 
-  var columns = createColumns(columnHeaders, colNumber, colWidth, colHeight);
+  var cardSize = { width : colSize.width - 2 * CARD_H_OFFSET,
+                   height : colSize.height / 5 - 2 * CARD_V_OFFSET };
 
-  var ColParams = {
-    width : colWidth,
-    height : colHeight
-  }
-
-  var cardWidth = colWidth - 2 * CARD_H_OFFSET;
-  var cardHeight = colHeight / 5 - 2 * CARD_V_OFFSET;
-
-  if(cardWidth <= 0 || cardHeight <= 0) {
+  if(cardSize.width <= 0 || cardSize.height <= 0) {
     return null;
   }
 
-  var cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, ColParams, onPressUp, isStatusGrid);
-
+  var columns = createColumns(columnHeaders, colSize);
+  var oldColHeight = colSize.height;
+  var cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSize);
   if(cards != null) {
-    if(ColParams.height > colHeight) {
-      var add = ColParams.height - colHeight;
-      colHeight += add;
+    if(colSize.height > oldColHeight) {
+      var add = colSize.height - oldColHeight;
       document.getElementById(panelName).height += add;
 
-      columns = createColumns(columnHeaders, colNumber, colWidth, colHeight);
+      columns = createColumns(columnHeaders, colSize);
 
-      ColParams.height += add;
-      cards = createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, ColParams, onPressUp, isStatusGrid);
-
-      height += add;
+      colSize.height += add;
+      cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSize);
     }
   } else
     return null;
@@ -90,7 +84,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
   }
 };
 
-function createCards(panel, issues, cardDescArray, selectedCardMousePos, selectedCard, selectedCardSourceIndex, colNumber, cardWidth, cardHeight, colParams, onPressUp, isStatusGrid) {
+function createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSizeOut) {
   var textHeight = 10;
   cardDescArray.length = 0;
 
@@ -98,7 +92,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
 
   for(var i = 0; i < colNumber; ++i) {
     var issuesNumber = issues[i].length;
-    var x = CARD_H_OFFSET + (H_OFFSET + i * colParams.width);
+    var x = CARD_H_OFFSET + (H_OFFSET + i * colSizeOut.width);
 
     var cardDescs = [];
     var y = V_OFFSET + textHeight + CARD_V_OFFSET;
@@ -107,11 +101,11 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
       position = {
         x : x,
         y : y,
-        width : cardWidth,
-        height : cardHeight
+        width : cardSize.width,
+        height : cardSize.height
       }
 
-      var card = createCard(panel, position, issues, issues[i][k], selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid);
+      var card = createCard(panel, position, issues, issues[i][k], selectedCard, cardDescArray, onPressUp, isStatusGrid);
       cards.push(card);
 
       CardDesc = {
@@ -121,8 +115,8 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
         issueIndex : k
       }
 
-      if(y + position.height > colParams.height) {
-        colParams.height += y + position.height - colParams.height;
+      if(y + position.height > colSizeOut.height) {
+        colSizeOut.height += y + position.height - colSizeOut.height;
       }
 
       y += position.height + 2 * CARD_V_OFFSET;
@@ -136,7 +130,7 @@ function createCards(panel, issues, cardDescArray, selectedCardMousePos, selecte
   return cards;
 };
 
-function createCard(panel, position, issues, issue, selectedCardMousePos, cardDescArray, selectedCard, selectedCardSourceIndex, onPressUp, isStatusGrid) {
+function createCard(panel, position, issues, issue, selectedCard, cardDescArray, onPressUp, isStatusGrid) {
   var card = new createjs.Container();
 
   var back = createCardBack(position.width, position.height);
@@ -176,8 +170,8 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
     var boolSuccess = false;
     var cardX = card.x;
     var cardY = card.y;
-    selectedCardMousePos.X = evt.stageX - card.x;
-    selectedCardMousePos.Y = evt.stageY - card.y;
+    selectedCard.mousePos.X = evt.stageX - card.x;
+    selectedCard.mousePos.Y = evt.stageY - card.y;
 
     for(var i = 0; i < cardDescArray.length && !boolSuccess; ++i) {
       if(cardDescArray[i].length > 0 && cardDescArray[i][0].x == cardX) {
@@ -186,7 +180,7 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
             boolSuccess = true;
 
             selectedCard.value = issues[i][k];
-            selectedCardSourceIndex.value = { i : i, k : k };
+            selectedCard.sourceIndex = { i : i, k : k };
 
             //console.log("Found! issues array index = " + i + " issue index = " + k + " selectedCard.id = " + selectedCard.id);
           }
@@ -202,8 +196,8 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
   card.on("mousedown", cardOnMousedown);
 
   function cardOnPressmove(evt) {
-    card.x = evt.stageX - selectedCardMousePos.X;
-    card.y = evt.stageY - selectedCardMousePos.Y;
+    card.x = evt.stageX - selectedCard.mousePos.X;
+    card.y = evt.stageY - selectedCard.mousePos.Y;
 
     m_update = true;
     m_stageToUpdate = panel;
@@ -340,23 +334,24 @@ function createHeaderTextPair(header, text, lineHeigth, maxLineWidth) {
   return res;
 };
 
-function createColumns(columnNames, number, width, height) {
+function createColumns(columnNames, colSize) {
   var columns = new createjs.Container();
+  var number = columnNames.length;
 
   for(var i = 0; i <= number; ++i) {
-    var startX = H_OFFSET + i * width;
+    var startX = H_OFFSET + i * colSize.width;
     var line = new createjs.Shape();
     line.graphics.setStrokeStyle(2);
     line.graphics.beginStroke("#b3cbd8");
     line.graphics.moveTo(startX, V_OFFSET);
-    line.graphics.lineTo(startX, height + V_OFFSET);
+    line.graphics.lineTo(startX, colSize.height + V_OFFSET);
     columns.addChild(line);
 
     var text = new createjs.Text(columnNames[i], FONT, FONT_COLOR);
-    text.x = startX + width / 2;
+    text.x = startX + colSize.width / 2;
     text.y = V_OFFSET;
     text.textAlign = "center";
-    text.lineWidth = width;
+    text.lineWidth = colSize.width;
     columns.addChild(text);
   }
 
