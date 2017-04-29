@@ -5,14 +5,14 @@ var m_statusList = [];
 var m_issues_st = [];
 
 var m_cardDescArray_st = [];
-var m_selectedCard_st = { value : null };
-var m_selectedCardSourceIndex_st = { value : null };
-var m_selectedCardMousePos_st = { X : 0, Y : 0 };
+var m_selectedCard_st = { value : null,
+                          mousePos : { X : 0, Y : 0 },
+                          sourceIndex : null };
 
 var m_columnWidth_st = { value : null };
 
-var m_parentWidth_st = { value : null };
-var m_parentHeight_st;
+var m_parentSize_st = { width : null,
+                        height : null };
 
 var m_bugsToSend_st = [];
 
@@ -27,8 +27,8 @@ function statusInit() {
 
   var parentDiv = document.getElementById("st-grid");
 
-  m_parentWidth_st.value = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
-  m_parentHeight_st = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
+  m_parentSize_st.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  m_parentSize_st.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   createColumnStatusMap();
   sortIssues_st();
@@ -43,13 +43,11 @@ function draw_st() {
   m_mainPanel_st.removeAllEventListeners();
 
   var panelCanvas = document.getElementById("panel_st");
-  panelCanvas.width = m_parentWidth_st.value;
-  panelCanvas.height = m_parentHeight_st;
+  panelCanvas.width = m_parentSize_st.width;
+  panelCanvas.height = m_parentSize_st.height;
 
   createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, "panel_st",
-              true, m_selectedCardMousePos_st, m_selectedCard_st,
-              m_selectedCardSourceIndex_st, m_columnWidth_st, m_parentWidth_st,
-              m_parentWidth_st.value, m_parentHeight_st, onPressUp_st);
+              true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st);
   m_mainPanel_st.update();
 };
 
@@ -57,16 +55,16 @@ function onPressUp_st(evt) {
   setHrefMark(window, "sg");
 
   var newColumnIndex = computeColumnIndex(evt.stageX, m_issues_st, H_OFFSET, m_columnWidth_st.value);
-  var currStatus = getStatusByColumn_st(m_selectedCardSourceIndex_st.value.i);
+  var currStatus = getStatusByColumn_st(m_selectedCard_st.sourceIndex.i);
   var newStatus = getStatusByColumn_st(newColumnIndex);
 
   if(newColumnIndex == -1
     || !isStatusAllowed(m_selectedCard_st.value.id, currStatus, newStatus)) {
-    newColumnIndex = m_selectedCardSourceIndex_st.value.i;
+    newColumnIndex = m_selectedCard_st.sourceIndex.i;
   }
 
-  if(m_selectedCardSourceIndex_st.value.i != newColumnIndex) {
-    m_issues_st[m_selectedCardSourceIndex_st.value.i].splice(m_selectedCardSourceIndex_st.value.k, 1);
+  if(m_selectedCard_st.sourceIndex.i != newColumnIndex) {
+    m_issues_st[m_selectedCard_st.sourceIndex.i].splice(m_selectedCard_st.sourceIndex.k, 1);
     m_issues_st[newColumnIndex].splice(m_issues_st[newColumnIndex].length, 0, m_selectedCard_st.value);
 
     var status = getStatusByColumn_st(newColumnIndex);
