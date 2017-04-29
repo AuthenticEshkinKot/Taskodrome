@@ -84,9 +84,6 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
     panel.addChild(cards[i]);
   }
 
-  var outerLine = createOuterLine(width, height);
-  panel.addChild(outerLine);
-
   if (createjs.Ticker.hasEventListener("tick") == false) {
     createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
@@ -459,19 +456,6 @@ function createCardSummary(issueText, width, markWidth, number) {
   }
 
   return summary;
-};
-
-function createOuterLine(width, height) {
-  var line = new createjs.Shape();
-  line.graphics.setStrokeStyle(2, 2);
-  line.graphics.beginStroke(createjs.Graphics.getRGB(255,0,0));
-  line.graphics.moveTo(0, 0);
-  line.graphics.lineTo(0, height);
-  line.graphics.lineTo(width, height);
-  line.graphics.lineTo(width, 0);
-  line.graphics.lineTo(0, 0);
-  line.tickEnabled = false;
-  return line;
 };
 
 function tick(event) {
