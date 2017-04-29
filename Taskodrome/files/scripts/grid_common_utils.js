@@ -26,7 +26,7 @@ function getIssuesRaw() {
 };
 
 function getTemperatureColor(updateTime) {
-  var colorPeriod = cooldown_period / 4;
+  var colorPeriod = m_cooldown_period / 4;
   var currentTime = (new Date().getTime()) / 1000;
   var timeFromUpdate = currentTime - updateTime;
 

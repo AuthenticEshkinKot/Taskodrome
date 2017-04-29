@@ -13,10 +13,10 @@ var MIN_COL_WIDTH = 140;
 
 var POPUP_PAUSE = 600;
 
-var update = false;
-var stageToUpdate;
+var m_update = false;
+var m_stageToUpdate;
 
-var popupPause = 0;
+var m_popupPause = 0;
 
 function fullRedraw() {
   draw();
@@ -208,8 +208,8 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
     card.x = evt.stageX - selectedCardMousePos.X;
     card.y = evt.stageY - selectedCardMousePos.Y;
 
-    update = true;
-    stageToUpdate = panel;
+    m_update = true;
+    m_stageToUpdate = panel;
   };
   card.on("pressmove", cardOnPressmove);
 
@@ -217,15 +217,15 @@ function createCard(panel, position, issues, issue, selectedCardMousePos, cardDe
 
   function cardOnRollover(evt) {
     m_popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
-    popupPause = POPUP_PAUSE;
-    stageToUpdate = panel;
+    m_popupPause = POPUP_PAUSE;
+    m_stageToUpdate = panel;
   };
   card.on("rollover", cardOnRollover);
 
   function cardOnRollout(evt) {
     panel.removeChild(m_popupCard);
     m_popupCard = null;
-    update = true;
+    m_update = true;
   };
   card.on("rollout", cardOnRollout);
 
@@ -262,8 +262,7 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
     rootCanvas = m_mainPanel.canvas;
   }
 
-  var POPUP_MAX_WIDTH = Math.round(rootCanvas.width / 3.5);
-  var maxWidth = Math.max(POPUP_MAX_WIDTH, cardWidth);
+  var maxWidth = getPopupMaxWidth(rootCanvas, cardWidth);
 
   var description = createHeaderTextPair("Description: ", descriptionText, 12 + offset, maxWidth - 2 * offset);
   description.x = offset;
@@ -318,6 +317,11 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
   card.mouseEnabled = false;
 
   return card;
+};
+
+function getPopupMaxWidth(rootCanvas, cardWidth) {
+  var popupMaxWidth = Math.round(rootCanvas.width / 3.5);
+  return Math.max(popupMaxWidth, cardWidth);
 };
 
 function createHeaderTextPair(header, text, lineHeigth, maxLineWidth) {
@@ -471,22 +475,22 @@ function createOuterLine(width, height) {
 };
 
 function tick(event) {
-  if(update) {
-    update = false;
-    stageToUpdate.update();
+  if(m_update) {
+    m_update = false;
+    m_stageToUpdate.update();
   }
 
   if (m_popupCard != null) {
-    if (popupPause == 0) {
-      stageToUpdate.addChild(m_popupCard);
-      update = true;
-      popupPause = -1;
-    } else if (popupPause > 0) {
-      popupPause -= Math.min(event.delta, popupPause);
+    if (m_popupPause == 0) {
+      m_stageToUpdate.addChild(m_popupCard);
+      m_update = true;
+      m_popupPause = -1;
+    } else if (m_popupPause > 0) {
+      m_popupPause -= Math.min(event.delta, m_popupPause);
     }
   }
 };
 
 function getColorByStatus(issueStatus) {
-  return status_color_map[issueStatus];
+  return m_status_color_map[issueStatus];
 };
