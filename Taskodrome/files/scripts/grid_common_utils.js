@@ -89,16 +89,25 @@ function getPathToMantisFile(window, filename) {
   return result;
 };
 
-function computeColumnIndex(x, issues_in, firstColumnX_in, columnWidth_in) {
-  for(var i = 0; i < issues_in.length; ++i) {
-    var diff = x - (firstColumnX_in + i * columnWidth_in);
-    if(diff >= 0 && diff < columnWidth_in) {
+function computeColumnIndex(x, tableScheme) {
+  var columnBorders = tableScheme.columnBorders;
+  for (var i = columnBorders.length - 1; i > -1; --i) {
+    if (x >= columnBorders[i]) {
+      return i == columnBorders.length - 1 ? -1 : i;
+    }
+  }
+  return -1;
+}
+
+function computeVersionIndex(y, tableScheme) {
+  var versionBorders = tableScheme.versionBorders;
+  for (var i = versionBorders.length - 1; i > -1; --i) {
+    if (y >= versionBorders[i]) {
       return i;
     }
   }
-
   return -1;
-};
+}
 
 function openBoard(board) {
   setHrefMark(window, board);
@@ -140,7 +149,7 @@ function getStatusesAllowanceMap() {
   return ret;
 };
 
-function getStatusColors(issueStatus) {
+function getStatusColors() {
   var ret = [];
   var statusColorMap = document.getElementsByClassName("status_color_map")[0].getAttribute("value");
   if (!checkExistence("getStatusColors", statusColorMap)) {
@@ -154,6 +163,15 @@ function getStatusColors(issueStatus) {
     ret[pair[0]] = pair[1];
   }
 
+  return ret;
+};
+
+function getVersions() {
+  var ret = [''];
+  var versions = document.getElementsByClassName("version");
+  for (var i = 0, l = versions.length; i != l; ++i) {
+    ret.push(versions[i].getAttribute("value"));
+  }
   return ret;
 };
 
