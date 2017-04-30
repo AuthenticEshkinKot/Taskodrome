@@ -14,10 +14,11 @@ var m_columnWidth_st = { value : null };
 var m_parentSize_st = { width : null,
                         height : null };
 
-var m_bugsToSend_st = [];
-
 var m_statusByColumns = [];
 var m_columnByStatus = [];
+
+var m_tableScheme_st = { columnBorders : [],
+                         versionBorders : [] };
 
 function statusInit() {
   m_mainPanel_st = new createjs.Stage("panel_st");
@@ -47,14 +48,15 @@ function draw_st() {
   panelCanvas.height = m_parentSize_st.height;
 
   createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, "panel_st",
-              true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st);
+              true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st, m_tableScheme_st);
   m_mainPanel_st.update();
 };
 
 function onPressUp_st(evt) {
   setHrefMark(window, "sg");
 
-  var newColumnIndex = computeColumnIndex(evt.stageX, m_issues_st, H_OFFSET, m_columnWidth_st.value);
+  var newVersionIndex = computeVersionIndex(evt.stageY, m_tableScheme_st);
+  var newColumnIndex = computeColumnIndex(evt.stageX, m_tableScheme_st);
   var currStatus = getStatusByColumn_st(m_selectedCard_st.sourceIndex.i);
   var newStatus = getStatusByColumn_st(newColumnIndex);
 
@@ -70,14 +72,22 @@ function onPressUp_st(evt) {
     var status = getStatusByColumn_st(newColumnIndex);
     m_selectedCard_st.value.status = status;
     m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
+    m_selectedCard_st.value.version = m_versions[newVersionIndex];
 
     var handler_id = m_selectedCard_st.value.handler_id;
     var bug_id = m_selectedCard_st.value.id;
-    m_bugsToSend_st.push({ handler_id : handler_id, bug_id : bug_id, status : status });
+    var version = m_selectedCard_st.value.version;
+    update_issue(bug_id, handler_id, version, status);
 
-    if (m_bugsToSend_st.length == 1) {
-      sendRequest_st(0);
-    }
+    setHrefMark(window, "sg");
+  } else if(m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
+    m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
+    m_selectedCard_st.value.version = m_versions[newVersionIndex];
+
+    var handler_id = m_selectedCard_st.value.handler_id;
+    var bug_id = m_selectedCard_st.value.id;
+    var version = m_selectedCard_st.value.version;
+    update_issue(bug_id, handler_id, version);
 
     setHrefMark(window, "sg");
   }
@@ -87,51 +97,54 @@ function onPressUp_st(evt) {
   fullRedraw();
 };
 
-function sendRequest_st(bugIndex) {
-  var requestToken = new XMLHttpRequest();
-  var address = getPathToMantisFile(window, "bug_change_status_page.php");
-  requestToken.open("POST", address, true);
-  requestToken.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-  function tokenOnReadyStateChange() {
-    if (requestToken.readyState == 4 && requestToken.status == 200) {
-      var page_text = requestToken.responseText;
-      var security_token = getValueByName_st(page_text, "bug_update_token");
-
-      var requestUpdate = new XMLHttpRequest();
-      var address = getPathToMantisFile(window, "bug_update.php");
-      requestUpdate.open("POST", address, true);
-      requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-      function reqUpdateOnReadyStateChanged() {
-        if (requestUpdate.readyState == 4 && requestUpdate.status == 200) {
-          if(bugIndex < m_bugsToSend_st.length - 1) {
-            sendRequest_st(bugIndex + 1);
-          } else if(m_bugsToSend_st.length > 0) {
-            m_bugsToSend_st.length = 0;
-          }
-        }
-      };
-      requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
-
-      var bug_update_token = security_token;
-      var handler_id = m_bugsToSend_st[bugIndex].handler_id;
-      var bug_id = m_bugsToSend_st[bugIndex].bug_id;
-      var status = m_bugsToSend_st[bugIndex].status;
-      var parameters = "bug_update_token=" + bug_update_token
-      + "&handler_id=" + handler_id + "&bug_id=" + bug_id
-      + "&status=" + status;
-      requestUpdate.send(parameters);
-    }
-  };
-  requestToken.onreadystatechange = tokenOnReadyStateChange;
-
-  var bug_id = m_bugsToSend_st[bugIndex].bug_id;
-  var status = m_bugsToSend_st[bugIndex].status;
-  var parameters = "id=" + bug_id + "&new_status=" + status;
-  requestToken.send(parameters);
-};
-
+// <<<<<<< HEAD:Taskodrome/scripts/status_grid.js
+// function sendRequest_st(bugIndex) {
+//   var requestToken = new XMLHttpRequest();
+//   var address = getPathToMantisFile(window, "bug_change_status_page.php");
+//   requestToken.open("POST", address, true);
+//   requestToken.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 
+//   function tokenOnReadyStateChange() {
+//     if (requestToken.readyState == 4 && requestToken.status == 200) {
+//       var page_text = requestToken.responseText;
+//       var security_token = getValueByName_st(page_text, "bug_update_token");
+// 
+//       var requestUpdate = new XMLHttpRequest();
+//       var address = getPathToMantisFile(window, "bug_update.php");
+//       requestUpdate.open("POST", address, true);
+//       requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 
+//       function reqUpdateOnReadyStateChanged() {
+//         if (requestUpdate.readyState == 4 && requestUpdate.status == 200) {
+//           if(bugIndex < m_bugsToSend_st.length - 1) {
+//             sendRequest_st(bugIndex + 1);
+//           } else if(m_bugsToSend_st.length > 0) {
+//             m_bugsToSend_st.length = 0;
+//           }
+//         }
+//       };
+//       requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
+// 
+//       var bug_update_token = security_token;
+//       var handler_id = m_bugsToSend_st[bugIndex].handler_id;
+//       var bug_id = m_bugsToSend_st[bugIndex].bug_id;
+//       var status = m_bugsToSend_st[bugIndex].status;
+//       var parameters = "bug_update_token=" + bug_update_token
+//       + "&handler_id=" + handler_id + "&bug_id=" + bug_id
+//       + "&status=" + status;
+//       requestUpdate.send(parameters);
+//     }
+//   };
+//   requestToken.onreadystatechange = tokenOnReadyStateChange;
+// 
+//   var bug_id = m_bugsToSend_st[bugIndex].bug_id;
+//   var status = m_bugsToSend_st[bugIndex].status;
+//   var parameters = "id=" + bug_id + "&new_status=" + status;
+//   requestToken.send(parameters);
+// };
+// 
+// =======
+// >>>>>>> 6bd53bc... 106 done:Taskodrome/files/scripts/status_grid.js
 function createColumnStatusMap() {
   var statusCodes = getStatusCodes_st();
 
@@ -166,13 +179,6 @@ function sortIssues_st() {
     var posIndex = m_issues_st[columnIndex].length;
     m_issues_st[columnIndex][posIndex] = m_issues_raw[i];
   }
-};
-
-function getValueByName_st(page_text, name) {
-  var prefix = 'name="' + name + '" value="';
-  var src_string = page_text.match(new RegExp('.*' + prefix + '.*'))[0];
-  var start_index = src_string.indexOf(prefix) + prefix.length;
-  return src_string.substr(start_index, src_string.indexOf("\"", start_index + 1) - start_index);
 };
 
 function getStatusByColumn_st(columnIndex) {

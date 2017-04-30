@@ -5,6 +5,7 @@
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/easeljs-0.8.2.min.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_common_utils.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_draw_utils.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/issue_updater.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/devs_grid.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/status_grid.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/on_load_opening.js\"></script>\n";
@@ -59,11 +60,12 @@
       $issues_array_html .= 'handler_id="'.$handler_id.'" ';
       $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
-      $issues_array_html .= 'updateTime="'.$t_row->last_updated.'"';
-      $issues_array_html .= 'description="'.$t_row->description.'"';
-      $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'"';
-      $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'"';
-      $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'"';
+      $issues_array_html .= 'updateTime="'.$t_row->last_updated.'" ';
+      $issues_array_html .= 'description="'.$t_row->description.'" ';
+      $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'" ';
+      $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'" ';
+      $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
+      $issues_array_html .= 'version="'.$t_row->version.'" ';
       $issues_array_html .= '></p>';
 
       $t_row_statuses = get_status_option_list(access_get_project_level( $t_row->project_id ), $t_row->status, true, false, $t_row->project_id);
@@ -120,6 +122,14 @@
     foreach( plugin_config_get("status_board_order") as $t_value ) {
       $status_order .= $t_value.';';
     }
+
+    $t_versions = version_get_all_rows( helper_get_current_project() );
+    $t_versions_cnt = count( $t_versions );
+    for( $k=0; $k < $t_versions_cnt; $k++ ) {
+      $ver_id = $t_versions[$k]['id'];
+      print '<p class="version" value="'.version_get_field($ver_id, "version").'"></p>';
+    }
+
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
