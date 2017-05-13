@@ -208,9 +208,10 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   }
 
   var summary = createCardSummary(issue.summary, position.width, markWidth, number);
+  var summaryHeight = summary.getBounds() ? summary.getBounds().height : 0;
 
-  if(summary.y + summary.getBounds().height + 10 > position.height) {
-    var add = summary.y + summary.getBounds().height + 10 - position.height;
+  if(summary.y + summaryHeight + 10 > position.height) {
+    var add = summary.y + summaryHeight + 10 - position.height;
     position.height += add;
 
     back = createCardBack(position.width, position.height);
@@ -514,8 +515,9 @@ function createCardSummary(issueText, width, markWidth, number) {
   summary.textAlign = "center";
   summary.lineWidth = width - 4;
   summary.y = 2 * number.getBounds().height + markWidth;
+  var summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
 
-  while (--sz != 7 && summary.getBounds().width > summary.lineWidth) {
+  while (--sz != 7 && summaryWidth > summary.lineWidth) {
     summary.font = sz + "px " + FONT_FAMILY;
   }
 
