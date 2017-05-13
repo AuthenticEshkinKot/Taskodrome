@@ -62,13 +62,17 @@
 
       $issues_array_html .= '<p class="issue_data" ';
       $issues_array_html .= 'id="'.$t_row->id.'" ';
-      $issues_array_html .= 'summary="'.strip_tags($t_row->summary).'" ';
+      $summary = strip_tags($t_row->summary);
+      $summary = str_replace('"', '&#34;', $summary);
+      $issues_array_html .= 'summary="'.$summary.'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
       $issues_array_html .= 'handler_id="'.$handler_id.'" ';
       $issues_array_html .= 'topColor="#0000FF" ';
       $issues_array_html .= 'bottomColor="#FF0000" ';
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'" ';
-      $issues_array_html .= 'description="'.strip_tags($t_row->description).'" ';
+      $description = strip_tags($t_row->description);
+      $description = str_replace('"', '&#34;', $description);
+      $issues_array_html .= 'description="'.$description.'" ';
       $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'" ';
       $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'" ';
       $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
