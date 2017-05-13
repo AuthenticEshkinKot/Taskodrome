@@ -97,54 +97,6 @@ function onPressUp_st(evt) {
   fullRedraw();
 };
 
-// <<<<<<< HEAD:Taskodrome/scripts/status_grid.js
-// function sendRequest_st(bugIndex) {
-//   var requestToken = new XMLHttpRequest();
-//   var address = getPathToMantisFile(window, "bug_change_status_page.php");
-//   requestToken.open("POST", address, true);
-//   requestToken.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-// 
-//   function tokenOnReadyStateChange() {
-//     if (requestToken.readyState == 4 && requestToken.status == 200) {
-//       var page_text = requestToken.responseText;
-//       var security_token = getValueByName_st(page_text, "bug_update_token");
-// 
-//       var requestUpdate = new XMLHttpRequest();
-//       var address = getPathToMantisFile(window, "bug_update.php");
-//       requestUpdate.open("POST", address, true);
-//       requestUpdate.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-// 
-//       function reqUpdateOnReadyStateChanged() {
-//         if (requestUpdate.readyState == 4 && requestUpdate.status == 200) {
-//           if(bugIndex < m_bugsToSend_st.length - 1) {
-//             sendRequest_st(bugIndex + 1);
-//           } else if(m_bugsToSend_st.length > 0) {
-//             m_bugsToSend_st.length = 0;
-//           }
-//         }
-//       };
-//       requestUpdate.onreadystatechange = reqUpdateOnReadyStateChanged;
-// 
-//       var bug_update_token = security_token;
-//       var handler_id = m_bugsToSend_st[bugIndex].handler_id;
-//       var bug_id = m_bugsToSend_st[bugIndex].bug_id;
-//       var status = m_bugsToSend_st[bugIndex].status;
-//       var parameters = "bug_update_token=" + bug_update_token
-//       + "&handler_id=" + handler_id + "&bug_id=" + bug_id
-//       + "&status=" + status;
-//       requestUpdate.send(parameters);
-//     }
-//   };
-//   requestToken.onreadystatechange = tokenOnReadyStateChange;
-// 
-//   var bug_id = m_bugsToSend_st[bugIndex].bug_id;
-//   var status = m_bugsToSend_st[bugIndex].status;
-//   var parameters = "id=" + bug_id + "&new_status=" + status;
-//   requestToken.send(parameters);
-// };
-// 
-// =======
-// >>>>>>> 6bd53bc... 106 done:Taskodrome/files/scripts/status_grid.js
 function createColumnStatusMap() {
   var statusCodes = getStatusCodes_st();
 
