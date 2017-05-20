@@ -54,12 +54,23 @@ div.grid {
 
 #radio_dg:checked ~ #label_dg,
 #radio_sg:checked ~ #label_sg {
-  color: purple;
+  background: #4389C5;
+  color: white;
 }
 
 .radio_label {
-  text-decoration: underline;
-  color: blue;
+  color: #4389C5;
+  font-weight: bolder;
+  background: white;
+  border: solid thick #4389C5;
+  border-radius: 0.3em;
+  border-width: 1px;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  padding-bottom: 0.25em;
+  padding-top: 0.25em;
+  margin: 0.12em;
+  margin-bottom: 1em;
 }
 
 .radio_label:hover {
