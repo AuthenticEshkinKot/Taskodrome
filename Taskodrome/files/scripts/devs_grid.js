@@ -19,7 +19,8 @@ var m_nameToHandlerId = [];
 var m_popupCard = null;
 
 var m_tableScheme = { columnBorders : [],
-                      versionBorders : [] };
+                      versionBorders : [],
+                      headerHeight : 0 };
 
 function init() {
   m_mainPanel = new createjs.Stage("panel");
@@ -58,7 +59,7 @@ function onPressUp(evt) {
     newColumnIndex = m_selectedCard.sourceIndex.i;
   }
 
-  if(m_selectedCard.sourceIndex.i != newColumnIndex) {
+  if(newVersionIndex != -1 && m_selectedCard.sourceIndex.i != newColumnIndex) {
     m_issues[m_selectedCard.sourceIndex.i].splice(m_selectedCard.sourceIndex.k, 1);
     m_issues[newColumnIndex].splice(m_issues[newColumnIndex].length, 0, m_selectedCard.value);
 
@@ -77,7 +78,7 @@ function onPressUp(evt) {
     update_issue(bug_id, handler_id, version);
 
     setHrefMark(window, "dg");
-  } else if(m_selectedCard.value.version != m_versions[newVersionIndex]) {
+  } else if(newVersionIndex != -1 && m_selectedCard.value.version != m_versions[newVersionIndex]) {
     m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard.value.version = m_versions[newVersionIndex];
 
