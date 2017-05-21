@@ -18,7 +18,8 @@ var m_statusByColumns = [];
 var m_columnByStatus = [];
 
 var m_tableScheme_st = { columnBorders : [],
-                         versionBorders : [] };
+                         versionBorders : [],
+                         headerHeight : 0 };
 
 function statusInit() {
   m_mainPanel_st = new createjs.Stage("panel_st");
@@ -65,7 +66,7 @@ function onPressUp_st(evt) {
     newColumnIndex = m_selectedCard_st.sourceIndex.i;
   }
 
-  if(m_selectedCard_st.sourceIndex.i != newColumnIndex) {
+  if(newVersionIndex != -1 && m_selectedCard_st.sourceIndex.i != newColumnIndex) {
     m_issues_st[m_selectedCard_st.sourceIndex.i].splice(m_selectedCard_st.sourceIndex.k, 1);
     m_issues_st[newColumnIndex].splice(m_issues_st[newColumnIndex].length, 0, m_selectedCard_st.value);
 
@@ -80,7 +81,7 @@ function onPressUp_st(evt) {
     update_issue(bug_id, handler_id, version, status);
 
     setHrefMark(window, "sg");
-  } else if(m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
+  } else if(newVersionIndex != -1 && m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
     m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard_st.value.version = m_versions[newVersionIndex];
 
