@@ -1,13 +1,17 @@
 var H_OFFSET = 20;
-var V_OFFSET = 20;
+var V_OFFSET = 10;
 
 var CARD_H_OFFSET = 15;
 var CARD_V_OFFSET = 10;
 
-var FONT_COLOR = "#393939"
 var FONT_FAMILY = "Open Sans"
+var FONT_COLOR = "#393939"
 var FONT_SIZE = "12px"
 var FONT = FONT_SIZE + " " + FONT_FAMILY;
+
+var HEADER_FONT_COLOR = "#FFFFFF";
+var HEADER_FONT_SIZE = "16px";
+var HEADER_FONT = HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
 var MIN_COL_WIDTH = 140;
 
@@ -59,7 +63,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
     return null;
   }
 
-  var columns = createColumns(issues, columnHeaders, colSize, tableSchemeOut);
+  var columns = createColumns(issues, columnHeaders, colSize, parentSize, tableSchemeOut);
   var oldColHeight = colSize.height;
   var cardCounts = [];
   var cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSize, tableSchemeOut, cardCounts);
@@ -68,7 +72,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
       var add = colSize.height - oldColHeight;
       document.getElementById(panelName).height += add;
 
-      columns = createColumns(issues, columnHeaders, colSize, tableSchemeOut);
+      columns = createColumns(issues, columnHeaders, colSize, parentSize, tableSchemeOut);
 
       colSize.height += add;
       cardCounts.length = 0;
@@ -131,7 +135,7 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
   var lower_edge_curr = 0;
 
   for(var v_i = 0, l = m_versions.length; v_i != l; ++v_i) {
-    var start_y = V_OFFSET + textHeight + CARD_V_OFFSET + lower_edge;
+    var start_y = tableSchemeOut.headerHeight + CARD_V_OFFSET + lower_edge;
     tableSchemeOut.versionBorders.push(start_y);
     cardCountsOut[v_i] = [];
 
@@ -398,10 +402,16 @@ function createHeaderTextPair(header, text, lineHeigth, maxLineWidth) {
   return res;
 };
 
-function createColumns(issues, columnNames, colSize, tableSchemeOut) {
+function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
   var columns = new createjs.Container();
   var number = columnNames.length;
   tableSchemeOut.columnBorders = [];
+
+  var headerHeight = 0;
+  var headerBack = new createjs.Shape();
+  headerBack.graphics.beginStroke("#4389C5");
+  headerBack.graphics.beginFill("#4389C5");
+  columns.addChild(headerBack);
 
   for(var i = 0; i <= number; ++i) {
     var startX = Math.round(H_OFFSET + i * colSize.width);
@@ -417,13 +427,20 @@ function createColumns(issues, columnNames, colSize, tableSchemeOut) {
     if (columnNameText && columnNameText != " " && i != number) {
       columnNameText += " (" + issues[i].length + ")";
     }
-    var text = new createjs.Text(columnNameText, FONT, FONT_COLOR);
-    text.x = startX + colSize.width / 2;
+    var text = new createjs.Text(columnNameText, HEADER_FONT, HEADER_FONT_COLOR);
+    text.x = startX + 20;
     text.y = V_OFFSET;
-    text.textAlign = "center";
+    text.textAlign = "left";
     text.lineWidth = colSize.width;
     columns.addChild(text);
+
+    if (headerHeight == 0 && text.getBounds())
+      headerHeight = text.getBounds().height;
   }
+
+  headerHeight += 2 * V_OFFSET;
+  headerBack.graphics.rect(0, 0, backSize.width, headerHeight);
+  tableSchemeOut.headerHeight = headerHeight;
 
   columns.tickEnabled = false;
 
