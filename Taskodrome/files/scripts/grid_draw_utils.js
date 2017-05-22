@@ -464,7 +464,7 @@ function createCardBack(width, height) {
   back.graphics.setStrokeStyle(1);
   back.graphics.beginStroke("#bfd5e1");
   back.graphics.beginFill("#F0F5FF");
-  back.graphics.drawRoundRect(0, 0, width, height, 3, 3 ,3, 3);
+  back.graphics.drawRect(0, 0, width, height);
   return back;
 };
 
