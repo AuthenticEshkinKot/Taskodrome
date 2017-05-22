@@ -1,4 +1,4 @@
-var H_OFFSET = 20;
+var H_OFFSET = 0;
 var V_OFFSET = 10;
 
 var CARD_H_OFFSET = 15;
@@ -17,7 +17,7 @@ var MIN_COL_WIDTH = 140;
 
 var POPUP_PAUSE = 600;
 
-var COLUMN_DELIMITER_WIDTH = 2;
+var COLUMN_DELIMITER_WIDTH = 1;
 var VERSION_DELIMITER_WIDTH = 4;
 
 var m_update = false;
@@ -37,7 +37,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
     width : 0,
     height : 0
   }
-  colSize.width = (parentSize.width - 2 * H_OFFSET) / colNumber;
+  colSize.width = Math.round((parentSize.width - 2 * H_OFFSET) / colNumber);
   if(colSize.width < MIN_COL_WIDTH) {
     colSize.width = MIN_COL_WIDTH;
 
@@ -412,16 +412,11 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
   headerBack.graphics.beginStroke("#4389C5");
   headerBack.graphics.beginFill("#4389C5");
   columns.addChild(headerBack);
+  var headerDelimOffset = 5;
 
   for(var i = 0; i <= number; ++i) {
     var startX = Math.round(H_OFFSET + i * colSize.width);
     tableSchemeOut.columnBorders.push(startX);
-    var line = new createjs.Shape();
-    line.graphics.setStrokeStyle(COLUMN_DELIMITER_WIDTH);
-    line.graphics.beginStroke(createjs.Graphics.getRGB(0,0,0));
-    line.graphics.moveTo(startX, V_OFFSET);
-    line.graphics.lineTo(startX, colSize.height + V_OFFSET);
-    columns.addChild(line);
 
     var columnNameText = columnNames[i];
     if (columnNameText && columnNameText != " " && i != number) {
@@ -432,13 +427,30 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
     text.y = V_OFFSET;
     text.textAlign = "left";
     text.lineWidth = colSize.width;
-    columns.addChild(text);
 
     if (headerHeight == 0 && text.getBounds())
-      headerHeight = text.getBounds().height;
+      headerHeight = text.getBounds().height + 2 * V_OFFSET;
+
+    if (!(H_OFFSET == 0 && (i == 0 || i == number))) {
+      var headerDelim = new createjs.Shape();
+      headerDelim.graphics.setStrokeStyle(COLUMN_DELIMITER_WIDTH);
+      headerDelim.graphics.beginStroke("#FFFFFF");
+      headerDelim.graphics.moveTo(startX, headerDelimOffset);
+      headerDelim.graphics.lineTo(startX, headerHeight - headerDelimOffset);
+
+      var columnDelim = new createjs.Shape();
+      columnDelim.graphics.setStrokeStyle(COLUMN_DELIMITER_WIDTH);
+      columnDelim.graphics.beginStroke("#CCCCCC");
+      columnDelim.graphics.moveTo(startX, headerHeight);
+      columnDelim.graphics.lineTo(startX, colSize.height);
+
+      columns.addChild(columnDelim);
+      columns.addChild(headerDelim);
+    }
+
+    columns.addChild(text);
   }
 
-  headerHeight += 2 * V_OFFSET;
   headerBack.graphics.rect(0, 0, backSize.width, headerHeight);
   tableSchemeOut.headerHeight = headerHeight;
 
