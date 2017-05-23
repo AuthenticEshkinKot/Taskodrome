@@ -1,0 +1,25 @@
+<?php
+
+# Copyright (c) 2015 Maxim Kuzmin
+# Licensed under the Apache license
+
+$s_plugin_Taskodrome_ = '';
+$s_plugin_Taskodrome_title = 'Taskodrome';
+$s_plugin_Taskodrome_description = 'Tableau scrum intéractif';
+
+$s_plugin_Taskodrome_board = 'Taskodrome';
+
+$s_plugin_Taskodrome_assignment_board = 'Tableau d\'assignation';
+$s_plugin_Taskodrome_status_board = 'Tableau des status';
+
+$s_plugin_Taskodrome_config = 'Configuration';
+$s_plugin_Taskodrome_config_title = 'Configuration du plugin Taskodrome';
+
+$s_plugin_Taskodrome_default_value = 'Valeur par défaut :<br>%s<br>';
+
+$s_plugin_Taskodrome_status_board_order_label = 'Ordre du tableau des statuts';
+
+$s_plugin_Taskodrome_cooldown_period_label = 'Période de calme';
+$s_plugin_Taskodrome_cooldown_period_hint = 'La période de calme est une somme de ces valeurs (par exemple une période de 1 jour et 7 heures est égale à 31 heures)';
+$s_plugin_Taskodrome_cooldown_period_days = 'Jours';
+$s_plugin_Taskodrome_cooldown_period_hours = 'Heures';
