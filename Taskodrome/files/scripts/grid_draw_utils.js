@@ -186,10 +186,10 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
       cardDescArray.push(cardDescs);
     }
 
-    if (lower_edge == lower_edge_curr)
+    if (lower_edge_curr - lower_edge < 1.5 * cardSize.height)
     {
-      lower_edge_curr += cardSize.height;
-      colSizeOut.height += cardSize.height;
+      lower_edge_curr = lower_edge + 1.5 * cardSize.height;
+      colSizeOut.height = lower_edge + 1.5 * cardSize.height;
     }
 
     lower_edge = lower_edge_curr;
@@ -208,7 +208,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, position.width, cardHeaderHeightOut);
 //   console.log(issue.priorityCode + " " + issue.priority);
 
-  var y = cardHeaderHeightOut.value * 1.75;
+  var y = cardHeaderHeightOut.value * 1.5;
 
   var assignee = null;
   if (isStatusGrid && issue.handler_id != 0) {
@@ -437,8 +437,9 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
     text.textAlign = "left";
     text.lineWidth = colSize.width;
 
-    if (headerHeight == 0 && text.getBounds())
+    if (headerHeight == 0 && text.getBounds()) {
       headerHeight = text.getBounds().height + 2 * V_OFFSET;
+    }
 
     if (!(H_OFFSET == 0 && (i == 0 || i == number))) {
       var headerDelim = new createjs.Shape();
