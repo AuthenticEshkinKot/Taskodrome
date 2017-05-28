@@ -11,8 +11,6 @@ function getIssuesRaw() {
       summary : el.getAttribute("summary"),
       status : el.getAttribute("status"),
       handler_id : el.getAttribute("handler_id"),
-      topColor: el.getAttribute("topColor"),
-      bottomColor: el.getAttribute("bottomColor"),
       updateTime: el.getAttribute("updateTime"),
       description: el.getAttribute("description"),
       severity: el.getAttribute("severity"),

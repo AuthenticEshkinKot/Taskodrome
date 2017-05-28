@@ -56,15 +56,16 @@ div.grid {
 
 #radio_dg:checked ~ #label_dg,
 #radio_sg:checked ~ #label_sg {
-  background: #4389C5;
+  background: #428AC8;
   color: white;
 }
 
 .radio_label {
-  color: #4389C5;
+  color: #428AC8;
+  font-size: 10pt;
   font-weight: bolder;
   background: white;
-  border: solid thick #4389C5;
+  border: solid thick #428AC8;
   border-radius: 0.3em;
   border-width: 1px;
   padding-left: 0.6em;
