@@ -67,8 +67,6 @@
       $issues_array_html .= 'summary="'.$summary.'" ';
       $issues_array_html .= 'status="'.$t_row->status.'" ';
       $issues_array_html .= 'handler_id="'.$handler_id.'" ';
-      $issues_array_html .= 'topColor="#0000FF" ';
-      $issues_array_html .= 'bottomColor="#FF0000" ';
       $issues_array_html .= 'updateTime="'.$t_row->last_updated.'" ';
       $description = strip_tags($t_row->description);
       $description = str_replace('"', '&#34;', $description);

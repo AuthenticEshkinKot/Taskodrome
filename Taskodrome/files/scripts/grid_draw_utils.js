@@ -4,14 +4,19 @@ var V_OFFSET = 10;
 var CARD_H_OFFSET = 15;
 var CARD_V_OFFSET = 10;
 
-var FONT_FAMILY = "Open Sans"
-var FONT_COLOR = "#393939"
-var FONT_SIZE = "12px"
+var FONT_FAMILY = "Open Sans";
+var FONT_COLOR = "#393939";
+var FONT_SIZE_NUM = 10;
+var FONT_SIZE = FONT_SIZE_NUM + "pt";
 var FONT = FONT_SIZE + " " + FONT_FAMILY;
 
-var HEADER_FONT_COLOR = "#FFFFFF";
-var HEADER_FONT_SIZE = "16px";
-var HEADER_FONT = HEADER_FONT_SIZE + " " + FONT_FAMILY;
+var BLUE_COLOR = "#428AC8";
+
+var CARD_TEXT_H_OFFSET = 12;
+
+var COL_HEADER_FONT_COLOR = "#FFFFFF";
+var COL_HEADER_FONT_SIZE = "14pt";
+var COL_HEADER_FONT = COL_HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
 var MIN_COL_WIDTH = 140;
 
@@ -198,29 +203,34 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
 
   var back = createCardBack(position.width, position.height);
 
-  var markWidth = 6;
+  var cardHeaderHeightOut = { value : -1 };
+  var cardHeaderMarkColor = getColorByStatus(issue.status);
+  var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, position.width, cardHeaderHeightOut);
+//   console.log(issue.priorityCode + " " + issue.priority);
 
-  issue.topColor = getColorByStatus(issue.status);
-  issue.bottomColor = getTemperatureColor(issue.updateTime);
+  var y = cardHeaderHeightOut.value * 1.75;
 
-  var topMark = createCardTopMark(issue.topColor, position.width, markWidth);
-  var bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
-  var number = createCardNumber(issue.id, position.width, markWidth);
   var assignee = null;
-  if (isStatusGrid) {
-    assignee = createCardAssignee(issue.handler_id, position.width, markWidth);
+  if (isStatusGrid && issue.handler_id != 0) {
+    assignee = createCardAssignee(issue.handler_id);
+    assignee.y = y;
+    y += assignee.getBounds().height * 1.5;
   }
 
-  var summary = createCardSummary(issue.summary, position.width, markWidth, number);
+  var summary = createCardSummary(issue.summary, position.width);
+  summary.y = y;
   var summaryHeight = summary.getBounds() ? summary.getBounds().height : 0;
+  y += summaryHeight + 10;
 
-  if(summary.y + summaryHeight + 10 > position.height) {
-    var add = summary.y + summaryHeight + 10 - position.height;
+  var updateTime = createCardUpdateTime(issue.updateTime);
+  var updateTimeHeight = updateTime.getBounds().height;
+  updateTime.y = y;
+
+  if(summary.y + summaryHeight + updateTimeHeight + 20 > position.height) {
+    var add = summary.y + summaryHeight + updateTimeHeight + 20 - position.height;
     position.height += add;
 
     back = createCardBack(position.width, position.height);
-    topMark = createCardTopMark(issue.topColor, position.width, markWidth);
-    bottomMark = createCardBottomMark(issue.bottomColor, position.width, position.height, markWidth);
   }
 
   function cardOnMousedown(evt) {
@@ -292,13 +302,12 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   card.y = position.y;
 
   card.addChild(back);
-  card.addChild(topMark);
-  card.addChild(bottomMark);
-  card.addChild(number);
-  if (isStatusGrid) {
+  card.addChild(cardHeader);
+  if (assignee) {
     card.addChild(assignee);
   }
   card.addChild(summary);
+  card.addChild(updateTime);
 
   card.tickEnabled = false;
 
@@ -409,8 +418,8 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
 
   var headerHeight = 0;
   var headerBack = new createjs.Shape();
-  headerBack.graphics.beginStroke("#4389C5");
-  headerBack.graphics.beginFill("#4389C5");
+  headerBack.graphics.beginStroke(BLUE_COLOR);
+  headerBack.graphics.beginFill(BLUE_COLOR);
   columns.addChild(headerBack);
   var headerDelimOffset = 5;
 
@@ -422,7 +431,7 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
     if (columnNameText && columnNameText != " " && i != number) {
       columnNameText += " (" + issues[i].length + ")";
     }
-    var text = new createjs.Text(columnNameText, HEADER_FONT, HEADER_FONT_COLOR);
+    var text = new createjs.Text(columnNameText, COL_HEADER_FONT, COL_HEADER_FONT_COLOR);
     text.x = startX + 20;
     text.y = V_OFFSET;
     text.textAlign = "left";
@@ -440,7 +449,7 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
 
       var columnDelim = new createjs.Shape();
       columnDelim.graphics.setStrokeStyle(COLUMN_DELIMITER_WIDTH);
-      columnDelim.graphics.beginStroke("#CCCCCC");
+      columnDelim.graphics.beginStroke("#d2d1d3");
       columnDelim.graphics.moveTo(startX, headerHeight);
       columnDelim.graphics.lineTo(startX, colSize.height);
 
@@ -462,41 +471,49 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
 function createCardBack(width, height) {
   var back = new createjs.Shape();
   back.graphics.setStrokeStyle(1);
-  back.graphics.beginStroke("#bfd5e1");
-  back.graphics.beginFill("#F0F5FF");
+  back.graphics.beginStroke("#c0bfc1");
+  back.graphics.beginFill("#FFFFFF");
   back.graphics.drawRect(0, 0, width, height);
   return back;
 };
 
-function createCardTopMark(markColor, cardWidth, markWidth) {
-  var mark = new createjs.Shape();
-  mark.graphics.setStrokeStyle(1);
-  mark.graphics.beginStroke(markColor);
-  mark.graphics.beginFill(markColor);
-  mark.graphics.drawRect(1, 1, cardWidth - 2, markWidth);
-  return mark;
-};
-
-function createCardBottomMark(markColor, cardWidth, cardHeight, markWidth) {
-  var mark = new createjs.Shape();
-  mark.graphics.setStrokeStyle(1);
-  mark.graphics.beginStroke(markColor);
-  mark.graphics.beginFill(markColor);
-  mark.graphics.drawRect(1, cardHeight - 1 - markWidth, cardWidth - 2, markWidth);
-  return mark;
-};
-
-function createCardNumber(issueNumber, width, markWidth) {
+function createCardHeader(id, markColor, cardWidth, heightOut) {
   var cont = new createjs.Container();
-  var numberColor = "#4C8FBD";
-  var number = new createjs.Text(issueNumber, FONT, numberColor);
-  number.x = width - number.getBounds().width - 5;
-  number.y += markWidth + 3;
+
+  var number = createCardNumber(id, cardWidth);
+  var height = number.getBounds().height * 2;
+  heightOut.value = height;
+  var numberWidth = number.getBounds().width;
+  number.y = height / 4;
+
+  var back = new createjs.Shape();
+  back.graphics.setStrokeStyle(1);
+  back.graphics.beginStroke("#c0bfc1");
+  back.graphics.beginFill("#F9F9F9");
+  back.graphics.drawRect(0, 0, cardWidth, height);
+
+  var statusMark = new createjs.Shape();
+  statusMark.graphics.setStrokeStyle(1);
+  statusMark.graphics.beginStroke("#c0bfc1");
+  statusMark.graphics.beginFill(markColor);
+  var statusMarkHeight = Math.round(height / 2);
+  statusMark.graphics.drawRoundRect(cardWidth - height, 5, statusMarkHeight, statusMarkHeight, 1);
+
+  cont.addChild(back);
+  cont.addChild(number);
+  cont.addChild(statusMark);
+  return cont;
+};
+
+function createCardNumber(issueNumber, width) {
+  var cont = new createjs.Container();
+  var number = new createjs.Text(issueNumber, FONT, BLUE_COLOR);
+  var numberBounds = number.getBounds();
 
   var underline = new createjs.Shape();
-  underline.graphics.beginStroke(numberColor).setStrokeStyle(1)
-            .moveTo(number.x, number.y + number.getMeasuredHeight() + 1)
-            .lineTo(number.x + number.getMeasuredWidth(), number.y + number.getMeasuredHeight() + 1);
+  underline.graphics.beginStroke(BLUE_COLOR).setStrokeStyle(1)
+            .moveTo(number.x, number.y + numberBounds.height)
+            .lineTo(number.x + numberBounds.width, number.y + numberBounds.height);
 
   var hit = new createjs.Shape();
   var ext = 5;
@@ -521,6 +538,7 @@ function createCardNumber(issueNumber, width, markWidth) {
 
   cont.addChild(number);
   cont.addChild(underline);
+  cont.x = CARD_TEXT_H_OFFSET;
 
   return cont;
 };
@@ -530,27 +548,33 @@ function onIssueIdPressup(event, issue) {
   window.open(address);
 };
 
-function createCardAssignee(issueHandlerId, width, markWidth) {
-  var assignee = new createjs.Text(m_nameToHandlerId[issueHandlerId], FONT, FONT_COLOR);
-  assignee.x = 5;
-  assignee.y += markWidth + 3;
+function createCardAssignee(issueHandlerId) {
+  var assignee = new createjs.Text(m_nameToHandlerId[issueHandlerId], FONT, BLUE_COLOR);
+  assignee.x = CARD_TEXT_H_OFFSET;
   return assignee;
 };
 
-function createCardSummary(issueText, width, markWidth, number) {
-  var sz = 12;
-  var summary = new createjs.Text(issueText, sz + "px " + FONT_FAMILY, FONT_COLOR);
-  summary.x = width / 2;
-  summary.textAlign = "center";
-  summary.lineWidth = width - 4;
-  summary.y = 2 * number.getBounds().height + markWidth;
+function createCardSummary(issueText, width) {
+  var sz = FONT_SIZE_NUM;
+  var summary = new createjs.Text(issueText, sz + "pt " + FONT_FAMILY, FONT_COLOR);
+  summary.x = CARD_TEXT_H_OFFSET;
+  summary.textAlign = "left";
+  summary.lineWidth = width - 2 * CARD_TEXT_H_OFFSET;
   var summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
 
-  while (--sz != 7 && summaryWidth > summary.lineWidth) {
-    summary.font = sz + "px " + FONT_FAMILY;
+  while (--sz != 6 && summaryWidth > summary.lineWidth) {
+    summary.font = sz + "pt " + FONT_FAMILY;
   }
 
   return summary;
+};
+
+function createCardUpdateTime(updateTime) {
+  var date = new Date(updateTime * 1000);
+  var color = getTemperatureColor(updateTime);
+  var time = new createjs.Text(date.toLocaleString(), FONT, color);
+  time.x = CARD_TEXT_H_OFFSET;
+  return time;
 };
 
 function tick(event) {
