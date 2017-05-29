@@ -205,8 +205,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
 
   var cardHeaderHeightOut = { value : -1 };
   var cardHeaderMarkColor = getColorByStatus(issue.status);
-  var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, position.width, cardHeaderHeightOut);
-//   console.log(issue.priorityCode + " " + issue.priority);
+  var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, position.width, issue.priorityCode, cardHeaderHeightOut);
 
   var y = cardHeaderHeightOut.value * 1.5;
 
@@ -478,7 +477,7 @@ function createCardBack(width, height) {
   return back;
 };
 
-function createCardHeader(id, markColor, cardWidth, heightOut) {
+function createCardHeader(id, markColor, cardWidth, priorityCode, heightOut) {
   var cont = new createjs.Container();
 
   var number = createCardNumber(id, cardWidth);
@@ -498,11 +497,16 @@ function createCardHeader(id, markColor, cardWidth, heightOut) {
   statusMark.graphics.beginStroke("#c0bfc1");
   statusMark.graphics.beginFill(markColor);
   var statusMarkHeight = Math.round(height / 2);
-  statusMark.graphics.drawRoundRect(cardWidth - height, 5, statusMarkHeight, statusMarkHeight, 1);
+  statusMark.graphics.drawRoundRect(cardWidth - height, (height - statusMarkHeight) / 2, statusMarkHeight, statusMarkHeight, 1);
+
+  var priorityMark = createPriorityMark(priorityCode, number.x + numberWidth, height);
 
   cont.addChild(back);
   cont.addChild(number);
   cont.addChild(statusMark);
+  if (priorityMark) {
+    cont.addChild(priorityMark);
+  }
   return cont;
 };
 
@@ -542,6 +546,29 @@ function createCardNumber(issueNumber, width) {
   cont.x = CARD_TEXT_H_OFFSET;
 
   return cont;
+};
+
+function createPriorityMark(priorityCode, h_offset, height)
+{
+  var path = "plugins/Taskodrome/files/assets/";
+  switch (priorityCode) {
+    case "20": path += "lower.png"; break;
+    case "30": path += "minus.png"; break;
+    case "40": path += "higher.png"; break;
+    case "50": path += "arrow.png"; break;
+    case "60": path += "danger.png"; break;
+    default: return null;
+  }
+
+  var priorityMark = new createjs.Bitmap(path);
+  if (!priorityMark) {
+    console.log("Error - unable to load priorityMark bitmap");
+    return null;
+  }
+
+  priorityMark.x = h_offset + 20;
+  priorityMark.y = (height - 20) / 2;
+  return priorityMark;
 };
 
 function onIssueIdPressup(event, issue) {
