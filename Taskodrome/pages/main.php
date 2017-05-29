@@ -66,6 +66,7 @@
       $issues_array_html .= 'description="'.$description.'" ';
       $issues_array_html .= 'severity="'.get_enum_element('severity', $t_row->severity).'" ';
       $issues_array_html .= 'priority="'.get_enum_element('priority', $t_row->priority).'" ';
+      $issues_array_html .= 'priorityCode="'.$t_row->priority.'" ';
       $issues_array_html .= 'reproducibility="'.get_enum_element('reproducibility', $t_row->reproducibility).'" ';
       $issues_array_html .= 'version="'.$t_row->version.'" ';
       $issues_array_html .= '></p>';
