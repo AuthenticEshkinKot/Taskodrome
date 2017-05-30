@@ -174,6 +174,19 @@ function getVersions() {
   return ret;
 };
 
+function getLangReportDetails() {
+  var ret = [];
+  var descr = document.getElementById("lang_description").getAttribute("value");
+  ret["description"] = descr ? descr : "Description";
+  var sev = document.getElementById("lang_severity").getAttribute("value");
+  ret["severity"] = sev ? sev : "Severity";
+  var pri = document.getElementById("lang_priority").getAttribute("value");
+  ret["priority"] = pri ? pri : "Priority";
+  var repr = document.getElementById("lang_reproducibility").getAttribute("value");
+  ret["reproducibility"] = repr ? repr : "Reproducibility";
+  return ret;
+}
+
 function checkExistence(functionName, obj) {
   var exists = (obj != null);
   console.log(functionName + ": exists - " + exists);
