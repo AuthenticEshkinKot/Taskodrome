@@ -19,7 +19,7 @@ function requestViewPage(bug_id, handler_id, version, status) {
       request.onreadystatechange = null;
       request.abort();
 
-      console.log("requestViewPage ERROR: readyState=" + request.readyState
+      console.error("requestViewPage ERROR: readyState=" + request.readyState
                 + " status=" + request.status);
     } else {
       console.log("requestViewPage UNKNOWN: readyState=" + request.readyState
@@ -49,7 +49,7 @@ function requesBugUpdatePage(requestPrev, bug_id, handler_id, version, status) {
       request.onreadystatechange = null;
       request.abort();
 
-      console.log("requesBugUpdatePage ERROR: readyState=" + request.readyState
+      console.error("requesBugUpdatePage ERROR: readyState=" + request.readyState
                 + " status=" + request.status);
     } else {
       console.log("requesBugUpdatePage UNKNOWN: readyState=" + request.readyState
@@ -81,7 +81,7 @@ function requestBugUpdate(requestPrev, bug_id, handler_id, version, status) {
       request.onreadystatechange = null;
       request.abort();
 
-      console.log("requestBugUpdate ERROR: readyState=" + request.readyState
+      console.error("requestBugUpdate ERROR: readyState=" + request.readyState
                 + " status=" + request.status);
     } else {
       console.log("requestBugUpdate UNKNOWN: readyState=" + request.readyState

@@ -562,7 +562,7 @@ function createPriorityMark(priorityCode, h_offset, height)
 
   var priorityMark = new createjs.Bitmap(path);
   if (!priorityMark) {
-    console.log("Error - unable to load priorityMark bitmap");
+    console.error("Unable to load priorityMark bitmap");
     return null;
   }
 
