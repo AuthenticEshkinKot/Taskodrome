@@ -3,6 +3,7 @@ var m_cooldown_period;
 var m_allowed_statuses_map;
 var m_status_color_map;
 var m_versions;
+var m_lang_report_details;
 
 function onLoadOpening() {
   var markIndex = window.location.href.lastIndexOf("#");
@@ -41,6 +42,7 @@ function pageOnLoad() {
   m_allowed_statuses_map = getStatusesAllowanceMap();
   m_status_color_map = getStatusColors();
   m_versions = getVersions();
+  m_lang_report_details = getLangReportDetails();
 
   init();
   statusInit();
