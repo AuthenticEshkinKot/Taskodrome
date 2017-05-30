@@ -136,6 +136,10 @@
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
+    print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
+    print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
+    print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
+    print '<p id="lang_reproducibility" value="'. lang_get("reproducibility") .'"></p>';
     print '</div>';
 
     print '<section class="tabs">

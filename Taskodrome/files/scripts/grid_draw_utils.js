@@ -331,27 +331,27 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
 
   var maxWidth = getPopupMaxWidth(rootCanvas, cardWidth);
 
-  var description = createHeaderTextPair("Description: ", descriptionText, 12 + offset, maxWidth - 2 * offset);
+  var description = createHeaderTextPair(m_lang_report_details["description"] + ": ", descriptionText, 12 + offset, maxWidth - 2 * offset);
   description.x = offset;
   description.y = offset;
   width = description.getBounds().width + 2 * offset;
   height += description.getBounds().height + offset;
 
-  var severity = createHeaderTextPair("Severity: ", severityText, 12 + offset);
+  var severity = createHeaderTextPair(m_lang_report_details["severity"] + ": ", severityText, 12 + offset);
   severity.x = offset;
   severity.y = Math.round(height);
   width = Math.max(severity.getBounds().width + 2 * offset, width);
   maxWidth = Math.max(severity.getBounds().width + 2 * offset, maxWidth);
   height += severity.getBounds().height;
 
-  var priority = createHeaderTextPair("Priority: ", priorityText, 12 + offset);
+  var priority = createHeaderTextPair(m_lang_report_details["priority"] + ": ", priorityText, 12 + offset);
   priority.x = offset;
   priority.y = Math.round(height);
   width = Math.max(priority.getBounds().width + 2 * offset, width);
   maxWidth = Math.max(priority.getBounds().width + 2 * offset, maxWidth);
   height += priority.getBounds().height;
 
-  var reproducibility = createHeaderTextPair("Reproducibility: ", reproducibilityText, 12 + offset);
+  var reproducibility = createHeaderTextPair(m_lang_report_details["reproducibility"] + ": ", reproducibilityText, 12 + offset);
   reproducibility.x = offset;
   reproducibility.y = Math.round(height);
   width = Math.max(reproducibility.getBounds().width + 2 * offset, width);
