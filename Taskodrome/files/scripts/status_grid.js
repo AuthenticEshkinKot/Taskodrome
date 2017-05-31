@@ -27,7 +27,7 @@ function statusInit() {
 
   m_statusList = getStatusList_st();
 
-  var parentDiv = document.getElementById("st-grid");
+  var parentDiv = document.getElementById("tab_c2");
 
   m_parentSize_st.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
   m_parentSize_st.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
@@ -48,7 +48,7 @@ function draw_st() {
   panelCanvas.width = m_parentSize_st.width;
   panelCanvas.height = m_parentSize_st.height;
 
-  createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, "panel_st",
+  createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, panelCanvas,
               true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st, m_tableScheme_st);
   m_mainPanel_st.update();
 };

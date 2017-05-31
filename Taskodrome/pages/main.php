@@ -143,7 +143,6 @@
     print '</div>';
 
     print '<section class="tabs">
-    <br>
 
     <input type="radio" id="radio_dg" name="group" >
     <input type="radio" id="radio_sg" name="group" >
@@ -152,31 +151,25 @@
     <label id="label_sg" class="radio_label" for="radio_sg" >' . plugin_lang_get("status_board") . '</label>
 
     <div class="tabs_cont">
-    <div id="tab_c1">
+    <div id="tab_c1" class="grid">
     ';
 
-    print '<div id="dev-grid" class="grid">
-    <canvas id="panel">
+    print '<canvas id="panel">
     </canvas>
     </div>
     ';
 
-    print '</div>';
-
-    print '<div id="tab_c2">
-    <div id="st-grid" class="grid">
+    print '<div id="tab_c2" class="grid">
     <canvas id="panel_st">
     </canvas>
     </div>
     ';
 
-    html_page_bottom();
-
-    print '</div>';
-
     print '</div>
     </section>
     ';
+    
+    html_page_bottom();
   }
 
   function get_user_array()
