@@ -1,26 +1,23 @@
 div.grid {
+  background-color: #EEEEEE;
+  border: 1px solid #428AC8;
   position: relative;
-  padding: 0px;
-  left: -6px;
   height: auto;
   min-height: 500px;
-  overflow: auto;
-  background-color: #EEEEEE;
-  outline: 1px solid #428AC8;
-  margin: 6px;
+  overflow-x: auto;
 }
 
 .tabs {
   position: relative;
-  margin: 0 auto;
   width: 100%;
 }
 
 .tabs_cont {
   background: #fff;
-  position: relative;
   height: auto;
-  min-height: 230px;
+  min-height: 500px;
+  overflow: hidden;
+  position: relative;
 }
 
 .tabs_cont > div {
@@ -66,14 +63,14 @@ div.grid {
   font-size: 10pt;
   font-weight: bolder;
   background: white;
-  border: solid thick #428AC8;
+  border: solid #428AC8;
   border-radius: 0.3em;
   border-width: 1px;
   padding-left: 0.6em;
   padding-right: 0.6em;
   padding-bottom: 0.25em;
   padding-top: 0.25em;
-  margin: 0.12em;
+  margin-right: 0.12em;
   margin-bottom: 1em;
 }
 

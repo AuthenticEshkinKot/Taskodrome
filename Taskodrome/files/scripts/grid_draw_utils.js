@@ -18,7 +18,7 @@ var COL_HEADER_FONT_COLOR = "#FFFFFF";
 var COL_HEADER_FONT_SIZE = "14pt";
 var COL_HEADER_FONT = COL_HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
-var MIN_COL_WIDTH = 140;
+var MIN_COL_WIDTH = 180;
 
 var POPUP_PAUSE = 600;
 
@@ -36,7 +36,7 @@ function fullRedraw() {
   draw_st();
 };
 
-function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut, tableSchemeOut) {
+function createTable(issues, cardDescArray, columnHeaders, panel, canvas, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut, tableSchemeOut) {
   var colNumber = columnHeaders.length;
   var colSize = {
     width : 0,
@@ -49,7 +49,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
     var tableWidth = colSize.width * colNumber + 2 * H_OFFSET;
     if(tableWidth > parentSize.width) {
       parentSize.width = tableWidth;
-      document.getElementById(panelName).width = tableWidth;
+      canvas.width = tableWidth;
     }
   }
 
@@ -75,7 +75,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, panelName, isS
   if(cards != null) {
     if(colSize.height > oldColHeight) {
       var add = colSize.height - oldColHeight;
-      document.getElementById(panelName).height += add;
+      canvas.height += add;
 
       columns = createColumns(issues, columnHeaders, colSize, parentSize, tableSchemeOut);
 
