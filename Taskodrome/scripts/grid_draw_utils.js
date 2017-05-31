@@ -107,7 +107,7 @@ function createVersionBorders(tableScheme, parentWidth, cardCounts) {
   var ret = [];
   var versionBorders = tableScheme.versionBorders;
   for (var i = 1, l = versionBorders.length; i < l; ++i) {
-    var versionName = new createjs.Text(m_versions[i], "bold " + FONT, "#555555");
+    var versionName = new createjs.Text(m_versions[i], "bold " + FONT, BLUE_COLOR);
     var versionBnds = versionName.getBounds();
     versionName.x = tableScheme.columnBorders[0] + 1 + COLUMN_DELIMITER_WIDTH / 2;
     versionName.y = versionBorders[i] - versionBnds.height - VERSION_DELIMITER_WIDTH / 2;
@@ -120,7 +120,7 @@ function createVersionBorders(tableScheme, parentWidth, cardCounts) {
     ret.push(line);
 
     for (var k = 1, l_k = tableScheme.columnBorders.length; k < l_k; ++k) {
-      var cardsCount = new createjs.Text("(" + cardCounts[i][k - 1] + ")", FONT, "#000000");
+      var cardsCount = new createjs.Text("(" + cardCounts[i][k - 1] + ")", FONT, BLUE_COLOR);
       var countBnds = cardsCount.getBounds();
       cardsCount.x = tableScheme.columnBorders[k] - COLUMN_DELIMITER_WIDTH / 2 - countBnds.width - 10;
       cardsCount.y = versionName.y;
