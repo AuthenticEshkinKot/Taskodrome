@@ -583,16 +583,17 @@ function createCardAssignee(issueHandlerId) {
 };
 
 function createCardSummary(issueText, width) {
-  var sz = FONT_SIZE_NUM;
-  var summary = new createjs.Text(issueText, sz + "pt " + FONT_FAMILY, FONT_COLOR);
-  summary.x = CARD_TEXT_H_OFFSET;
-  summary.textAlign = "left";
+  var summary = new createjs.Text(issueText, FONT, FONT_COLOR);
   summary.lineWidth = width - 2 * CARD_TEXT_H_OFFSET;
   var summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
 
-  while (--sz != 6 && summaryWidth > summary.lineWidth) {
-    summary.font = sz + "pt " + FONT_FAMILY;
+  while (summaryWidth > summary.lineWidth) {
+    issueText = issueText.substring(0, issueText.length - 5);
+    summary.text = issueText + "...";
+    summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
   }
+
+  summary.x = CARD_TEXT_H_OFFSET;
 
   return summary;
 };
