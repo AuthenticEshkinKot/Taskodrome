@@ -26,7 +26,7 @@ function init() {
   m_mainPanel = new createjs.Stage("panel");
     m_mainPanel.enableMouseOver(4);
 
-  var parentDiv = document.getElementById("dev-grid");
+  var parentDiv = document.getElementById("tab_c1");
 
   m_parentSize.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
   m_parentSize.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
@@ -45,7 +45,7 @@ function draw() {
   panelCanvas.width = m_parentSize.width;
   panelCanvas.height = m_parentSize.height;
 
-  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, "panel",
+  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas,
               false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth, m_tableScheme);
   m_mainPanel.update();
 };
