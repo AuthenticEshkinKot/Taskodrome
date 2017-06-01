@@ -426,15 +426,22 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
     var startX = Math.round(H_OFFSET + i * colSize.width);
     tableSchemeOut.columnBorders.push(startX);
 
-    var columnNameText = columnNames[i];
-    if (columnNameText && columnNameText != " " && i != number) {
-      columnNameText += " (" + issues[i].length + ")";
+    var issueCounter = null;
+    var x_offset_counter = 10;
+    var issueCounterWidth = 0;
+    if (i != number) {
+      issueCounter = new createjs.Text("(" + issues[i].length + ")", COL_HEADER_FONT, COL_HEADER_FONT_COLOR);
+      issueCounter.x = startX + colSize.width - issueCounter.getBounds().width - COLUMN_DELIMITER_WIDTH / 2 - x_offset_counter;
+      issueCounter.y = V_OFFSET;
+      issueCounterWidth = issueCounter.getBounds().width;
     }
-    var text = new createjs.Text(columnNameText, COL_HEADER_FONT, COL_HEADER_FONT_COLOR);
-    text.x = startX + 20;
+
+    var x_offset_name = 20;
+    var columnNameText = columnNames[i];
+    var targetWidth = colSize.width - x_offset_name -  issueCounterWidth - COLUMN_DELIMITER_WIDTH - x_offset_counter;
+    var text = createShortenedText(columnNameText, targetWidth, COL_HEADER_FONT, COL_HEADER_FONT_COLOR, 1, true);
+    text.x = startX + x_offset_name;
     text.y = V_OFFSET;
-    text.textAlign = "left";
-    text.lineWidth = colSize.width;
 
     if (headerHeight == 0 && text.getBounds()) {
       headerHeight = text.getBounds().height + 2 * V_OFFSET;
@@ -457,6 +464,9 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
       columns.addChild(headerDelim);
     }
 
+    if (issueCounter != null) {
+      columns.addChild(issueCounter);
+    }
     columns.addChild(text);
   }
 
@@ -583,20 +593,24 @@ function createCardAssignee(issueHandlerId) {
 };
 
 function createCardSummary(issueText, width) {
-  var summary = new createjs.Text(issueText, FONT, FONT_COLOR);
-  summary.lineWidth = width - 2 * CARD_TEXT_H_OFFSET;
-  var summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
-
-  while (summaryWidth > summary.lineWidth) {
-    issueText = issueText.substring(0, issueText.length - 5);
-    summary.text = issueText + "...";
-    summaryWidth = summary.getBounds() ? summary.getBounds().width : 0;
-  }
-
+  var summary = createShortenedText(issueText, width - 2 * CARD_TEXT_H_OFFSET, FONT, FONT_COLOR, 5);
   summary.x = CARD_TEXT_H_OFFSET;
-
   return summary;
 };
+
+function createShortenedText(text, lineWidth, font, font_color, step, is_single_line = false) {
+  var textObj = new createjs.Text(text, font, font_color);
+  textObj.lineWidth = is_single_line ? null : lineWidth;
+  var textObjWidth = textObj.getBounds() ? textObj.getBounds().width : 0;
+
+  while (textObjWidth > lineWidth) {
+    text = text.substring(0, text.length - step);
+    textObj.text = text + "...";
+    textObjWidth = textObj.getBounds() ? textObj.getBounds().width : 0;
+  }
+
+  return textObj;
+}
 
 function createCardUpdateTime(updateTime) {
   var date = new Date(updateTime * 1000);
