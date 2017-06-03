@@ -6,6 +6,7 @@
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_common_utils.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/grid_draw_utils.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/issue_updater.js\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/scroller.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/devs_grid.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/status_grid.js\"></script>\n";
   print "<script type=\"text/javascript\" src=\"./plugins/Taskodrome/scripts/on_load_opening.js\"></script>\n";

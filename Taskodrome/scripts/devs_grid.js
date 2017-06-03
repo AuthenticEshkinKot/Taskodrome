@@ -45,7 +45,9 @@ function draw() {
   panelCanvas.width = m_parentSize.width;
   panelCanvas.height = m_parentSize.height;
 
-  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas,
+  var parentDiv = document.getElementById("tab_c1");
+
+  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas, parentDiv,
               false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth, m_tableScheme);
   m_mainPanel.update();
 };
