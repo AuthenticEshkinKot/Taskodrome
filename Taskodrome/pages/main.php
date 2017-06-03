@@ -9,6 +9,7 @@
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_common_utils.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_draw_utils.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/issue_updater.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/scroller.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/devs_grid.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/status_grid.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/on_load_opening.js') . "\"></script>\n";

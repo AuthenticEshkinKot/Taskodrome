@@ -36,7 +36,7 @@ function fullRedraw() {
   draw_st();
 };
 
-function createTable(issues, cardDescArray, columnHeaders, panel, canvas, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut, tableSchemeOut) {
+function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parentDiv, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut, tableSchemeOut) {
   var colNumber = columnHeaders.length;
   var colSize = {
     width : 0,
@@ -101,6 +101,8 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, isStat
     createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
   }
+
+  createScroller(canvas, parentDiv);
 };
 
 function createVersionBorders(tableScheme, parentWidth, cardCounts) {
@@ -252,7 +254,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
           if(cardDescArray[i][k].y == cardY) {
             boolSuccess = true;
 
-            console.log("Found! issues array index = " + i + " issue index = " + k + " selectedCard.id = " + selectedCard.id);
+            console.log("Found! issues array index = " + i + " issue index = " + k);
             console.log("cardX - " + cardX + ", cardY - " + cardY);
 
             issueGroupIndex = cardDescArray[i][k].issueGroupIndex;
@@ -284,6 +286,9 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   card.on("pressup", onPressUp);
 
   function cardOnRollover(evt) {
+    if (m_scrollTimer != null)
+      return;
+
     m_popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
     m_popupPause = POPUP_PAUSE;
     m_stageToUpdate = panel;
@@ -610,7 +615,7 @@ function createShortenedText(text, lineWidth, font, font_color, step, is_single_
   }
 
   return textObj;
-}
+};
 
 function createCardUpdateTime(updateTime) {
   var date = new Date(updateTime * 1000);
@@ -627,6 +632,12 @@ function tick(event) {
   }
 
   if (m_popupCard != null) {
+    if (m_scrollTimer != null) {
+      m_stageToUpdate.removeChild(m_popupCard);
+      m_popupCard = null;
+      m_popupPause = -1;
+    }
+
     if (m_popupPause == 0) {
       m_stageToUpdate.addChild(m_popupCard);
       m_update = true;
