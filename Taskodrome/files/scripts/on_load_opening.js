@@ -48,4 +48,4 @@ function pageOnLoad() {
   statusInit();
 };
 
-document.addEventListener("DOMContentLoaded", pageOnLoad);
+window.addEventListener("load", pageOnLoad);
