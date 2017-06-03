@@ -1,3 +1,5 @@
+var SCROLL_BASE_STEP = 20;
+
 var m_scrollTimer = null;
 
 function createScroller(canvas, parentDiv) {
@@ -15,8 +17,9 @@ function createScroller(canvas, parentDiv) {
   };
   canvas.addEventListener("mouseup", canvas_onmouseup);
 
-  var scrollStep = 15;
+  var scrollStep = SCROLL_BASE_STEP;
   var scrollInterval = 40;
+  var rect = parentDiv.getBoundingClientRect();
 
   function scrollRight() {
     parentDiv.scrollLeft += scrollStep;
@@ -51,14 +54,16 @@ function createScroller(canvas, parentDiv) {
     if (!canvas.m_down)
       return;
 
-    var rect = parentDiv.getBoundingClientRect();
     var mouseX = evt.clientX - rect.left;
     var actArea = rect.width * 0.15;
-    if (mouseX > rect.width - actArea) {
+    var rightEdge = rect.width - actArea;
+    if (mouseX > rightEdge) {
+      scrollStep = SCROLL_BASE_STEP * ((mouseX - rightEdge) / actArea);
       if (m_scrollTimer != null)
         return;
       m_scrollTimer = window.setInterval(scrollRight, scrollInterval);
     } else if (mouseX < actArea) {
+      scrollStep = SCROLL_BASE_STEP * ((actArea - mouseX) / actArea);
       if (m_scrollTimer != null)
         return;
       m_scrollTimer = window.setInterval(scrollLeft, scrollInterval);
