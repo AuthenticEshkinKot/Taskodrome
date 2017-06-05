@@ -18,3 +18,5 @@ Status:
 Temperature of issue has no analogue in mantisbt. It allows you to simply differ last recently touched issues from forgotten ones. Temperature bar is placed on the bottom of the card.
 
 ![tempr](Screenshots/temperature.gif)
+
+Designed by svalion https://www.behance.net/svalion
