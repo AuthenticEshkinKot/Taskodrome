@@ -116,7 +116,7 @@ function createVersionBorders(tableScheme, parentWidth, cardCounts) {
     ret.push(versionName);
     var line = new createjs.Shape();
     line.graphics.setStrokeStyle(VERSION_DELIMITER_WIDTH);
-    line.graphics.beginStroke("#AAAAAA");
+    line.graphics.beginStroke("#bfd5e1");
     line.graphics.moveTo(tableScheme.columnBorders[0], versionBorders[i]);
     line.graphics.lineTo(tableScheme.columnBorders[tableScheme.columnBorders.length - 1], versionBorders[i]);
     ret.push(line);

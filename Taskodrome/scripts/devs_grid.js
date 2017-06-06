@@ -26,7 +26,7 @@ function init() {
   m_mainPanel = new createjs.Stage("panel");
     m_mainPanel.enableMouseOver(4);
 
-  var parentDiv = document.getElementById("tab_c1");
+  var parentDiv = document.getElementById("parent_div");
 
   m_parentSize.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
   m_parentSize.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
