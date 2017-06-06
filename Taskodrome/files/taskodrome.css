@@ -1,13 +1,20 @@
+#content {
+  padding: 0;
+  padding-top: 1em;
+}
+
 .grid {
   background-color: #EEEEEE;
   border: 1px solid #428AC8;
   height: auto;
   min-height: 500px;
   overflow-x: auto;
+  padding: 0;
 }
 
 .tabs {
   position: relative;
+  width: 100%;
 }
 
 .tabs_cont {
@@ -16,13 +23,14 @@
   min-height: 500px;
   overflow: hidden;
   position: relative;
+  margin-top: 1em;
+  padding: 0;
 }
 
 .tabs_cont .grid {
   position: static;
   left: 0;
   opacity: 1;
-  width: 100%;
   -moz-transition: opacity .5s ease-in-out;
   -webkit-transition: opacity .5s ease-in-out;
   transition: opacity .5s ease-in-out;
@@ -73,5 +81,5 @@
 }
 
 .radio_label:hover {
-  color: red;
+  text-decoration: underline;
 }

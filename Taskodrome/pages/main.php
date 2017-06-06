@@ -151,7 +151,7 @@
     <label id="label_dg" class="radio_label" for="radio_dg" >' . plugin_lang_get("assignment_board") . '</label>
     <label id="label_sg" class="radio_label" for="radio_sg" >' . plugin_lang_get("status_board") . '</label>
 
-    <div class="tabs_cont">
+    <div id="parent_div" class="tabs_cont">
     <div id="tab_c1" class="grid">
     ';
 

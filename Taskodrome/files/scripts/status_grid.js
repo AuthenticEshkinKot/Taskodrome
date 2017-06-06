@@ -27,7 +27,7 @@ function statusInit() {
 
   m_statusList = getStatusList_st();
 
-  var parentDiv = document.getElementById("tab_c2");
+  var parentDiv = document.getElementById("parent_div");
 
   m_parentSize_st.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
   m_parentSize_st.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
