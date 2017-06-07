@@ -45,11 +45,16 @@ function draw() {
   panelCanvas.width = m_parentSize.width;
   panelCanvas.height = m_parentSize.height;
 
-  var parentDiv = document.getElementById("tab_c1");
+  var tab_c1 = document.getElementById("tab_c1");
 
-  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas, parentDiv,
+  createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas, tab_c1,
               false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth, m_tableScheme);
-  m_mainPanel.update();
+  if (panelCanvas.width > parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"))) {
+    m_parentSize.width = parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"));
+    draw();
+  } else {
+    m_mainPanel.update();
+  }
 };
 
 function onPressUp(evt) {

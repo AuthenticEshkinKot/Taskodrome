@@ -42,7 +42,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parent
     width : 0,
     height : 0
   }
-  colSize.width = Math.round((parentSize.width - 2 * H_OFFSET) / colNumber);
+  colSize.width = (parentSize.width - 2 * H_OFFSET) / colNumber;
   if(colSize.width < MIN_COL_WIDTH) {
     colSize.width = MIN_COL_WIDTH;
 
