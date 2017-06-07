@@ -22,9 +22,11 @@ var m_tableScheme = { columnBorders : [],
                       versionBorders : [],
                       headerHeight : 0 };
 
+var m_redrawn = false;
+
 function init() {
   m_mainPanel = new createjs.Stage("panel");
-    m_mainPanel.enableMouseOver(4);
+  m_mainPanel.enableMouseOver(4);
 
   var parentDiv = document.getElementById("parent_div");
 
@@ -49,10 +51,13 @@ function draw() {
 
   createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas, tab_c1,
               false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth, m_tableScheme);
-  if (panelCanvas.width > parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"))) {
-    m_parentSize.width = parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"));
+  var tab_c1_width = parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"));
+  if (!m_redrawn && (panelCanvas.width > tab_c1_width)) {
+    m_redrawn = true;
+    m_parentSize.width = tab_c1_width;
     draw();
   } else {
+    m_redrawn = false;
     m_mainPanel.update();
   }
 };

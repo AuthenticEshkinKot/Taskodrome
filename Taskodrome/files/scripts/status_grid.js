@@ -21,6 +21,8 @@ var m_tableScheme_st = { columnBorders : [],
                          versionBorders : [],
                          headerHeight : 0 };
 
+var m_redrawn_st = false;
+
 function statusInit() {
   m_mainPanel_st = new createjs.Stage("panel_st");
   m_mainPanel_st.enableMouseOver(4);
@@ -52,10 +54,13 @@ function draw_st() {
 
   createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, panelCanvas, tab_c2,
               true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st, m_tableScheme_st);
-  if (panelCanvas.width > parseInt(window.getComputedStyle(tab_c2).getPropertyValue("width"))) {
-    m_parentSize_st.width = parseInt(window.getComputedStyle(tab_c2).getPropertyValue("width"));
+  var tab_c2_width = parseInt(window.getComputedStyle(tab_c2).getPropertyValue("width"));
+  if (!m_redrawn_st && (panelCanvas.width > tab_c2_width)) {
+    m_redrawn_st = true;
+    m_parentSize_st.width = tab_c2_width;
     draw_st();
   } else {
+    m_redrawn_st = false;
     m_mainPanel_st.update();
   }
 };
