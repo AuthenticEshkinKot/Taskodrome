@@ -30,8 +30,9 @@ function statusInit() {
   m_statusList = getStatusList_st();
 
   var parentDiv = document.getElementById("parent_div");
-
   m_parentSize_st.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+
+  parentDiv = document.getElementById("tab_c2");
   m_parentSize_st.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
 
   createColumnStatusMap();
