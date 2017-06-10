@@ -4,7 +4,7 @@ var V_OFFSET = 10;
 var CARD_H_OFFSET = 15;
 var CARD_V_OFFSET = 10;
 
-var FONT_FAMILY = "Open Sans";
+var FONT_FAMILY = "sans-serif";
 var FONT_COLOR = "#393939";
 var FONT_SIZE_NUM = 10;
 var FONT_SIZE = FONT_SIZE_NUM + "pt";
