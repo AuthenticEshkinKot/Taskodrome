@@ -43,15 +43,19 @@ function draw() {
   m_mainPanel.removeAllChildren();
   m_mainPanel.removeAllEventListeners();
 
-  var panelCanvas = document.getElementById("panel");
-  panelCanvas.width = m_parentSize.width;
-  panelCanvas.height = m_parentSize.height;
-
   var tab_c1 = document.getElementById("tab_c1");
+  var tab_c1_style = window.getComputedStyle(tab_c1);
+
+  var border_width = parseInt(tab_c1_style.getPropertyValue("border-right-width"))
+  + parseInt(tab_c1_style.getPropertyValue("border-left-width"));
+
+  var panelCanvas = document.getElementById("panel");
+  panelCanvas.width = m_parentSize.width - border_width;
+  panelCanvas.height = m_parentSize.height;
 
   createTable(m_issues, m_cardDescArray, m_developersNames, m_mainPanel, panelCanvas, tab_c1,
               false, m_selectedCard, m_parentSize, onPressUp, m_columnWidth, m_tableScheme);
-  var tab_c1_width = parseInt(window.getComputedStyle(tab_c1).getPropertyValue("width"));
+  var tab_c1_width = parseInt(tab_c1_style.getPropertyValue("width")) - border_width;
   if (!m_redrawn && (panelCanvas.width > tab_c1_width)) {
     m_redrawn = true;
     m_parentSize.width = tab_c1_width;
