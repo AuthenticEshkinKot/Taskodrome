@@ -46,15 +46,19 @@ function draw_st() {
   m_mainPanel_st.removeAllChildren();
   m_mainPanel_st.removeAllEventListeners();
 
-  var panelCanvas = document.getElementById("panel_st");
-  panelCanvas.width = m_parentSize_st.width;
-  panelCanvas.height = m_parentSize_st.height;
-
   var tab_c2 = document.getElementById("tab_c2");
+  var tab_c2_style = window.getComputedStyle(tab_c2);
+
+  var border_width = parseInt(tab_c2_style.getPropertyValue("border-right-width"))
+  + parseInt(tab_c2_style.getPropertyValue("border-left-width"));
+
+  var panelCanvas = document.getElementById("panel_st");
+  panelCanvas.width = m_parentSize_st.width - border_width;
+  panelCanvas.height = m_parentSize_st.height;
 
   createTable(m_issues_st, m_cardDescArray_st, m_statusList, m_mainPanel_st, panelCanvas, tab_c2,
               true, m_selectedCard_st, m_parentSize_st, onPressUp_st, m_columnWidth_st, m_tableScheme_st);
-  var tab_c2_width = parseInt(window.getComputedStyle(tab_c2).getPropertyValue("width"));
+  var tab_c2_width = parseInt(tab_c2_style.getPropertyValue("width")) - border_width;
   if (!m_redrawn_st && (panelCanvas.width > tab_c2_width)) {
     m_redrawn_st = true;
     m_parentSize_st.width = tab_c2_width;
