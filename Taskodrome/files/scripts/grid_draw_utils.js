@@ -1,7 +1,7 @@
 var H_OFFSET = 0;
 var V_OFFSET = 10;
 
-var CARD_H_OFFSET = 15;
+var CARD_H_OFFSET = 10;
 var CARD_V_OFFSET = 10;
 
 var FONT_FAMILY = "sans-serif";
@@ -18,7 +18,7 @@ var COL_HEADER_FONT_COLOR = "#FFFFFF";
 var COL_HEADER_FONT_SIZE = "14pt";
 var COL_HEADER_FONT = COL_HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
-var MIN_COL_WIDTH = 180;
+var MIN_COL_WIDTH = 190;
 
 var POPUP_PAUSE = 600;
 
