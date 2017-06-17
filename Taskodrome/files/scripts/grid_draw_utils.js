@@ -6,8 +6,7 @@ var CARD_V_OFFSET = 10;
 
 var FONT_FAMILY = "sans-serif";
 var FONT_COLOR = "#393939";
-var FONT_SIZE_NUM = 10;
-var FONT_SIZE = FONT_SIZE_NUM + "pt";
+var FONT_SIZE = "10pt";
 var FONT = FONT_SIZE + " " + FONT_FAMILY;
 
 var BLUE_COLOR = "#428AC8";
