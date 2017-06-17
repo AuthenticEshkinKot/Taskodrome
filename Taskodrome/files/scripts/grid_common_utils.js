@@ -25,45 +25,54 @@ function getIssuesRaw() {
 };
 
 function getTemperatureColor(updateTime) {
-  var colorPeriod = m_cooldown_period / 4;
   var currentTime = (new Date().getTime()) / 1000;
   var timeFromUpdate = currentTime - updateTime;
 
-  if(timeFromUpdate <= colorPeriod) {
-    var green = Math.round((timeFromUpdate / colorPeriod) * 255);
-    var greenStr = green.toString(16);
-    if (greenStr.length == 2) {
-      return '#FF' + greenStr + '00';
-    } else {
-      return '#FF0' + greenStr + '00';
-    }
-  } else if(timeFromUpdate <= 2 * colorPeriod ) {
-    var blue = Math.round(((timeFromUpdate - colorPeriod) / colorPeriod) * 255);
-    var blueStr = blue.toString(16);
-    if (blueStr.length == 2) {
-      return '#FFFF' + blueStr;
-    } else {
-      return '#FFFF0' + blueStr;
-    }
-  } else if( timeFromUpdate <= 3 * colorPeriod ) {
-    var red = Math.round(( 1 - ( (timeFromUpdate - 2 * colorPeriod) / colorPeriod)) * 255);
-    var redStr = red.toString(16);
-    if (redStr.length == 2) {
-      return '#' + redStr + 'FFFF';
-    } else {
-      return '#0' + redStr + 'FFFF';
-    }
-  } else if( timeFromUpdate <= 4 * colorPeriod ) {
-    var green = Math.round(( 1 - ( (timeFromUpdate - 3 * colorPeriod) / colorPeriod)) * 255);
-    var greenStr = green.toString(16);
-    if (greenStr.length == 2) {
-      return '#00' + greenStr + 'FF';
-    } else {
-      return '#000' + greenStr + 'FF';
-    }
+  if (timeFromUpdate > m_cooldown_period)
+    return "#1D1DE2";
+
+  var hue = (timeFromUpdate / m_cooldown_period) * 0.66667;
+  var sat = 0.77;
+  var lgt = 0.5;
+  var rgb = hslToRgb(hue, sat, lgt);
+
+  var r = rgb[0].toString(16);
+  r = (r.length == 1) ? "0" + r : r;
+  var g = rgb[1].toString(16);
+  g = (g.length == 1) ? "0" + g : g;
+  var b = rgb[2].toString(16);
+  b = (b.length == 1) ? "0" + b : b;
+  return "#" + r + g + b;
+};
+
+function hslToRgb(h, s, l) {
+  var r, g, b;
+
+  if (s == 0) {
+    r = g = b = l; // achromatic
   } else {
-    return '#0000FF';
+    var hue2rgb = function hue2rgb(p, q, t) {
+      if(t < 0)
+        t += 1;
+      if(t > 1)
+        t -= 1;
+      if(t < 1/6)
+        return p + (q - p) * 6 * t;
+      if(t < 1/2)
+        return q;
+      if(t < 2/3)
+        return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
   }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 };
 
 function setHrefMark(window, mark) {
