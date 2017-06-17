@@ -142,14 +142,14 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
   var lower_edge_curr = 0;
 
   for(var v_i = 0, l = m_versions.length; v_i != l; ++v_i) {
-    var start_y = tableSchemeOut.headerHeight + CARD_V_OFFSET + lower_edge;
+    var start_y = tableSchemeOut.headerHeight + 2 * CARD_V_OFFSET + lower_edge;
     tableSchemeOut.versionBorders.push(start_y);
     cardCountsOut[v_i] = [];
 
     var ver = m_versions[v_i];
     for(var i = 0; i < colNumber; ++i) {
       var x = CARD_H_OFFSET + (H_OFFSET + i * colSizeOut.width);
-      var y = start_y + ((lower_edge == 0) ? 0 : VERSION_DELIMITER_WIDTH);
+      var y = start_y + ((lower_edge == 0) ? 0 : (2 * CARD_V_OFFSET + VERSION_DELIMITER_WIDTH / 2));
       cardCountsOut[v_i][i] = 0;
 
       var cardDescs = [];
