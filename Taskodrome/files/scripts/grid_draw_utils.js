@@ -14,11 +14,12 @@ var BLUE_COLOR = "#428AC8";
 
 var CARD_TEXT_H_OFFSET = 12;
 
+var COL_HEADER_TEXT_OFFSET = 10;
 var COL_HEADER_FONT_COLOR = "#FFFFFF";
 var COL_HEADER_FONT_SIZE = "14pt";
 var COL_HEADER_FONT = COL_HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
-var MIN_COL_WIDTH = 190;
+var MIN_COL_WIDTH = 200;
 
 var POPUP_PAUSE = 600;
 
@@ -441,11 +442,10 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
       issueCounterWidth = issueCounter.getBounds().width;
     }
 
-    var x_offset_name = 20;
     var columnNameText = columnNames[i];
-    var targetWidth = colSize.width - x_offset_name -  issueCounterWidth - COLUMN_DELIMITER_WIDTH - x_offset_counter;
+    var targetWidth = colSize.width - COL_HEADER_TEXT_OFFSET -  issueCounterWidth - COLUMN_DELIMITER_WIDTH - x_offset_counter;
     var text = createShortenedText(columnNameText, targetWidth, COL_HEADER_FONT, COL_HEADER_FONT_COLOR, 1, true);
-    text.x = startX + x_offset_name;
+    text.x = startX + COL_HEADER_TEXT_OFFSET;
     text.y = V_OFFSET;
 
     if (headerHeight == 0 && text.getBounds()) {
