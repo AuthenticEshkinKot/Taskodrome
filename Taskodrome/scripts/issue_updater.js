@@ -93,7 +93,7 @@ function requestBugUpdate(requestPrev, bug_id, handler_id, version, status) {
   var parameters = "bug_update_token=" + security_token
                    + "&bug_id=" + bug_id
                    + "&handler_id=" + handler_id
-                   + "&version=" + version;
+                   + "&target_version=" + version;
 //                    + "&last_updated=" + last_updated;
   if (status) {
     parameters += "&status=" + status;
