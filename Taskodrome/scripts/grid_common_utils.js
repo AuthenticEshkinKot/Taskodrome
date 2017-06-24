@@ -31,9 +31,24 @@ function getTemperatureColor(updateTime) {
   if (timeFromUpdate > m_cooldown_period)
     return "#1D1DE2";
 
-  var hue = (timeFromUpdate / m_cooldown_period) * 0.66667;
   var sat = 0.77;
   var lgt = 0.5;
+
+  var diff = 0.2;
+  var huePart = 0;
+  var step = Math.floor((timeFromUpdate / m_cooldown_period) / diff);
+  switch (step)
+  {
+    case 0: huePart = 0; break;
+    case 1: huePart = 0.09; break;
+    case 2: huePart = 0.18; lgt = 0.48; break;
+    case 3: huePart = 0.38; lgt = 0.38; break;
+    case 4: huePart = 0.81; break;
+    default: huePart = 1; break;
+  }
+  var max_hue = 0.66667;
+  var hue = huePart * max_hue;
+
   var rgb = hslToRgb(hue, sat, lgt);
 
   var r = rgb[0].toString(16);
