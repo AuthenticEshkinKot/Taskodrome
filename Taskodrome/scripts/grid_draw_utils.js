@@ -3,6 +3,12 @@ var V_OFFSET = 10;
 
 var CARD_H_OFFSET = 10;
 var CARD_V_OFFSET = 10;
+var CARD_STROKE_COLOR = "#C0BFC1";
+var CARD_FILL_COLOR = "#FFFFFF";
+
+var CARD_SHADOW_COLOR = "#0000001F";
+var CARD_SHADOW_X = 5;
+var CARD_SHADOW_Y = 5;
 
 var FONT_FAMILY = "sans-serif";
 var FONT_COLOR = "#393939";
@@ -203,7 +209,7 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
 function createCard(panel, position, issues, issue, selectedCard, cardDescArray, onPressUp, isStatusGrid) {
   var card = new createjs.Container();
 
-  var back = createCardBack(position.width, position.height);
+  var back = createRect(position.width, position.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
 
   var cardHeaderHeightOut = { value : -1 };
   var cardHeaderMarkColor = getColorByStatus(issue.status);
@@ -231,8 +237,11 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
     var add = summary.y + summaryHeight + updateTimeHeight + 20 - position.height;
     position.height += add;
 
-    back = createCardBack(position.width, position.height);
+    back = createRect(position.width, position.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
   }
+
+  var shadowBack = createRect(position.width, position.height, "#00000000", "#000000");
+  card.shadowBack = shadowBack;
 
   function cardOnMousedown(evt) {
     //console.log("mousedown");
@@ -266,6 +275,8 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
         }
       }
     }
+
+    card.shadowBack.shadow = new createjs.Shadow(CARD_SHADOW_COLOR, CARD_SHADOW_X, CARD_SHADOW_Y, 0);
 
     if (m_popupCard != null) {
       panel.removeChild(m_popupCard);
@@ -305,6 +316,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   card.x = position.x;
   card.y = position.y;
 
+  card.addChild(shadowBack);
   card.addChild(back);
   card.addChild(cardHeader);
   if (assignee) {
@@ -374,7 +386,7 @@ function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorit
     height += description.getBounds().height;
   }
 
-  var back = createCardBack(width, height);
+  var back = createRect(width, height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
 
   card.addChild(back);
   card.addChild(description);
@@ -482,11 +494,11 @@ function createColumns(issues, columnNames, colSize, backSize, tableSchemeOut) {
   return columns;
 };
 
-function createCardBack(width, height) {
+function createRect(width, height, strokeColor, fillColor) {
   var back = new createjs.Shape();
   back.graphics.setStrokeStyle(1);
-  back.graphics.beginStroke("#c0bfc1");
-  back.graphics.beginFill("#FFFFFF");
+  back.graphics.beginStroke(strokeColor);
+  back.graphics.beginFill(fillColor);
   back.graphics.drawRect(0, 0, width, height);
   return back;
 };
