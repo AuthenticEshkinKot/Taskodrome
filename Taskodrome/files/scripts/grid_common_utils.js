@@ -30,6 +30,8 @@ function getTemperatureColor(updateTime) {
 
   if (timeFromUpdate > m_cooldown_period)
     return "#1D1DE2";
+  else if (timeFromUpdate < 0)
+    timeFromUpdate = 0;
 
   var sat = 0.77;
   var lgt = 0.5;
