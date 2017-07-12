@@ -6,7 +6,7 @@ var CARD_V_OFFSET = 10;
 var CARD_STROKE_COLOR = "#C0BFC1";
 var CARD_FILL_COLOR = "#FFFFFF";
 
-var CARD_SHADOW_COLOR = "#0000001F";
+var CARD_SHADOW_COLOR = "#AFAFAF";
 var CARD_SHADOW_X = 5;
 var CARD_SHADOW_Y = 5;
 
@@ -276,7 +276,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
       }
     }
 
-    card.shadowBack.shadow = new createjs.Shadow(CARD_SHADOW_COLOR, CARD_SHADOW_X, CARD_SHADOW_Y, 0);
+    card.shadowBack.shadow = new createjs.Shadow(CARD_SHADOW_COLOR, CARD_SHADOW_X, CARD_SHADOW_Y, 8);
 
     if (m_popupCard != null) {
       panel.removeChild(m_popupCard);
