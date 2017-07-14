@@ -39,6 +39,8 @@ function statusInit() {
   sortIssues_st();
 
   draw_st();
+
+  addRadioCallback(window, "sg", "radio_sg");
 };
 
 function draw_st() {
@@ -67,8 +69,6 @@ function draw_st() {
 };
 
 function onPressUp_st(evt) {
-  setHrefMark(window, "sg");
-
   var newVersionIndex = computeVersionIndex(evt.stageY, m_tableScheme_st);
   var newColumnIndex = computeColumnIndex(evt.stageX, m_tableScheme_st);
   var currStatus = getStatusByColumn_st(m_selectedCard_st.sourceIndex.i);
@@ -92,8 +92,6 @@ function onPressUp_st(evt) {
     var bug_id = m_selectedCard_st.value.id;
     var version = m_selectedCard_st.value.version;
     update_issue(bug_id, handler_id, version, status);
-
-    setHrefMark(window, "sg");
   } else if(newVersionIndex != -1 && m_selectedCard_st.value.version != m_versions[newVersionIndex]) {
     m_selectedCard_st.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard_st.value.version = m_versions[newVersionIndex];
@@ -102,8 +100,6 @@ function onPressUp_st(evt) {
     var bug_id = m_selectedCard_st.value.id;
     var version = m_selectedCard_st.value.version;
     update_issue(bug_id, handler_id, version);
-
-    setHrefMark(window, "sg");
   }
 
   m_selectedCard_st.value = null;
