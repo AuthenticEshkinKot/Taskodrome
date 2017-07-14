@@ -35,6 +35,8 @@ function init() {
 
   sortIssues();
   draw();
+
+  addRadioCallback(window, "dg", "radio_dg");
 };
 
 function draw() {
@@ -67,8 +69,6 @@ function draw() {
 };
 
 function onPressUp(evt) {
-  setHrefMark(window, "dg");
-
   var newVersionIndex = computeVersionIndex(evt.stageY, m_tableScheme);
   var newColumnIndex = computeColumnIndex(evt.stageX, m_tableScheme);
   if(newColumnIndex == -1) {
@@ -92,8 +92,6 @@ function onPressUp(evt) {
     m_selectedCard.value.version = m_versions[newVersionIndex];
     var version = m_selectedCard.value.version;
     update_issue(bug_id, handler_id, version);
-
-    setHrefMark(window, "dg");
   } else if(newVersionIndex != -1 && m_selectedCard.value.version != m_versions[newVersionIndex]) {
     m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
     m_selectedCard.value.version = m_versions[newVersionIndex];
@@ -102,8 +100,6 @@ function onPressUp(evt) {
     var handler_id = m_selectedCard.value.handler_id;
     var version = m_selectedCard.value.version;
     update_issue(bug_id, handler_id, version);
-
-    setHrefMark(window, "dg");
   }
 
   m_selectedCard.value = null;
