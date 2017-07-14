@@ -221,3 +221,10 @@ function checkExistence(functionName, obj) {
   }
   return exists;
 };
+
+function addRadioCallback(window, mark, radioId) {
+  function onRadioClick() {
+    setHrefMark(window, mark);
+  };
+  document.getElementById(radioId).onclick = onRadioClick;
+};
