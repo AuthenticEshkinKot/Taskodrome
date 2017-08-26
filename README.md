@@ -4,6 +4,14 @@ Interactive scrum board for Mantis bugtracker 1.2.9 and later.
 # Installation
 Copy Taskodrome catalogue to mantisbt plugin directory.
 
+## Compatibility
+MantisBT version | Branch
+:---:|---
+2.x   | [mantisbt_2.0.0](https://github.com/AuthenticEshkinKot/Taskodrome/tree/mantisbt_2.0.0)
+1.3.x | [mantisbt_1.3.0](https://github.com/AuthenticEshkinKot/Taskodrome/tree/mantisbt_1.3.0)
+1.2.x | [mantisbt_1.2.9](https://github.com/AuthenticEshkinKot/Taskodrome/tree/mantisbt_1.2.9)
+
+
 # Features
 ## Issue drag'n'drop
 Changing task's assignee or status has never been so easy! Just drag'n'drop - nothing more.
