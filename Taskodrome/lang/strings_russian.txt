@@ -23,3 +23,6 @@ $s_plugin_Taskodrome_cooldown_period_label = 'Период "остывания" 
 $s_plugin_Taskodrome_cooldown_period_hint = 'Период "остывания" равен сумме этих величин (т.е., "1 день; 7 часов" дают период, равный 31 часу)';
 $s_plugin_Taskodrome_cooldown_period_days = 'Дни';
 $s_plugin_Taskodrome_cooldown_period_hours = 'Часы';
+
+$s_plugin_Taskodrome_hidden_users_label = 'Скрытые пользователи';
+$s_plugin_Taskodrome_hidden_users_hint = 'Список, через точку с запятой';
