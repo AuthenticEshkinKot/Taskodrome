@@ -64,6 +64,27 @@ echo plugin_config_get( $t_field . '_hours' ); ?>"/>
 </td>
 </tr>
 
+<tr <?php echo helper_alternate_class() ?>>
+<?php $t_field = 'hidden_users'; ?>
+<td class="category">
+  <?php echo plugin_lang_get( $t_field . '_label' ) ?><br>
+</td>
+<td>
+<input name="<?php echo $t_field; ?>" size="75" value="<?php
+  $t_config = plugin_config_get( $t_field );
+  $t_encoded = '';
+  foreach( $t_config as $t_value ) {
+    $t_encoded .= "$t_value;";
+  }
+  echo trim( $t_encoded, ';' );
+?>"</input>
+<br>
+<span class="small"><?php
+  echo plugin_lang_get( $t_field . '_hint' );
+?></span>
+</td>
+</tr>
+
 <tr>
   <td class="center" colspan="3">
     <input type="submit" class="button" value="<?php echo lang_get( 'change_configuration' )?>" />

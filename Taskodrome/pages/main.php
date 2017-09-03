@@ -51,7 +51,7 @@
       $handler_id = $t_row->handler_id;
       if (!array_key_exists($t_row->handler_id, $alive_user_ids))
       {
-        $handler_id = 0;
+        continue;
       }
 
       $issues_array_html .= '<p class="issue_data" ';
@@ -225,10 +225,14 @@
         }
       }
 
-      $user = new User();
-      $user->id = $t_user['id'];
-      $user->name = $t_user_name;
-      array_push($user_array, $user);
+      if (!is_user_hidden($t_user_name))
+      {
+        $user = new User();
+        $user->id = $t_user['id'];
+        $user->name = $t_user_name;
+
+        array_push($user_array, $user);
+      }
     }
 
     $user = new User();
@@ -237,6 +241,11 @@
     array_push($user_array, $user);
 
     return $user_array;
+  }
+
+  function is_user_hidden( $username )
+  {
+    return in_array($username, plugin_config_get("hidden_users"));
   }
 
   write_bug_rows( $rows );
