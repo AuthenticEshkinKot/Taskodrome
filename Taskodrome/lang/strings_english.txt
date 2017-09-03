@@ -23,3 +23,6 @@ $s_plugin_Taskodrome_cooldown_period_label = 'Cooldown period';
 $s_plugin_Taskodrome_cooldown_period_hint = 'Cooldown period is a sum of this values (e.g., period of 1 day and 7 hours equals to 31 hours)';
 $s_plugin_Taskodrome_cooldown_period_days = 'Days';
 $s_plugin_Taskodrome_cooldown_period_hours = 'Hours';
+
+$s_plugin_Taskodrome_hidden_users_label = 'Hidden users';
+$s_plugin_Taskodrome_hidden_users_hint = 'Semicolon-separated list';

@@ -11,7 +11,7 @@ class TaskodromePlugin extends MantisPlugin
     $this->description = plugin_lang_get("description");
     $this->page = 'config_page';
 
-    $this->version = "1.0";
+    $this->version = "1.1";
     $this->requires = array(
       "MantisCore" => "1.3.0",
     );
@@ -38,7 +38,8 @@ class TaskodromePlugin extends MantisPlugin
       "status_board_order_default" => $status_list,
       "status_board_order" => $status_list,
       "cooldown_period_days" => 14,
-      "cooldown_period_hours" => 0
+      "cooldown_period_hours" => 0,
+      "hidden_users" => array()
     );
   }
 

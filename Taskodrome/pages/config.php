@@ -23,6 +23,12 @@ if( plugin_config_get( 'cooldown_period_hours' ) != $f_cooldown_period_hours ) {
   plugin_config_set( 'cooldown_period_hours', $f_cooldown_period_hours );
 }
 
+$f_hidden_users = gpc_get_string( 'hidden_users' );
+
+if( plugin_config_get( 'hidden_users' ) != $f_hidden_users ) {
+  plugin_config_set( 'hidden_users', explode(';', $f_hidden_users) );
+}
+
 form_security_purge( 'plugin_format_config_edit' );
 
 print_successful_redirect( plugin_page( 'config_page', true ) );

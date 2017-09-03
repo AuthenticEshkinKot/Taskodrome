@@ -71,6 +71,31 @@ print_manage_menu();
         <span class="label-style"></span>
       </div>
 
+       <div class="field-container">
+        <?php $t_field = 'hidden_users'; ?>
+        <label>
+          <span>
+            <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+            <br>
+          </span>
+          <span class="small"><?php
+            echo plugin_lang_get( $t_field . '_hint' );
+            ?>
+          </span>
+        </label>
+        <span class="input">
+          <input name="<?php echo $t_field; ?>" size="85" type="text" value="<?php
+            $t_config = plugin_config_get( $t_field );
+            $t_encoded = '';
+            foreach( $t_config as $t_value ) {
+              $t_encoded .= "$t_value;";
+            }
+            echo trim( $t_encoded, ';' );
+          ?>"</input>
+        </span>
+        <span class="label-style"></span>
+      </div>
+
       <span class="submit-button">
         <input type="submit" class="button" value="<?php echo lang_get( 'change_configuration' )?>" />
       </span>
