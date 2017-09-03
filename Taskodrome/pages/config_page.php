@@ -83,6 +83,26 @@ print_manage_menu( 'manage_plugin_page.php' );
                     </table>
                   </td>
                 </tr>
+
+                <tr>
+                  <?php $t_field = 'hidden_users'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center" width="20%">
+                    <span class="input">
+                      <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
+                        $t_config = plugin_config_get( $t_field );
+                        $t_encoded = '';
+                        foreach( $t_config as $t_value ) {
+                          $t_encoded .= "$t_value;";
+                        }
+                        echo trim( $t_encoded, ';' );
+                      ?>"</input>
+                    </span>
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
