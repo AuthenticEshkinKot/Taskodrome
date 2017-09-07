@@ -49,7 +49,7 @@ print_manage_menu( 'manage_plugin_page.php' );
                   <td class="center" width="20%">
                     <span class="input">
                       <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
-                        $t_config = plugin_config_get( $t_field );
+                        $t_config = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
                         $t_encoded = '';
                         foreach( $t_config as $t_value ) {
                           $t_encoded .= "$t_value;";
@@ -72,12 +72,12 @@ print_manage_menu( 'manage_plugin_page.php' );
                         <td>
                           <?php echo plugin_lang_get( $t_field . '_days' )?>:&nbsp
                           <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
-                          echo plugin_config_get( $t_field . '_days' ); ?>"/>
+                          echo plugin_config_get( $t_field . '_days', null, false, null, helper_get_current_project() ); ?>"/>
                         </td>
                         <td>
                           <?php echo plugin_lang_get( $t_field . '_hours' )?>:&nbsp
                           <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
-                          echo plugin_config_get( $t_field . '_hours' ); ?>"/>
+                          echo plugin_config_get( $t_field . '_hours', null, false, null, helper_get_current_project() ); ?>"/>
                         </td>
                       </tr>
                     </table>
@@ -93,7 +93,7 @@ print_manage_menu( 'manage_plugin_page.php' );
                   <td class="center" width="20%">
                     <span class="input">
                       <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
-                        $t_config = plugin_config_get( $t_field );
+                        $t_config = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
                         $t_encoded = '';
                         foreach( $t_config as $t_value ) {
                           $t_encoded .= "$t_value;";
