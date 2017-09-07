@@ -25,6 +25,7 @@
     $alive_user_ids = array();
     $issues_array_html = '';
     $allowed_statuses_html = '';
+    $current_project_id = helper_get_current_project();
 
     print '<div id="taskodrome_data" hidden="true">
     ';
@@ -123,11 +124,11 @@
     print '<p class="status_color_map" value="'.$status_color_map.'"></p>';
 
     $status_order = null;
-    foreach( plugin_config_get("status_board_order") as $t_value ) {
+    foreach( plugin_config_get("status_board_order", null, false, null, $current_project_id) as $t_value ) {
       $status_order .= $t_value.';';
     }
 
-    $t_versions = version_get_all_rows( helper_get_current_project() );
+    $t_versions = version_get_all_rows( $current_project_id );
     $t_versions_cnt = count( $t_versions );
     for( $k=0; $k < $t_versions_cnt; $k++ ) {
       $ver_id = $t_versions[$k]['id'];
@@ -135,8 +136,8 @@
     }
 
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
-    print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days") .'"></p>';
-    print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours") .'"></p>';
+    print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
+    print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
     print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
@@ -225,7 +226,7 @@
         }
       }
 
-      if (!is_user_hidden($t_user_name))
+      if (!is_user_hidden($t_user_name, $p_project_id))
       {
         $user = new User();
         $user->id = $t_user['id'];
@@ -243,9 +244,9 @@
     return $user_array;
   }
 
-  function is_user_hidden( $username )
+  function is_user_hidden( $username, $project_id )
   {
-    return in_array($username, plugin_config_get("hidden_users"));
+    return in_array($username, plugin_config_get("hidden_users", null, false, null, $project_id));
   }
 
   write_bug_rows( $rows );
