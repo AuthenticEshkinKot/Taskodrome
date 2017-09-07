@@ -31,14 +31,14 @@ print_manage_menu();
             <br />
             <span class="small">
               <?php printf( plugin_lang_get( 'default_value' ),
-                string_attribute( implode( ';', plugin_config_get('status_board_order_default') ) ));
+                string_attribute( implode( ';', plugin_config_get( $t_field . '_default' ) ) ));
               ?>
             </span>
           </span>
         </label>
         <span class="input">
           <input name="<?php echo $t_field; ?>" size="85" type="text" value="<?php
-            $t_config = plugin_config_get( $t_field );
+            $t_config = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
             $t_encoded = '';
             foreach( $t_config as $t_value ) {
               $t_encoded .= "$t_value;";
@@ -61,11 +61,11 @@ print_manage_menu();
         <span class="input">
           <?php echo plugin_lang_get( $t_field . '_days' ) ?>:
           <input name="<?php echo $t_field . '_days'; ?>" size="5" value="<?php
-            echo plugin_config_get( $t_field . '_days' ); ?>"/>
+            echo plugin_config_get( $t_field . '_days', null, false, null, helper_get_current_project() ); ?>"/>
           <br>
           <?php echo plugin_lang_get( $t_field . '_hours' ) ?>:
           <input name="<?php echo $t_field . '_hours'; ?>" size="5" value="<?php
-            echo plugin_config_get( $t_field . '_hours' ); ?>"/>
+            echo plugin_config_get( $t_field . '_hours', null, false, null, helper_get_current_project() ); ?>"/>
           <br>
         </span>
         <span class="label-style"></span>
@@ -85,7 +85,7 @@ print_manage_menu();
         </label>
         <span class="input">
           <input name="<?php echo $t_field; ?>" size="85" type="text" value="<?php
-            $t_config = plugin_config_get( $t_field );
+            $t_config = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
             $t_encoded = '';
             foreach( $t_config as $t_value ) {
               $t_encoded .= "$t_value;";
