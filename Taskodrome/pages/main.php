@@ -13,7 +13,7 @@
 
   $f_page_number = gpc_get_int( 'page_number', 1 );
 
-  $t_per_page = null;
+  $t_per_page = -1;
   $t_bug_count = null;
   $t_page_count = null;
 
