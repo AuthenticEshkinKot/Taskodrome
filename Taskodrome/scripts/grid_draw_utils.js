@@ -146,6 +146,9 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
   var cards = [];
   var lower_edge = 0;
   var lower_edge_curr = 0;
+  var onMousedown = createCardOnMousedown(panel, selectedCard, cardDescArray, issues);
+  var onPressmove = createCardOnPressmove(panel, selectedCard);
+  var onRollout = createCardOnRollout(panel);
 
   for(var v_i = 0, l = m_versions.length; v_i != l; ++v_i) {
     var start_y = tableSchemeOut.headerHeight + 2 * CARD_V_OFFSET + lower_edge;
@@ -163,28 +166,29 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
         if (issues[i][k].version != ver)
           continue;
 
-        position = {
+        var rect = {
           x : x,
           y : y,
           width : cardSize.width,
           height : cardSize.height
-        }
+        };
+        var onRollover = createCardOnRollover(panel, rect, issues[i][k]);
 
-        var card = createCard(panel, position, issues, issues[i][k], selectedCard, cardDescArray, onPressUp, isStatusGrid);
+        var card = createCard(rect, issues[i][k], isStatusGrid, onMousedown, onPressmove, onPressUp, onRollover, onRollout);
         cards.push(card);
 
         CardDesc = {
           x : x,
-          y : position.y,
+          y : rect.y,
           issueGroupIndex : i,
           issueIndex : k
         }
 
-        if(y + position.height > colSizeOut.height) {
-          colSizeOut.height += y + position.height - colSizeOut.height;
+        if(y + rect.height > colSizeOut.height) {
+          colSizeOut.height += y + rect.height - colSizeOut.height;
         }
 
-        y += position.height + 2 * CARD_V_OFFSET;
+        y += rect.height + 2 * CARD_V_OFFSET;
         lower_edge_curr = Math.max(y, lower_edge_curr);
 
         cardDescs.push(CardDesc);
@@ -206,14 +210,14 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
   return cards;
 };
 
-function createCard(panel, position, issues, issue, selectedCard, cardDescArray, onPressUp, isStatusGrid) {
+function createCard(rect, issue, isStatusGrid, onMousedown, onPressmove, onPressUp, onRollover, onRollout) {
   var card = new createjs.Container();
 
-  var back = createRect(position.width, position.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
+  var back = createRect(rect.width, rect.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
 
   var cardHeaderHeightOut = { value : -1 };
   var cardHeaderMarkColor = getColorByStatus(issue.status);
-  var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, position.width, issue.priorityCode, cardHeaderHeightOut);
+  var cardHeader = createCardHeader(issue.id, cardHeaderMarkColor, rect.width, issue.priorityCode, cardHeaderHeightOut);
 
   var y = cardHeaderHeightOut.value * 1.5;
 
@@ -224,7 +228,7 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
     y += assignee.getBounds().height * 1.5;
   }
 
-  var summary = createCardSummary(issue.summary, position.width);
+  var summary = createCardSummary(issue.summary, rect.width);
   summary.y = y;
   var summaryHeight = summary.getBounds() ? summary.getBounds().height : 0;
   y += summaryHeight + 10;
@@ -233,88 +237,18 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
   var updateTimeHeight = updateTime.getBounds().height;
   updateTime.y = y;
 
-  if(summary.y + summaryHeight + updateTimeHeight + 20 > position.height) {
-    var add = summary.y + summaryHeight + updateTimeHeight + 20 - position.height;
-    position.height += add;
+  if(summary.y + summaryHeight + updateTimeHeight + 20 > rect.height) {
+    var add = summary.y + summaryHeight + updateTimeHeight + 20 - rect.height;
+    rect.height += add;
 
-    back = createRect(position.width, position.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
+    back = createRect(rect.width, rect.height, CARD_STROKE_COLOR, CARD_FILL_COLOR);
   }
 
-  var shadowBack = createRect(position.width, position.height, "#00000000", "#000000");
+  var shadowBack = createRect(rect.width, rect.height, "#00000000", "#000000");
   card.shadowBack = shadowBack;
 
-  function cardOnMousedown(evt) {
-    //console.log("mousedown");
-    //console.log("mouse X = " + evt.stageX);
-    //console.log("mouse Y = " + evt.stageY);
-
-    panel.removeChild(card);
-    panel.addChild(card);
-
-    var boolSuccess = false;
-    var cardX = card.x;
-    var cardY = card.y;
-    selectedCard.mousePos.X = evt.stageX - card.x;
-    selectedCard.mousePos.Y = evt.stageY - card.y;
-
-    for(var i = 0; i < cardDescArray.length && !boolSuccess; ++i) {
-      if(cardDescArray[i].length > 0 && cardDescArray[i][0].x == cardX) {
-        for(var k = 0; k < cardDescArray[i].length && !boolSuccess; ++k) {
-          if(cardDescArray[i][k].y == cardY) {
-            boolSuccess = true;
-
-            console.log("Found! issues array index = " + i + " issue index = " + k);
-            console.log("cardX - " + cardX + ", cardY - " + cardY);
-
-            issueGroupIndex = cardDescArray[i][k].issueGroupIndex;
-            issueIndex = cardDescArray[i][k].issueIndex;
-
-            selectedCard.value = issues[issueGroupIndex][issueIndex];
-            selectedCard.sourceIndex = { i : issueGroupIndex, k : issueIndex };
-          }
-        }
-      }
-    }
-
-    card.shadowBack.shadow = new createjs.Shadow(CARD_SHADOW_COLOR, CARD_SHADOW_X, CARD_SHADOW_Y, 8);
-
-    if (m_popupCard != null) {
-      panel.removeChild(m_popupCard);
-      m_popupCard = null;
-    }
-  };
-  card.on("mousedown", cardOnMousedown);
-
-  function cardOnPressmove(evt) {
-    card.x = evt.stageX - selectedCard.mousePos.X;
-    card.y = evt.stageY - selectedCard.mousePos.Y;
-
-    m_update = true;
-    m_stageToUpdate = panel;
-  };
-  card.on("pressmove", cardOnPressmove);
-
-  card.on("pressup", onPressUp);
-
-  function cardOnRollover(evt) {
-    if (m_scrollTimer != null)
-      return;
-
-    m_popupCard = createPopupCard(evt.stageX, evt.stageY, position.width, issue.description, issue.severity, issue.priority, issue.reproducibility, isStatusGrid);
-    m_popupPause = POPUP_PAUSE;
-    m_stageToUpdate = panel;
-  };
-  card.on("rollover", cardOnRollover);
-
-  function cardOnRollout(evt) {
-    panel.removeChild(m_popupCard);
-    m_popupCard = null;
-    m_update = true;
-  };
-  card.on("rollout", cardOnRollout);
-
-  card.x = position.x;
-  card.y = position.y;
+  card.x = rect.x;
+  card.y = rect.y;
 
   card.addChild(shadowBack);
   card.addChild(back);
@@ -327,24 +261,106 @@ function createCard(panel, position, issues, issue, selectedCard, cardDescArray,
 
   card.tickEnabled = false;
 
+  if (onMousedown) {
+    card.on("mousedown", onMousedown);
+  }
+  if (onPressmove) {
+    card.on("pressmove", onPressmove);
+  }
+  if (onPressUp) {
+    card.on("pressup", onPressUp);
+  }
+  if (onRollover) {
+    card.on("rollover", onRollover);
+  }
+  if (onRollout) {
+    card.on("rollout", onRollout);
+  }
+
   return card;
 };
 
-function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorityText, reproducibilityText, isStatusGrid) {
+function createCardOnMousedown(panel, selectedCard, cardDescArray, issues) {
+  function OnMousedown(evt) {
+    panel.removeChild(this);
+    panel.addChild(this);
+
+    var boolSuccess = false;
+    var cardX = this.x;
+    var cardY = this.y;
+    selectedCard.mousePos.X = evt.stageX - this.x;
+    selectedCard.mousePos.Y = evt.stageY - this.y;
+
+    for(var i = 0; i < cardDescArray.length && !boolSuccess; ++i) {
+      if(cardDescArray[i].length > 0 && cardDescArray[i][0].x == cardX) {
+        for(var k = 0; k < cardDescArray[i].length && !boolSuccess; ++k) {
+          if(cardDescArray[i][k].y == cardY) {
+            boolSuccess = true;
+
+            console.log("Found! issues array index = " + i + " issue index = " + k);
+            console.log("cardX - " + cardX + ", cardY - " + cardY);
+
+            var issueGroupIndex = cardDescArray[i][k].issueGroupIndex;
+            var issueIndex = cardDescArray[i][k].issueIndex;
+
+            selectedCard.value = issues[issueGroupIndex][issueIndex];
+            selectedCard.sourceIndex = { i : issueGroupIndex, k : issueIndex };
+          }
+        }
+      }
+    }
+
+    this.shadowBack.shadow = new createjs.Shadow(CARD_SHADOW_COLOR, CARD_SHADOW_X, CARD_SHADOW_Y, 8);
+
+    if (m_popupCard != null) {
+      panel.removeChild(m_popupCard);
+      m_popupCard = null;
+    }
+  };
+
+  return OnMousedown;
+};
+
+function createCardOnPressmove(panel, selectedCard) {
+  function OnPressmove(evt) {
+    this.x = evt.stageX - selectedCard.mousePos.X;
+    this.y = evt.stageY - selectedCard.mousePos.Y;
+
+    m_update = true;
+    m_stageToUpdate = panel;
+  };
+
+  return OnPressmove;
+};
+
+function createCardOnRollover(panel, rect, issue) {
+  function OnRollover(evt) {
+    if (m_scrollTimer != null)
+      return;
+
+    m_popupCard = createPopupCard(evt.stageX, evt.stageY, rect.width, issue.description, issue.severity, issue.priority, issue.reproducibility, panel.canvas);
+    m_popupPause = POPUP_PAUSE;
+    m_stageToUpdate = panel;
+  };
+
+  return OnRollover;
+};
+
+function createCardOnRollout(panel) {
+  function OnRollout(evt) {
+    panel.removeChild(m_popupCard);
+    m_popupCard = null;
+    m_update = true;
+  };
+
+  return OnRollout;
+};
+
+function createPopupCard(x, y, cardWidth, descriptionText, severityText, priorityText, reproducibilityText, rootCanvas) {
   var card = new createjs.Container();
   var height = 0;
   var width = 0;
   var offset = 8;
-
-  var rootCanvas;
-  if (isStatusGrid)
-  {
-    rootCanvas = m_mainPanel_st.canvas;
-  }
-  else
-  {
-    rootCanvas = m_mainPanel.canvas;
-  }
 
   var maxWidth = getPopupMaxWidth(rootCanvas, cardWidth);
 
