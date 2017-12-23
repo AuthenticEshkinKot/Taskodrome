@@ -26,3 +26,5 @@ $s_plugin_Taskodrome_cooldown_period_hours = 'Hours';
 
 $s_plugin_Taskodrome_hidden_users_label = 'Hidden users';
 $s_plugin_Taskodrome_hidden_users_hint = 'Semicolon-separated list';
+
+$s_plugin_Taskodrome_empty_version_label = 'Show empty versions';

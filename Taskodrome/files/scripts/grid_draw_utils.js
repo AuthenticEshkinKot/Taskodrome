@@ -42,7 +42,7 @@ function fullRedraw() {
   draw_st();
 };
 
-function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parentDiv, isStatusGrid, selectedCard, parentSize, onPressUp, columnWidthOut, tableSchemeOut) {
+function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parentDiv, isStatusGrid, selectedCard, parentSize, onPressUp, showEmptyVersions, columnWidthOut, tableSchemeOut) {
   var colNumber = columnHeaders.length;
   var colSize = {
     width : 0,
@@ -77,7 +77,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parent
   var columns = createColumns(issues, columnHeaders, colSize, parentSize, tableSchemeOut);
   var oldColHeight = colSize.height;
   var cardCounts = [];
-  var cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSize, tableSchemeOut, cardCounts);
+  var cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, showEmptyVersions, colSize, tableSchemeOut, cardCounts);
   if(cards != null) {
     if(colSize.height > oldColHeight) {
       var add = colSize.height - oldColHeight;
@@ -87,7 +87,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parent
 
       colSize.height += add;
       cardCounts.length = 0;
-      cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSize, tableSchemeOut, cardCounts);
+      cards = createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, showEmptyVersions, colSize, tableSchemeOut, cardCounts);
     }
   } else
     return null;
@@ -98,7 +98,7 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parent
     panel.addChild(cards[i]);
   }
 
-  var version_borders = createVersionBorders(tableSchemeOut, parentSize.width, cardCounts);
+  var version_borders = createVersionBorders(tableSchemeOut, parentSize.width, cardCounts, showEmptyVersions);
   for(var i = 0; i != version_borders.length; ++i) {
     panel.addChild(version_borders[i]);
   }
@@ -111,10 +111,15 @@ function createTable(issues, cardDescArray, columnHeaders, panel, canvas, parent
   createScroller(canvas, parentDiv);
 };
 
-function createVersionBorders(tableScheme, parentWidth, cardCounts) {
+function createVersionBorders(tableScheme, parentWidth, cardCounts, showEmptyVersions) {
   var ret = [];
   var versionBorders = tableScheme.versionBorders;
   for (var i = 1, l = versionBorders.length; i < l; ++i) {
+    if (!showEmptyVersions && cardCounts[i].no_cards_w_version)
+    {
+      continue;
+    }
+
     var versionName = new createjs.Text(m_versions[i], "bold " + FONT, BLUE_COLOR);
     var versionBnds = versionName.getBounds();
     versionName.x = tableScheme.columnBorders[0] + 1 + COLUMN_DELIMITER_WIDTH / 2;
@@ -138,7 +143,7 @@ function createVersionBorders(tableScheme, parentWidth, cardCounts) {
   return ret;
 };
 
-function createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, colSizeOut, tableSchemeOut, cardCountsOut) {
+function createCards(panel, issues, cardDescArray, selectedCard, colNumber, cardSize, onPressUp, isStatusGrid, showEmptyVersions, colSizeOut, tableSchemeOut, cardCountsOut) {
   var textHeight = 10;
   cardDescArray.length = 0;
   tableSchemeOut.versionBorders.length = 0;
@@ -155,6 +160,7 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
     tableSchemeOut.versionBorders.push(start_y);
     cardCountsOut[v_i] = [];
 
+    var no_cards_w_version = true;
     var ver = m_versions[v_i];
     for(var i = 0; i < colNumber; ++i) {
       var x = CARD_H_OFFSET + (H_OFFSET + i * colSizeOut.width);
@@ -193,18 +199,23 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
 
         cardDescs.push(CardDesc);
         ++cardCountsOut[v_i][i];
+        no_cards_w_version = false;
       }
 
       cardDescArray.push(cardDescs);
     }
 
-    if (lower_edge_curr - lower_edge < 1.5 * cardSize.height)
-    {
-      lower_edge_curr = lower_edge + 1.5 * cardSize.height;
-      colSizeOut.height = lower_edge + 1.5 * cardSize.height;
-    }
+    cardCountsOut[v_i].no_cards_w_version = no_cards_w_version;
 
-    lower_edge = lower_edge_curr;
+    if (showEmptyVersions || !no_cards_w_version) {
+      if (lower_edge_curr - lower_edge < 1.5 * cardSize.height)
+      {
+        lower_edge_curr = lower_edge + 1.5 * cardSize.height;
+        colSizeOut.height = lower_edge + 1.5 * cardSize.height;
+      }
+
+      lower_edge = lower_edge_curr;
+    }
   }
 
   return cards;
