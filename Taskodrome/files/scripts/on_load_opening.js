@@ -34,6 +34,25 @@ function getCooldownPeriod() {
   return cooldownPeriodHours * 3600 + cooldownPeriodDays * 86400;
 };
 
+function setVersionVisibility() {
+  var checkbox_version = document.getElementById("checkbox_version");
+  var show_empty_versions = sessionStorage.getItem("show_empty_versions");
+  if (show_empty_versions != null) {
+    show_empty_versions = (show_empty_versions == "true");
+    checkbox_version.checked = show_empty_versions;
+  } else {
+    show_empty_versions = checkbox_version.checked;
+    sessionStorage.setItem("show_empty_versions", show_empty_versions);
+  }
+  console.log("show_empty_versions - " + show_empty_versions);
+
+  function onCheckboxClick() {
+    sessionStorage.setItem("show_empty_versions", checkbox_version.checked);
+    fullRedraw();
+  };
+  checkbox_version.onclick = onCheckboxClick;
+}
+
 function pageOnLoad() {
   onLoadOpening();
 
@@ -44,6 +63,7 @@ function pageOnLoad() {
   m_versions = getVersions();
   m_lang_report_details = getLangReportDetails();
 
+  setVersionVisibility();
   init();
   statusInit();
 };
