@@ -76,6 +76,26 @@
   margin-bottom: 1em;
 }
 
+#checkbox_version {
+  position: relative;
+  margin-left: 1.5em;
+  top: 0.3em;
+  color: #428AC8;
+}
+
+.checkbox_label {
+  color: #428AC8;
+  font-size: 10pt;
+  font-weight: bolder;
+  background: white;
+  padding-left: 0.2em;
+  padding-right: 0.6em;
+  padding-bottom: 0.25em;
+  padding-top: 0.25em;
+  margin-right: 0.12em;
+  margin-bottom: 1em;
+}
+
 .radio_label:hover {
   text-decoration: underline;
 }
