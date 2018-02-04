@@ -11,6 +11,7 @@ $s_plugin_Taskodrome_board = 'Taskodrome';
 
 $s_plugin_Taskodrome_assignment_board = 'Доска исполнителей';
 $s_plugin_Taskodrome_status_board = 'Доска статусов';
+$s_plugin_Taskodrome_relationship_board = 'Доска связей';
 
 $s_plugin_Taskodrome_config = 'Настройка';
 $s_plugin_Taskodrome_config_title = 'Настройка плагина Taskodrome';
@@ -28,3 +29,5 @@ $s_plugin_Taskodrome_hidden_users_label = 'Скрытые пользовател
 $s_plugin_Taskodrome_hidden_users_hint = 'Список, через точку с запятой';
 
 $s_plugin_Taskodrome_empty_version_label = 'Показать пустые версии';
+
+$s_plugin_Taskodrome_no_relations_message = 'Нет связей между задачами';

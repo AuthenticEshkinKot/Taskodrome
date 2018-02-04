@@ -66,6 +66,7 @@ function pageOnLoad() {
   setVersionVisibility();
   init();
   statusInit();
+  relationshipInit();
 };
 
 window.addEventListener("load", pageOnLoad);

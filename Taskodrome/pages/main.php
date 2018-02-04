@@ -12,6 +12,7 @@
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/scroller.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/devs_grid.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/status_grid.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/relationship_grid.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/on_load_opening.js') . "\"></script>\n";
 
   layout_page_header_end();
@@ -32,7 +33,10 @@
     $alive_user_ids = array();
     $issues_array_html = '';
     $allowed_statuses_html = '';
+    $relationships_html = '';
     $current_project_id = helper_get_current_project();
+
+    $rels_str = '';
 
     print '<div id="taskodrome_data" hidden="true">
     ';
@@ -60,6 +64,19 @@
       if (!array_key_exists($t_row->handler_id, $alive_user_ids))
       {
         continue;
+      }
+
+      $rels = relationship_get_all_src($t_row->id);
+      for($rel_i=0; $rel_i != count($rels); $rel_i++)
+      {
+        $relationships_html .= '<p class="relationship_data" ';
+        $relationships_html .= 'id="'.$rels[$rel_i]->id.'" ';
+        $relationships_html .= 'src_project_id="'.$rels[$rel_i]->src_project_id.'" ';
+        $relationships_html .= 'dest_project_id="'.$rels[$rel_i]->dest_project_id.'" ';
+        $relationships_html .= 'src_bug_id="'.$rels[$rel_i]->src_bug_id.'" ';
+        $relationships_html .= 'dest_bug_id="'.$rels[$rel_i]->dest_bug_id.'" ';
+        $relationships_html .= 'type="'.$rels[$rel_i]->type.'" ';
+        $relationships_html .= '></p>';
       }
 
       $issues_array_html .= '<p class="issue_data" ';
@@ -117,6 +134,7 @@
 
     print $issues_array_html;
     print $allowed_statuses_html;
+    print $relationships_html;
 
     $status_name_map = null;
     foreach( $t_all_statuses as $src_status_code => $src_status_name ) {
@@ -149,15 +167,21 @@
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
     print '<p id="lang_reproducibility" value="'. lang_get("reproducibility") .'"></p>';
+
+    print '<p id="lang_no_relations_msg" value="' . plugin_lang_get("no_relations_message") . '"</p>';
     print '</div>';
+
+    print $rels_str;
 
     print '<section class="tabs">
 
     <input type="radio" id="radio_dg" name="group" >
     <input type="radio" id="radio_sg" name="group" >
+    <input type="radio" id="radio_rg" name="group" >
 
     <label id="label_dg" class="radio_label" for="radio_dg" >' . plugin_lang_get("assignment_board") . '</label>
     <label id="label_sg" class="radio_label" for="radio_sg" >' . plugin_lang_get("status_board") . '</label>
+    <label id="label_rg" class="radio_label" for="radio_rg" >' . plugin_lang_get("relationship_board") . '</label>
 
     <input type="checkbox" id="checkbox_version">
     <label id="label_version" class="checkbox_label" for="checkbox_version">' . plugin_lang_get("empty_version_label") . '</label>
@@ -173,6 +197,12 @@
 
     print '<div id="tab_c2" class="grid">
     <canvas id="panel_st">
+    </canvas>
+    </div>
+    ';
+
+    print '<div id="tab_c3" class="grid">
+    <canvas id="panel_rl">
     </canvas>
     </div>
     ';
