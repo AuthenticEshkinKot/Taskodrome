@@ -137,12 +137,24 @@ function computeVersionIndex(y, tableScheme) {
 function openBoard(board) {
   setHrefMark(window, board);
 
-  if (board == "sg") {
-    document.getElementById("radio_sg").checked = true;
-    document.getElementById("radio_dg").checked = false;
-  } else {
-    document.getElementById("radio_dg").checked = true;
-    document.getElementById("radio_sg").checked = false;
+  switch (board) {
+    case "sg":
+      document.getElementById("radio_sg").checked = true;
+      document.getElementById("radio_dg").checked = false;
+      document.getElementById("radio_rg").checked = false;
+      break;
+    case "dg":
+      document.getElementById("radio_dg").checked = true;
+      document.getElementById("radio_sg").checked = false;
+      document.getElementById("radio_rg").checked = false;
+      break;
+    case "rg":
+      document.getElementById("radio_rg").checked = true;
+      document.getElementById("radio_sg").checked = false;
+      document.getElementById("radio_dg").checked = false;
+      break;
+    default:
+      console.log("Unknown board id - " + board);
   }
 };
 
@@ -227,4 +239,23 @@ function addRadioCallback(window, mark, radioId) {
     setHrefMark(window, mark);
   };
   document.getElementById(radioId).onclick = onRadioClick;
+};
+
+function setupParentSize(tabName, parentSize) {
+  var parentDiv = document.getElementById(tabName);
+
+  parentSize.width = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("width"));
+  parentSize.height = parseInt(window.getComputedStyle(parentDiv).getPropertyValue("height"));
+};
+
+function setupParentSizeWithBorder(tabName, parentSize, panelName) {
+  var tab = document.getElementById(tabName);
+  var tab_style = window.getComputedStyle(tab);
+
+  var border_width = parseInt(tab_style.getPropertyValue("border-right-width"))
+  + parseInt(tab_style.getPropertyValue("border-left-width"));
+
+  var panelCanvas = document.getElementById(panelName);
+  panelCanvas.width = parentSize.width - border_width;
+  panelCanvas.height = parentSize.height;
 };
