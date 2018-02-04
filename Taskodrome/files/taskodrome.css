@@ -44,22 +44,32 @@
   display: none;
 }
 
+#radio_rg {
+  display: none;
+}
+
 #radio_dg:checked ~ .tabs_cont #tab_c2,
-#radio_sg:checked ~ .tabs_cont #tab_c1 {
+#radio_dg:checked ~ .tabs_cont #tab_c3,
+#radio_sg:checked ~ .tabs_cont #tab_c1,
+#radio_sg:checked ~ .tabs_cont #tab_c3,
+#radio_rg:checked ~ .tabs_cont #tab_c1,
+#radio_rg:checked ~ .tabs_cont #tab_c2 {
   position: absolute;
   left: -9999px;
   opacity: 0;
 }
 
 #radio_dg:checked ~ .tabs_cont #tab_c1,
-#radio_sg:checked ~ .tabs_cont #tab_c2 {
+#radio_sg:checked ~ .tabs_cont #tab_c2,
+#radio_rg:checked ~ .tabs_cont #tab_c3 {
   position: static;
   left: 0;
   opacity: 1;
 }
 
 #radio_dg:checked ~ #label_dg,
-#radio_sg:checked ~ #label_sg {
+#radio_sg:checked ~ #label_sg,
+#radio_rg:checked ~ #label_rg {
   background: #428AC8;
   color: white;
 }

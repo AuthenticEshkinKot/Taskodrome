@@ -563,7 +563,7 @@ function createCardHeader(id, markColor, cardWidth, priorityCode, heightOut) {
   return cont;
 };
 
-function createCardNumber(issueNumber, width) {
+function createCardNumber(issueNumber) {
   var cont = new createjs.Container();
   var number = new createjs.Text(issueNumber, FONT, BLUE_COLOR);
   var numberBounds = number.getBounds();

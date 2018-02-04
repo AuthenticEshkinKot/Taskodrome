@@ -11,6 +11,7 @@ $s_plugin_Taskodrome_board = 'Taskodrome';
 
 $s_plugin_Taskodrome_assignment_board = 'Assignment board';
 $s_plugin_Taskodrome_status_board = 'Status board';
+$s_plugin_Taskodrome_relationship_board = 'Relationships board';
 
 $s_plugin_Taskodrome_config = 'Configuration';
 $s_plugin_Taskodrome_config_title = 'Taskodrome Plugin Configuration';
@@ -28,3 +29,5 @@ $s_plugin_Taskodrome_hidden_users_label = 'Hidden users';
 $s_plugin_Taskodrome_hidden_users_hint = 'Semicolon-separated list';
 
 $s_plugin_Taskodrome_empty_version_label = 'Show empty versions';
+
+$s_plugin_Taskodrome_no_relations_message = 'No relations between issues';
