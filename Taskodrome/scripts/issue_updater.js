@@ -25,7 +25,7 @@ function requestViewPage(bug_id, handler_id, version, status) {
       console.log("requestViewPage UNKNOWN: readyState=" + request.readyState
                 + " status=" + request.status);
     }
-  }
+  };
 
   request.onreadystatechange = onReadyStateChange;
   request.send(null);
@@ -55,7 +55,7 @@ function requesBugUpdatePage(requestPrev, bug_id, handler_id, version, status) {
       console.log("requesBugUpdatePage UNKNOWN: readyState=" + request.readyState
                 + " status=" + request.status);
     }
-  }
+  };
 
   request.onreadystatechange = onReadyStateChange;
   var parameters = "bug_update_page_token=" + security_token
@@ -87,7 +87,7 @@ function requestBugUpdate(requestPrev, bug_id, handler_id, version, status) {
       console.log("requestBugUpdate UNKNOWN: readyState=" + request.readyState
                 + " status=" + request.status);
     }
-  }
+  };
 
   request.onreadystatechange = onReadyStateChange;
   var parameters = "bug_update_token=" + security_token

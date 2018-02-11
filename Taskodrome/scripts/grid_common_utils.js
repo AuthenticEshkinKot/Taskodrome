@@ -122,7 +122,7 @@ function computeColumnIndex(x, tableScheme) {
     }
   }
   return -1;
-}
+};
 
 function computeVersionIndex(y, tableScheme) {
   var versionBorders = tableScheme.versionBorders;
@@ -132,7 +132,7 @@ function computeVersionIndex(y, tableScheme) {
     }
   }
   return -1;
-}
+};
 
 function openBoard(board) {
   setHrefMark(window, board);
@@ -223,7 +223,7 @@ function getLangReportDetails() {
   var repr = document.getElementById("lang_reproducibility").getAttribute("value");
   ret["reproducibility"] = repr ? repr : "Reproducibility";
   return ret;
-}
+};
 
 function checkExistence(functionName, obj) {
   var exists = (obj != null);
