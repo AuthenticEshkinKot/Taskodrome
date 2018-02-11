@@ -51,7 +51,7 @@ function setVersionVisibility() {
     fullRedraw();
   };
   checkbox_version.onclick = onCheckboxClick;
-}
+};
 
 function pageOnLoad() {
   onLoadOpening();

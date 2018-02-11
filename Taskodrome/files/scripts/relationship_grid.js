@@ -34,8 +34,7 @@ function draw_rl() {
   m_mainPanel_rl.update();
 };
 
-function drawRelations_rl(sizeOut)
-{
+function drawRelations_rl(sizeOut) {
   if (m_relations_rl.length == 0) {
     noIssuesWarning_rl();
     return;
