@@ -105,11 +105,11 @@ function setHrefMark(window, mark) {
 
 function getPathToMantisFile(window, filename) {
   var protocol = window.location.protocol;
-  var hostname = window.location.hostname;
+  var host = window.location.host;
 
   var path = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"));
 
-  var result = protocol + "//" + hostname + path + "/" + filename;
+  var result = protocol + "//" + host + path + "/" + filename;
 
   return result;
 };
