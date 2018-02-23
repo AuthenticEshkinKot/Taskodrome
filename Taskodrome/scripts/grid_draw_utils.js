@@ -24,6 +24,8 @@ var COL_HEADER_FONT_COLOR = "#FFFFFF";
 var COL_HEADER_FONT_SIZE = "14pt";
 var COL_HEADER_FONT = COL_HEADER_FONT_SIZE + " " + FONT_FAMILY;
 
+var MAX_CANVAS_HEIGHT = 32767;
+
 var MIN_COL_WIDTH = 200;
 
 var POPUP_PAUSE = 600;
@@ -181,7 +183,21 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
         var onRollover = createCardOnRollover(panel, rect, issues[i][k]);
 
         var card = createCard(rect, issues[i][k], isStatusGrid, onMousedown, onPressmove, onPressUp, onRollover, onRollout);
+        var newColHeight = y + rect.height;
+        if (newColHeight > MAX_CANVAS_HEIGHT)
+        {
+          console.log("WARNING: Unable to show issue id " + issues[i][k].id + " due to canvas height exhaustion");
+          break;
+        }
+
         cards.push(card);
+
+        if(newColHeight > colSizeOut.height) {
+          colSizeOut.height = newColHeight;
+        }
+
+        y += rect.height + 2 * CARD_V_OFFSET;
+        lower_edge_curr = Math.max(y, lower_edge_curr);
 
         CardDesc = {
           x : x,
@@ -189,13 +205,6 @@ function createCards(panel, issues, cardDescArray, selectedCard, colNumber, card
           issueGroupIndex : i,
           issueIndex : k
         }
-
-        if(y + rect.height > colSizeOut.height) {
-          colSizeOut.height += y + rect.height - colSizeOut.height;
-        }
-
-        y += rect.height + 2 * CARD_V_OFFSET;
-        lower_edge_curr = Math.max(y, lower_edge_curr);
 
         cardDescs.push(CardDesc);
         ++cardCountsOut[v_i][i];
@@ -533,7 +542,7 @@ function createRect(width, height, strokeColor, fillColor) {
 function createCardHeader(id, markColor, cardWidth, priorityCode, heightOut) {
   var cont = new createjs.Container();
 
-  var number = createCardNumber(id, cardWidth);
+  var number = createCardNumber(id);
   var height = number.getBounds().height * 2;
   heightOut.value = height;
   var numberWidth = number.getBounds().width;
