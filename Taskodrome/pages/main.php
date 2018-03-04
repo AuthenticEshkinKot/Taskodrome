@@ -248,14 +248,14 @@
     $t_sort_by_last_name = ( ON == config_get( 'sort_by_last_name' ) );
     foreach( $t_users as $t_key => $t_user ) {
       $t_user_name = string_attribute( $t_user['username'] );
-      $t_sort_name = utf8_strtolower( $t_user_name );
+      $t_sort_name = mb_strtolower( $t_user_name );
       if( $t_show_realname && ( $t_user['realname'] <> '' ) ) {
         $t_user_name = string_attribute( $t_user['realname'] );
         if( $t_sort_by_last_name ) {
-          $t_sort_name_bits = explode( ' ', utf8_strtolower( $t_user_name ), 2 );
+          $t_sort_name_bits = explode( ' ', mb_strtolower( $t_user_name ), 2 );
           $t_sort_name = ( isset( $t_sort_name_bits[1] ) ? $t_sort_name_bits[1] . ', ' : '' ) . $t_sort_name_bits[0];
         } else {
-          $t_sort_name = utf8_strtolower( $t_user_name );
+          $t_sort_name = mb_strtolower( $t_user_name );
         }
       }
 
