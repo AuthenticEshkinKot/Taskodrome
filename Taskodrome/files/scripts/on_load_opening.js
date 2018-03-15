@@ -4,6 +4,7 @@ var m_allowed_statuses_map;
 var m_status_color_map;
 var m_versions;
 var m_lang_report_details;
+var m_auto_set_status_to_assigned;
 
 function onLoadOpening() {
   var markIndex = window.location.href.lastIndexOf("#");
@@ -62,6 +63,7 @@ function pageOnLoad() {
   m_status_color_map = getStatusColors();
   m_versions = getVersions();
   m_lang_report_details = getLangReportDetails();
+  m_auto_set_status_to_assigned = getAutoSetStatusToAssigned();
 
   setVersionVisibility();
   init();

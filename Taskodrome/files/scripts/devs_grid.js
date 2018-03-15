@@ -81,7 +81,7 @@ function onPressUp(evt) {
     m_selectedCard.value.updateTime = Math.round((new Date().getTime()) / 1000);
 
     if(m_selectedCard.value.handler_id == 0 && m_selectedCard.value.status != 80
-    && m_selectedCard.value.status != 90) {
+    && m_selectedCard.value.status != 90 && m_auto_set_status_to_assigned) {
       m_selectedCard.value.status = '50';
     }
 

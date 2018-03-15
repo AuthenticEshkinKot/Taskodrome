@@ -225,6 +225,11 @@ function getLangReportDetails() {
   return ret;
 };
 
+function getAutoSetStatusToAssigned() {
+  var val = document.getElementById("auto_set_status_to_assigned").getAttribute("value");
+  return (val !== '0');
+};
+
 function checkExistence(functionName, obj) {
   var exists = (obj != null);
   console.log(functionName + ": exists - " + exists);
