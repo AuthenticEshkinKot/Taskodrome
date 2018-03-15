@@ -79,7 +79,7 @@ function onPressUp(evt) {
     var handler_id = user_ids[newColumnIndex];
     var bug_id = m_selectedCard.value.id;
 
-    if(handler_id != 0) {
+    if(handler_id != 0 && m_auto_set_status_to_assigned) {
       m_selectedCard.value.status = '50';
     }
 
