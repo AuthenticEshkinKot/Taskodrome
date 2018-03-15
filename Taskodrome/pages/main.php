@@ -161,6 +161,7 @@
     }
 
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
+    print '<p id="auto_set_status_to_assigned" value="'. config_get( "auto_set_status_to_assigned" ) .'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
     print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
