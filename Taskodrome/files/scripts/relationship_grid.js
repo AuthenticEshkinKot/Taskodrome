@@ -141,6 +141,9 @@ function createMappedIsseuesWithRelations_rl(rels) {
     var src_id = item.src_bug_id.toString();
     var dest_id = item.dest_bug_id.toString();
 
+    if ( item[src_id] == undefined || item[dest_id] == undefined )
+        return;
+    
     if (ret[src_id] == undefined) {
       ret[src_id] = { issue : item[src_id], children : [], isChild : false };
     }
