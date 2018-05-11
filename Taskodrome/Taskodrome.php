@@ -11,7 +11,7 @@ class TaskodromePlugin extends MantisPlugin
     $this->description = plugin_lang_get("description");
     $this->page = 'config_page';
 
-    $this->version = "1.4.2";
+    $this->version = "1.4.3";
     $this->requires = array(
       "MantisCore" => "1.2.9",
     );
