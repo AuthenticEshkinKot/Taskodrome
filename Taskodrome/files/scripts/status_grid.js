@@ -117,9 +117,7 @@ function createColumnStatusMap() {
   }
 
   for (var i = 0; i != m_statusList.length; ++i) {
-    var status = m_statusList[i];
-    var statusNameL = status.toLowerCase();
-    m_statusByColumns[i] = statusCodes[statusNameL];
+    m_statusByColumns[i] = statusCodes[i];
   }
 
   for (var i = 0; i != 91; ++i) {
@@ -169,18 +167,15 @@ function getStatusList_st() {
   return ret;
 };
 
+//return status code sort by status in the config
 function getStatusCodes_st() {
   var ret = [];
-  var statusNameMap = document.getElementsByClassName("status_name_map")[0].getAttribute("value");
-  if (!checkExistence("getStatusCodes_st", statusNameMap)) {
+  var statusCode = document.getElementsByClassName("status_name_map")[0].getAttribute("value");
+  if (!checkExistence("getStatusCodes_st", statusCode)) {
     return ret;
   }
-  var pairs = statusNameMap.split(';');
-
-  for (var i = 0, l = pairs.length; i != l - 1; ++i) {
-    var pair = pairs[i].split(':');
-    ret[pair[1].toLowerCase()] = pair[0];
-  }
+  var ret = statusCode.split(';');
+  ret = ret.splice(0, ret.length - 1);
 
   return ret;
 };
