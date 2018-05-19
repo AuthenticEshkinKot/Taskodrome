@@ -153,7 +153,31 @@
       $status_order .= $t_value.';';
     }
 
-    $t_versions = version_get_all_rows( $current_project_id );
+    $t_user_id = auth_get_current_user_id();
+    if( ALL_PROJECTS == $current_project_id ) {
+        $t_project_ids_to_check = user_get_all_accessible_projects( $t_user_id, ALL_PROJECTS );
+        $t_project_ids = array();
+        foreach ( $t_project_ids_to_check as $current_project_id ) {
+            $t_roadmap_view_access_level = config_get( 'roadmap_view_threshold', null, null, $current_project_id );
+            if( access_has_project_level( $t_roadmap_view_access_level, $current_project_id ) ) {
+                $t_project_ids[] = $current_project_id;
+            }
+        }
+    } else {
+        access_ensure_project_level( config_get( 'roadmap_view_threshold' ), $current_project_id );
+        $t_project_ids = user_get_all_accessible_subprojects( $t_user_id, $current_project_id );
+        array_unshift( $t_project_ids, $current_project_id );
+    }
+    
+    $t_versions = array();
+    foreach( $t_project_ids as $t_project_id ) {
+        $t_project_version = version_get_all_rows( $t_project_id, false, false );
+        foreach ( $t_project_version as $t_version )
+            $t_versions[] = $t_version;
+    }
+    $t_versions = array_reverse( $t_versions );
+        
+    //$t_versions = version_get_all_rows( $current_project_id );    
     $t_versions_cnt = count( $t_versions );
     for( $k=0; $k < $t_versions_cnt; $k++ ) {
       $ver_id = $t_versions[$k]['id'];
