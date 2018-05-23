@@ -170,7 +170,7 @@ function getStatusList_st() {
 //return status code sort by status in the config
 function getStatusCodes_st() {
   var ret = [];
-  var statusCode = document.getElementsByClassName("status_name_map")[0].getAttribute("value");
+  var statusCode = document.getElementsByClassName("status_code_order")[0].getAttribute("value");
   if (!checkExistence("getStatusCodes_st", statusCode)) {
     return ret;
   }
