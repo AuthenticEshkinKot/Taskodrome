@@ -186,7 +186,7 @@
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
     print '<p id="lang_reproducibility" value="'. lang_get("reproducibility") .'"></p>';
 
-    print '<p id="lang_no_relations_msg" value="' . plugin_lang_get("no_relations_message") . '"</p>';
+    print '<p id="lang_no_relations_msg" value="' . plugin_lang_get("no_relations_message") . '"></p>';
     print '</div>';
 
     print $rels_str;
