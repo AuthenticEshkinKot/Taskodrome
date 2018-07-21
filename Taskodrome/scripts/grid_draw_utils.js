@@ -645,12 +645,12 @@ function createCardAssignee(issueHandlerId) {
 };
 
 function createCardSummary(issueText, width) {
-  var summary = createShortenedText(issueText, width - 2 * CARD_TEXT_H_OFFSET, FONT, FONT_COLOR, 5);
+  var summary = createShortenedText(issueText, width - 2 * CARD_TEXT_H_OFFSET, FONT, FONT_COLOR, 5, false);
   summary.x = CARD_TEXT_H_OFFSET;
   return summary;
 };
 
-function createShortenedText(text, lineWidth, font, font_color, step, is_single_line = false) {
+function createShortenedText(text, lineWidth, font, font_color, step, is_single_line) {
   var textObj = new createjs.Text(text, font, font_color);
   textObj.lineWidth = is_single_line ? null : lineWidth;
   var textObjWidth = textObj.getBounds() ? textObj.getBounds().width : 0;
