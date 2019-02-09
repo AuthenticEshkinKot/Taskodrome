@@ -169,15 +169,9 @@
         array_unshift( $t_project_ids, $current_project_id );
     }
     
-    $t_versions = array();
-    foreach( $t_project_ids as $t_project_id ) {
-        $t_project_version = version_get_all_rows( $t_project_id, false, false );
-        foreach ( $t_project_version as $t_version )
-            $t_versions[] = $t_version;
-    }
+    $t_versions = version_get_all_rows( $current_project_id );
     $t_versions = array_reverse( $t_versions );
         
-    //$t_versions = version_get_all_rows( $current_project_id );    
     $t_versions_cnt = count( $t_versions );
     for( $k=0; $k < $t_versions_cnt; $k++ ) {
       $ver_id = $t_versions[$k]['id'];
