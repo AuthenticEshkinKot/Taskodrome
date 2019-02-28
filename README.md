@@ -4,6 +4,9 @@ Interactive scrum board for Mantis bugtracker 1.2.9 and later.
 # Installation
 Copy Taskodrome catalogue to mantisbt plugin directory.
 
+# Dependencies
+PHP mbstring extension should be installed.
+
 ## Compatibility
 MantisBT version | Branch
 :---:|---
