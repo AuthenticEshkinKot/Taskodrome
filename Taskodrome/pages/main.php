@@ -178,7 +178,25 @@
       print '<p class="version" value="'.version_get_field($ver_id, "version").'"></p>';
     }
 
+    $status_code = null;
+    $status_name = explode( ';' , $status_order );
+    $t_enum_statuses = config_get( 'status_enum_string' );
+    $t_statuses = explode( ',', $t_enum_statuses );
+    $t_status_array = array();
+    foreach( $t_statuses as $t_status  ) {
+        $t_status_array[] = explode( ':', $t_status );
+    }
+    
+    foreach( $status_name as $t_name ) {
+        for ( $i = 0 ; $i < sizeof($t_status_array) ; $i++ ){
+            if ( 0 == strcmp($t_name, $t_status_array[$i][1]) ){
+                $status_code .= $t_status_array[$i][0] . ';';
+            }
+        }
+    }
+    
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
+    print '<p class="status_code_order" value="'.$status_code.'"></p>';
     print '<p id="auto_set_status_to_assigned" value="'. config_get( "auto_set_status_to_assigned" ) .'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
