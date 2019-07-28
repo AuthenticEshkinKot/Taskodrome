@@ -6,6 +6,9 @@ Copy Taskodrome catalogue to mantisbt plugin directory.
 
 If you are upgrading from Taskodrome v.1 to v.2 you should completely remove previous installation of the plugin from your mantisbt plugin directory.
 
+# Dependencies
+PHP mbstring extension should be installed.
+
 ## Compatibility
 MantisBT version | Branch
 :---:|---
