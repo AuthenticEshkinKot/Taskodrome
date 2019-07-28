@@ -31,3 +31,6 @@ $s_plugin_Taskodrome_hidden_users_hint = 'Список, через точку с
 $s_plugin_Taskodrome_empty_version_label = 'Показать пустые версии';
 
 $s_plugin_Taskodrome_no_relations_message = 'Нет связей между задачами';
+
+$s_plugin_Taskodrome_no_status_transition = 'ОШИБКА: Переход из $1 в $2 запрещён';
+$s_plugin_Taskodrome_depends_on_issues = 'ОШИБКА: Задача $1 зависит от $2';

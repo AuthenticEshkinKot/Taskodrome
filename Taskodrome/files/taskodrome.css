@@ -1,9 +1,8 @@
 .grid {
   background-color: #EEEEEE;
   border: 1px solid #428AC8;
-  height: auto;
-  min-height: 500px;
-  overflow-x: auto;
+  height: 80vh;
+  overflow: hidden;
 }
 
 .tabs {
@@ -12,8 +11,7 @@
 
 .tabs_cont {
   background: #fff;
-  height: auto;
-  min-height: 500px;
+  height: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -64,6 +62,18 @@
 #radio_rg:checked ~ #label_rg {
   background: #428AC8;
   color: white;
+}
+
+#radio_rg:checked ~ .checkbox_label,
+#radio_rg:checked ~ #checkbox_version {
+  opacity: 0;
+}
+
+#radio_dg:checked ~ .checkbox_label,
+#radio_sg:checked ~ .checkbox_label,
+#radio_dg:checked ~ #checkbox_version,
+#radio_sg:checked ~ #checkbox_version {
+  opacity: 1;
 }
 
 .radio_label {

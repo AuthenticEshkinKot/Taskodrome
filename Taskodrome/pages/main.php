@@ -5,15 +5,25 @@
   layout_page_header_begin(plugin_lang_get( 'board' ));
 
   print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodrome.css')."\" />\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/easeljs-0.8.2.min.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_common_utils.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid_draw_utils.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/fabric.min.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/utils.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/data_source.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/page.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/drawable.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/column_handler.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/card.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/card_transfer.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/block/block_graphics.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/block/block.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/block/block_list.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/scrollbar.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/grid.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/issue_updater.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/scroller.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/devs_grid.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/status_grid.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/relationship_grid.js') . "\"></script>\n";
-  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/on_load_opening.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/popup_alert.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/status_page.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/dev_page.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/relationship_page.js') . "\"></script>\n";
+  print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/starter.js') . "\"></script>\n";
 
   layout_page_header_end();
 
@@ -179,15 +189,16 @@
     }
 
     print '<p class="status_board_order" value="'.$status_order.'"></p>';
-    print '<p id="auto_set_status_to_assigned" value="'. config_get( "auto_set_status_to_assigned" ) .'"></p>';
+    print '<p id="autoassign" value="'. config_get( "auto_set_status_to_assigned" ) .'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
     print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';
     print '<p id="lang_reproducibility" value="'. lang_get("reproducibility") .'"></p>';
-
     print '<p id="lang_no_relations_msg" value="' . plugin_lang_get("no_relations_message") . '"></p>';
+    print '<p id="lang_no_status_transition" value="' . plugin_lang_get("no_status_transition") . '"></p>';
+    print '<p id="lang_depends_on_issues" value="' . plugin_lang_get("depends_on_issues") . '"></p>';
     print '</div>';
 
     print $rels_str;
@@ -209,19 +220,19 @@
     <div id="tab_c1" class="grid">
     ';
 
-    print '<canvas id="panel">
+    print '<canvas id="canvas_dv">
     </canvas>
     </div>
     ';
 
     print '<div id="tab_c2" class="grid">
-    <canvas id="panel_st">
+    <canvas id="canvas_st">
     </canvas>
     </div>
     ';
 
     print '<div id="tab_c3" class="grid">
-    <canvas id="panel_rl">
+    <canvas id="canvas_rl">
     </canvas>
     </div>
     ';
@@ -305,7 +316,6 @@
   }
 
   write_bug_rows( $rows );
-  layout_page_end();
-
+  // layout_page_end();
 
 ?>
