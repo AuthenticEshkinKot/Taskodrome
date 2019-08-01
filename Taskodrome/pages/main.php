@@ -316,6 +316,26 @@
   }
 
   write_bug_rows( $rows );
-  // layout_page_end();
 
+  function taskodrome_layout_page_end()
+  {
+    if( !db_is_connected() ) {
+      return;
+    }
+
+    event_signal( 'EVENT_LAYOUT_CONTENT_END' );
+
+    echo '</div>' , "\n";
+
+    layout_page_content_end();
+    layout_main_content_end();
+
+    layout_main_container_end();
+    layout_body_javascript();
+
+    html_body_end();
+    html_end();
+  }
+
+  taskodrome_layout_page_end();
 ?>
