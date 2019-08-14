@@ -251,7 +251,7 @@ function ScrollbarH(grid, /** @type {Page} */page) {
 };
 
 function VisibilityAnimator(/** @type {Drawable} */drawable, /** @type {Page} */page) {
-  var TIMEOUT = 800;
+  var TIMEOUT = 750;
   var DURATION = 500;
 
   var m_keepVisible = false;

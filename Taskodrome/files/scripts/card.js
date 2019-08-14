@@ -516,7 +516,7 @@ function Popup(cardWidth, description, severity, priority, reproducibility, /** 
 };
 
 function PopupVisibilityManager(/** @type {Drawable} */popup, /** @type {Page} */page) {
-  var TIMEOUT = 800;
+  var TIMEOUT = 750;
 
   var m_self = this;
   var m_mouseOver = false;
