@@ -416,6 +416,7 @@ function Card(id, owner, version, summary, description, severity, priority, prio
   this.move = function(h, v) {
     if (!m_isMouseDown) {
       parentMove(h, v);
+      m_popup_vis_mgr.hidePopup();
     }
   };
 };
@@ -517,6 +518,7 @@ function Popup(cardWidth, description, severity, priority, reproducibility, /** 
 function PopupVisibilityManager(/** @type {Drawable} */popup, /** @type {Page} */page) {
   var TIMEOUT = 800;
 
+  var m_self = this;
   var m_mouseOver = false;
   var m_mouseMoved = false;
   var m_lastPointerPos = null;
@@ -527,8 +529,7 @@ function PopupVisibilityManager(/** @type {Drawable} */popup, /** @type {Page} *
   };
 
   this.onMouseDown = function() {
-    m_mouseOver = false;
-    popup.hide();
+    m_self.hidePopup();
   };
 
   this.onMouseOver = function(evt) {
@@ -544,6 +545,10 @@ function PopupVisibilityManager(/** @type {Drawable} */popup, /** @type {Page} *
   };
 
   this.onMouseOut = function() {
+    m_self.hidePopup();
+  };
+
+  this.hidePopup = function() {
     m_mouseOver = false;
     popup.hide();
   };
