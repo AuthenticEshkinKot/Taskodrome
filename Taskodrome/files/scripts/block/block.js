@@ -61,9 +61,9 @@ function Block(name, /** @type {ColumnHandler} */columnHandler, /** @type {Page}
     if (this.toBeDrawn()) {
       m_blockGr.setPos(new Position(0, top + V_OFFSET));
       var width = columnHandler.getColumnWidth();
-      this.m_bounds = { top : top, bottom : m_blockGr.m_bounds.bottom, left : 0, right : width * columnHandler.getColumnNumber() };
+      this.m_bounds = { top : top, bottom : m_blockGr.m_bounds.bottom, left : this.m_bounds.left, right : this.m_bounds.left + width * columnHandler.getColumnNumber() };
       for (var i = 0; i != columnHandler.getColumnNumber(); ++i) {
-        var pos = new Position(width * i, m_blockGr.m_bounds.bottom);
+        var pos = new Position(this.m_bounds.left + width * i, m_blockGr.m_bounds.bottom);
         var column = m_columns[i];
         for (var k = 0; k != column.length; ++k) {
           column[k].setPos(pos);
@@ -81,7 +81,7 @@ function Block(name, /** @type {ColumnHandler} */columnHandler, /** @type {Page}
         this.setFooter(true);
       }
     } else {
-      this.m_bounds = { top : top, bottom : top, left : 0, right : width * columnHandler.getColumnNumber() };
+      this.m_bounds = { top : top, bottom : top, left : this.m_bounds.left, right : this.m_bounds.left + width * columnHandler.getColumnNumber() };
       if (this.m_isPrev) {
         this.setPrev(false);
       } else if (this.m_isHeader) {
