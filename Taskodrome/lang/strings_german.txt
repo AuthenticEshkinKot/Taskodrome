@@ -1,0 +1,36 @@
+<?php
+
+# Copyright (c) 2015 Maxim Kuzmin
+# Licensed under the Apache license
+
+$s_plugin_Taskodrome_ = '';
+$s_plugin_Taskodrome_title = 'Interaktive Berichtsübersicht';
+$s_plugin_Taskodrome_description = 'Interaktive Berichte';
+
+$s_plugin_Taskodrome_board = 'Taskodrome';
+
+$s_plugin_Taskodrome_assignment_board = 'Berichtszuweisungen';
+$s_plugin_Taskodrome_status_board = 'Statusübersicht';
+$s_plugin_Taskodrome_relationship_board = 'Berichtsbeziehungen';
+
+$s_plugin_Taskodrome_config = 'Konfiguration';
+$s_plugin_Taskodrome_config_title = 'Taskodrome Plugin Konfiguration';
+
+$s_plugin_Taskodrome_default_value = 'Standardwert:<br>%s<br>';
+
+$s_plugin_Taskodrome_status_board_order_label = 'Statusübersicht - Sortierung';
+
+$s_plugin_Taskodrome_cooldown_period_label = 'Cooldown Zeitraum';
+$s_plugin_Taskodrome_cooldown_period_hint = 'Cooldown Zeitraum ist die Summe dieser Werte (Z.B., Zeitraum 1 Tag und 7 Stunden entspricht: 31 Stunden)';
+$s_plugin_Taskodrome_cooldown_period_days = 'Tage';
+$s_plugin_Taskodrome_cooldown_period_hours = 'Stunden';
+
+$s_plugin_Taskodrome_hidden_users_label = 'Versteckte User';
+$s_plugin_Taskodrome_hidden_users_hint = 'Semikolon-getrennte Liste';
+
+$s_plugin_Taskodrome_empty_version_label = 'Leere Versionen anzeigen';
+
+$s_plugin_Taskodrome_no_relations_message = 'Keine Beziehungen zwischen Berichten';
+
+$s_plugin_Taskodrome_no_status_transition = 'FEHLER: Übergang von $1 zu $2 ist unzulässig';
+$s_plugin_Taskodrome_depends_on_issues = 'FEHLER: Bericht $1 hängt von $2 ab';
