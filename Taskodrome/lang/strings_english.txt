@@ -32,5 +32,5 @@ $s_plugin_Taskodrome_empty_version_label = 'Show empty versions';
 
 $s_plugin_Taskodrome_no_relations_message = 'No relations between issues';
 
-$s_plugin_Taskodrome_no_status_transition = 'ERROR: Transition from "$1" to "$2" is forbidden';
+$s_plugin_Taskodrome_no_status_transition = 'ERROR: Transition from $1 to $2 is forbidden';
 $s_plugin_Taskodrome_depends_on_issues = 'ERROR: Issue $1 depends on $2';
