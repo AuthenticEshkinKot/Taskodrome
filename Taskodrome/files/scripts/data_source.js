@@ -134,7 +134,7 @@ var DataSource = (function() {
   };
 
   var StatusId = function(name) {
-    return m_statusIds[name];
+    return m_statusIds[name.toLowerCase()];
   };
 
   function getStatusColors() {
