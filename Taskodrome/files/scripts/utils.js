@@ -89,21 +89,12 @@ function getPathToMantisFile(window, filename) {
 };
 
 function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
-  var textGr = new fabric.Text(text, {
-    fontFamily: "Arial",
-    fontSize: fabric.util.parseUnit("12px"),
-
-    evented: false,
-    hasBorders: false,
-    hasControls: false,
-    selectable: false
-  });
-
-  var resWidth = Math.round(textGr.getScaledWidth());
-  var resHeight = Math.round(textGr.getScaledHeight());
-
+  var textGr = null;
+  var resWidth = null;
+  var resHeight = null;
   var shortenedText = text;
-  while (resWidth > maxWidth || resHeight > maxHeight) {
+
+  do {
     if (isSingleLine) {
       textGr = new fabric.Text(shortenedText, {
         fontFamily: "Arial",
@@ -134,11 +125,31 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
 
     if (shortenedText.length < 8) {
       return textGr;
-    } else {
-      text = text.substring(0, text.length - 3);
-      shortenedText = text + "...";
     }
-  };
+
+    var subtract = 3;
+
+    if (!isSingleLine) {
+      if (resHeight > maxHeight) {
+        var removeChars = 0;
+        var currentHeight = resHeight;
+        for (var i = textGr.textLines.length - 1; i >= 0; --i) {
+          currentHeight -= textGr.getHeightOfLine(i);
+          removeChars += textGr.textLines[i].length;
+          if (currentHeight <= maxHeight) {
+            break;
+          }
+        }
+
+        if (removeChars > subtract) {
+          subtract = removeChars;
+        }
+      }
+    }
+
+    text = text.substring(0, text.length - subtract);
+    shortenedText = text + "...";
+  } while (resWidth > maxWidth || resHeight > maxHeight);
 
   return textGr;
 };
