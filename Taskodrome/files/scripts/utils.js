@@ -94,11 +94,13 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
   var resHeight = null;
   var shortenedText = text;
 
+  var fontSize = fabric.util.parseUnit("12px");
+
   do {
     if (isSingleLine) {
       textGr = new fabric.Text(shortenedText, {
         fontFamily: "Arial",
-        fontSize: fabric.util.parseUnit("12px"),
+        fontSize: fontSize,
 
         evented: false,
         hasBorders: false,
@@ -108,10 +110,9 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
     } else {
       textGr = new fabric.Textbox(shortenedText, {
         fontFamily: "Arial",
-        fontSize: fabric.util.parseUnit("12px"),
+        fontSize: fontSize,
 
         width: maxWidth - 2,
-        height: maxHeight - 2,
 
         evented: false,
         hasBorders: false,
@@ -130,8 +131,8 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
     var subtract = 3;
 
     if (!isSingleLine) {
+      var removeChars = 0;
       if (resHeight > maxHeight) {
-        var removeChars = 0;
         var currentHeight = resHeight;
         for (var i = textGr.textLines.length - 1; i >= 0; --i) {
           currentHeight -= textGr.getHeightOfLine(i);
@@ -140,10 +141,22 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
             break;
           }
         }
-
-        if (removeChars > subtract) {
-          subtract = removeChars;
+      } else if (resWidth > maxWidth && textGr.textLines.length > 1) {
+        var longestLineIndex = textGr.textLines.length - 1;
+        for (var i = textGr.textLines.length - 2; i != -1; --i)
+        {
+          if (textGr.textLines[i].length > textGr.textLines[longestLineIndex].length) {
+            longestLineIndex = i;
+          }
         }
+
+        for (var i = textGr.textLines.length - 1; i > longestLineIndex; --i) {
+          removeChars += textGr.textLines[i].length;
+        }
+      }
+
+      if (removeChars > subtract) {
+        subtract = removeChars;
       }
     }
 
