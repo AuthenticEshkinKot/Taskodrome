@@ -10,7 +10,6 @@ function Drawable(LEFT_OFFSET, RIGHT_OFFSET, TOP_OFFSET, BOTTOM_OFFSET, isForFro
     }
 
     m_graphics = graphics;
-
     return true;
   };
   

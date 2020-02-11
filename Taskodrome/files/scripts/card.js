@@ -56,7 +56,6 @@ function Card(id, owner, version, summary, description, severity, priority, prio
     });
 
     m_popup = new Popup(width, m_description, severity, priority, reproducibility, page);
-    m_popup.draw();
 
     m_popup_vis_mgr = new PopupVisibilityManager(m_popup, page);
 
@@ -555,6 +554,7 @@ function PopupVisibilityManager(/** @type {Drawable} */popup, /** @type {Page} *
 
   function tryShowPopup() {
     if (m_mouseOver && !m_mouseMoved) {
+      popup.draw();
       popup.setPos(m_lastPointerPos);
     }
     m_mouseMoved = false;
