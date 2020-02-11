@@ -141,17 +141,24 @@ function createShortenedText(text, maxWidth, maxHeight, isSingleLine) {
             break;
           }
         }
-      } else if (resWidth > maxWidth && textGr.textLines.length > 1) {
-        var longestLineIndex = textGr.textLines.length - 1;
-        for (var i = textGr.textLines.length - 2; i != -1; --i)
-        {
-          if (textGr.textLines[i].length > textGr.textLines[longestLineIndex].length) {
-            longestLineIndex = i;
+      } else if (resWidth > maxWidth) {
+        var longestLineLength = 0;
+        for (var i = 0; i != textGr.textLines.length; ++i) {
+          if (textGr.textLines[i].length > longestLineLength) {
+            longestLineLength = textGr.textLines[i].length;
           }
         }
 
-        for (var i = textGr.textLines.length - 1; i > longestLineIndex; --i) {
-          removeChars += textGr.textLines[i].length;
+        var avgCharWidth = resWidth / longestLineLength;
+
+        for (var i = 0; i != textGr.textLines.length; ++i) {
+          if (removeChars != 0) {
+            removeChars += textGr.textLines[i].length;
+          } else if (textGr.textLines[i].length * avgCharWidth > maxWidth) {
+            removeChars = Math.max(Math.round((textGr.textLines[i].length * avgCharWidth - maxWidth) / avgCharWidth), subtract);
+          } else if (textGr.textLines[i].length == longestLineLength) {
+            removeChars = Math.max(Math.round((resWidth - maxWidth) / avgCharWidth), subtract);
+          }
         }
       }
 
