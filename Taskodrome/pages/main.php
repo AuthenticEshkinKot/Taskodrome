@@ -1,7 +1,7 @@
 <?php
 
   html_robots_noindex();
-
+  require_once( config_get( 'plugin_path' ) . 'Taskodrome/core/config_helper.php' );
   layout_page_header_begin(plugin_lang_get( 'board' ));
 
   print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodrome.css')."\" />\n";
@@ -159,7 +159,7 @@
     print '<p class="status_color_map" value="'.$status_color_map.'"></p>';
 
     $status_order = null;
-    foreach( plugin_config_get("status_board_order", null, false, null, $current_project_id) as $t_value ) {
+    foreach( convertStatusEnumToString( plugin_config_get("status_board_order", null, false, null, $current_project_id)) as $t_value ) {
       $status_order .= $t_value.';';
     }
 
