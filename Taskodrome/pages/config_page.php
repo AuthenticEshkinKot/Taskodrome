@@ -5,7 +5,7 @@
 
 auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
-
+require_once( config_get( 'plugin_path' ) . 'Taskodrome/core/config_helper.php' );
 layout_page_header( plugin_lang_get( 'config_title' ) );
 
 layout_page_begin( 'manage_overview_page.php' );
@@ -42,14 +42,14 @@ print_manage_menu( 'manage_plugin_page.php' );
                     </br>
                     <span class="small">
                       <?php printf( plugin_lang_get( 'default_value' ),
-                      string_attribute( implode( ';', plugin_config_get( $t_field . '_default') ) ));
+                      string_attribute( implode( ';', convertStatusEnumToString(plugin_config_get( $t_field . '_default') )) ));
                     ?>
                     </span>
                   </th>
                   <td class="center" width="20%">
                     <span class="input">
                       <input name="<?php echo $t_field; ?>" size="75" type="text" value="<?php
-                        $t_config = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
+                        $t_config = convertStatusEnumToString(plugin_config_get( $t_field, null, false, null, helper_get_current_project()) );
                         $t_encoded = '';
                         foreach( $t_config as $t_value ) {
                           $t_encoded .= "$t_value;";
