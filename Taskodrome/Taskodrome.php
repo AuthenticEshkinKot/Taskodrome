@@ -41,10 +41,12 @@ class TaskodromePlugin extends MantisPlugin
 
   public function config()
   {
-    $status_list = explode(',', lang_get( 'status_enum_string' ));
-    foreach( $status_list as $key => $value ) {
-      $status_list[$key] = substr($value, strpos($value, ':') + 1);
-    }
+    $status_list = explode(',', config_get('status_enum_string') );
+  
+      foreach( $status_list as $key => $value ) {
+        $status_list[$key] = explode(':', $value)[0];
+      } 
+
     return array(
       "status_board_order_default" => $status_list,
       "status_board_order" => $status_list,
