@@ -4,11 +4,12 @@ form_security_validate( 'plugin_format_config_edit' );
 
 auth_reauthenticate( );
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
+require_once( config_get( 'plugin_path' ) . 'Taskodrome/core/config_helper.php' );
 
 $f_status_order = gpc_get_string( 'status_board_order' );
 
 if( plugin_config_get( 'status_board_order', null, false, null, helper_get_current_project() ) != $f_status_order ) {
-  plugin_config_set( 'status_board_order', explode(';', $f_status_order), NO_USER, helper_get_current_project() );
+ plugin_config_set( 'status_board_order', convertStringToStatusEnum(explode(';', $f_status_order)), NO_USER, helper_get_current_project() );
 }
 
 $f_cooldown_period_days = gpc_get_int( 'cooldown_period_days' );
