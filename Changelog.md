@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.7 - 2020-11-17
+### Added
+- Function to Convert Strings back to Enum (https://github.com/AuthenticEshkinKot/Taskodrome/pull/22)
+
 ## 2.1.6 - 2020-11-14
 ### Added
 - Language support for User which have different language then admin PR (https://github.com/AuthenticEshkinKot/Taskodrome/pull/20)
