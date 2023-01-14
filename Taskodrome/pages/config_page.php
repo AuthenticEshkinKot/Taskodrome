@@ -112,9 +112,13 @@ print_manage_menu( 'manage_plugin_page.php' );
                   </th>
                   <td class="center" width="20%">
                     <span class="input">
-                      <input name="<?php echo $t_field; ?>" size="75" type="checkbox"
-                       value="<?php plugin_config_get( $t_field, null, false, null, helper_get_current_project() ); ?>">
-                        </input>
+                    <input name="<?php echo $t_field; ?>" size="75" type="checkbox" <?php 
+                    $t_darkmode = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
+                    if ($t_darkmode) {
+                        echo "checked = true";
+                    }  ?>                      
+                     >
+                     </input>
                     </span>
                   </td>
                 </tr>

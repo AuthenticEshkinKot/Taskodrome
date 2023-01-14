@@ -4,7 +4,13 @@
   require_once( config_get( 'plugin_path' ) . 'Taskodrome/core/config_helper.php' );
   layout_page_header_begin(plugin_lang_get( 'board' ));
 
-  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodromeDark.css')."\" />\n";
+  $t_darkmode = plugin_config_get( "darkmode", null, false, null, helper_get_current_project() );
+  if ($t_darkmode) {
+      print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodromeDark.css')."\" />\n";
+  } else {
+      print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodromeLight.css')."\" />\n";
+  }
+
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/fabric.min.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/utils.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/data_source.js') . "\"></script>\n";
@@ -192,6 +198,7 @@
     print '<p id="autoassign" value="'. config_get( "auto_set_status_to_assigned" ) .'"></p>';
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
+    print '<p id="darkmode" value="'. plugin_config_get("darkmode", null, false, null, $current_project_id) .'"></p>';
     print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';

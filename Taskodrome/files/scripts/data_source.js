@@ -16,7 +16,8 @@ var DataSource = (function() {
   var m_lang_report_details = null;
   var m_autoassign = false;
   var m_relations = [];
-  var m_dependencies = [];
+    var m_dependencies = [];
+    var m_darkmode = false;
 
   function getIssuesRaw() {
     var ret = [];
@@ -47,7 +48,7 @@ var DataSource = (function() {
 
   var IssuesRaw = function() {
     return m_issues_raw;
-  };
+    };
 
   function getCooldownPeriod() {
     var cooldownPeriodDays = parseInt(document.getElementById("cooldown_period_days").getAttribute("value"), 10);
@@ -59,9 +60,9 @@ var DataSource = (function() {
 
   var CooldownPeriod = function() {
     return m_cooldown_period;
-  };
+    };
 
-  function getStatusesAllowanceMap() {
+     function getStatusesAllowanceMap() {
     var ret = [];
     var array = document.getElementsByClassName("status_pair");
     if (!checkExistence("getStatusesAllowanceMap", array)) {
@@ -242,14 +243,7 @@ var DataSource = (function() {
     return m_lang_report_details;
   };
 
-  function getAutoassign() {
-    var val = document.getElementById("autoassign").getAttribute("value");
-    return (val !== "0");
-  };
 
-  var IsAutoassign = function() {
-    return m_autoassign;
-  };
 
   function getRelations() {
     var ret = [];
@@ -295,7 +289,25 @@ var DataSource = (function() {
 
   var Dependencies = function(id) {
     return m_dependencies[id];
-  };
+    };
+
+function getAutoassign() {
+    var val = document.getElementById("autoassign").getAttribute("value");
+    return (val !== "0");
+};
+
+var IsAutoassign = function () {
+    return m_autoassign;
+};
+
+function getDarkmode() {
+    var val = document.getElementById("darkmode").getAttribute("value");
+    return (val !== "0");
+};
+
+    var IsDarkMode = function () {
+    return m_darkmode;
+};
 
   var CreateInst = function() {
     m_issues_raw = getIssuesRaw();
@@ -312,6 +324,8 @@ var DataSource = (function() {
     m_autoassign = getAutoassign();
     m_relations = getRelations();
     m_dependencies = getDependencies();
+      m_darkmode = getDarkmode();
+
     return {
       IssuesRaw: IssuesRaw,
       CooldownPeriod: CooldownPeriod,
@@ -327,7 +341,10 @@ var DataSource = (function() {
       LangReportDetails: LangReportDetails,
       IsAutoassign: IsAutoassign,
       Relations: Relations,
-      Dependencies: Dependencies
+      Dependencies: Dependencies,
+      IsDarkMode: IsDarkMode
+
+
     };
   };
 
