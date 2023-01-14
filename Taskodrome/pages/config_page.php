@@ -103,6 +103,22 @@ print_manage_menu( 'manage_plugin_page.php' );
                     </span>
                   </td>
                 </tr>
+
+                <tr>
+                  <?php $t_field = 'darkmode'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center" width="20%">
+                    <span class="input">
+                      <input name="<?php echo $t_field; ?>" size="75" type="checkbox"
+                       value="<?php plugin_config_get( $t_field, null, false, null, helper_get_current_project() ); ?>">
+                        </input>
+                    </span>
+                  </td>
+                </tr>
+
               </table>
             </div>
           </div>

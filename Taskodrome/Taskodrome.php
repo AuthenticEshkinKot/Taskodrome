@@ -52,7 +52,8 @@ class TaskodromePlugin extends MantisPlugin
       "status_board_order" => $status_list,
       "cooldown_period_days" => 14,
       "cooldown_period_hours" => 0,
-      "hidden_users" => array()
+      "hidden_users" => array(),
+      "darkmode" => false
     );
   }
 }
