@@ -1,0 +1,117 @@
+.grid {
+  background-color: #EEEEEE;
+  border: 1px solid #428AC8;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.tabs {
+  position: relative;
+}
+
+.tabs_cont {
+  background: #fff;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.tabs_cont .grid {
+  position: static;
+  left: 0;
+  opacity: 1;
+  width: 100%;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s ease-in-out;
+  transition: opacity .5s ease-in-out;
+}
+
+#radio_dg {
+  display: none;
+}
+
+#radio_sg {
+  display: none;
+}
+
+#radio_rg {
+  display: none;
+}
+
+#radio_dg:checked ~ .tabs_cont #tab_c2,
+#radio_dg:checked ~ .tabs_cont #tab_c3,
+#radio_sg:checked ~ .tabs_cont #tab_c1,
+#radio_sg:checked ~ .tabs_cont #tab_c3,
+#radio_rg:checked ~ .tabs_cont #tab_c1,
+#radio_rg:checked ~ .tabs_cont #tab_c2 {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+#radio_dg:checked ~ .tabs_cont #tab_c1,
+#radio_sg:checked ~ .tabs_cont #tab_c2,
+#radio_rg:checked ~ .tabs_cont #tab_c3 {
+  position: static;
+  left: 0;
+  opacity: 1;
+}
+
+#radio_dg:checked ~ #label_dg,
+#radio_sg:checked ~ #label_sg,
+#radio_rg:checked ~ #label_rg {
+  background: #428AC8;
+  color: white;
+}
+
+#radio_rg:checked ~ .checkbox_label,
+#radio_rg:checked ~ #checkbox_version {
+  opacity: 0;
+}
+
+#radio_dg:checked ~ .checkbox_label,
+#radio_sg:checked ~ .checkbox_label,
+#radio_dg:checked ~ #checkbox_version,
+#radio_sg:checked ~ #checkbox_version {
+  opacity: 1;
+}
+
+.radio_label {
+  color: #428AC8;
+  font-size: 10pt;
+  font-weight: bolder;
+  background: white;
+  border: solid #428AC8;
+  border-radius: 0.3em;
+  border-width: 1px;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  padding-bottom: 0.25em;
+  padding-top: 0.25em;
+  margin-right: 0.12em;
+  margin-bottom: 1em;
+}
+
+#checkbox_version {
+  position: relative;
+  margin-left: 1.5em;
+  top: 0.3em;
+  color: #428AC8;
+}
+
+.checkbox_label {
+  color: #428AC8;
+  font-size: 10pt;
+  font-weight: bolder;
+  background: white;
+  padding-left: 0.2em;
+  padding-right: 0.6em;
+  padding-bottom: 0.25em;
+  padding-top: 0.25em;
+  margin-right: 0.12em;
+  margin-bottom: 1em;
+}
+
+.radio_label:hover {
+  text-decoration: underline;
+}

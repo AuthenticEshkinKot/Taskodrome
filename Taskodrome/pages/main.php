@@ -4,7 +4,7 @@
   require_once( config_get( 'plugin_path' ) . 'Taskodrome/core/config_helper.php' );
   layout_page_header_begin(plugin_lang_get( 'board' ));
 
-  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodrome.css')."\" />\n";
+  print "<link rel=\"stylesheet\" type=\"text/css\" href=\"".plugin_file('taskodromeDark.css')."\" />\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/fabric.min.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/utils.js') . "\"></script>\n";
   print "<script type=\"text/javascript\" src=\"" . plugin_file('scripts/data_source.js') . "\"></script>\n";
