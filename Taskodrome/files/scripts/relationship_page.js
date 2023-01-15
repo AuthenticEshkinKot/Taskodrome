@@ -9,7 +9,9 @@ var RelPage = (function() {
   var m_size = new Size(0, 0);
   var m_pos = new Position(0, 0);
   var m_cards = [];
-  var m_lines = [];
+    var m_lines = [];
+
+
 
   function init() {
     m_page = new Page("canvas_rl", "tab_c3");
@@ -50,7 +52,7 @@ var RelPage = (function() {
     var text = new fabric.Text(msg, {
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("14px"),
-      fill: "#428AC8",
+        fill: FLAIR_COLOR,
 
       left: 10,
       top: 10,
@@ -149,7 +151,18 @@ var RelPage = (function() {
     var V_TRIE_OFFSET = 10;
     var H_TRIE_OFFSET = 10;
     var H_TREE_STEP = 10;
-    var H_CARD_STEP = 30;
+      var H_CARD_STEP = 30;
+
+      var CONNECTOR_COLOR = "#000";
+      var FLAIR_COLOR = "#428AC8";
+
+      if (DataSource.Inst().IsDarkMode()) {
+          CONNECTOR_COLOR = "#999";
+          FLAIR_COLOR = "#" + (DataSource.Inst().FlairColor());
+      };
+
+
+
 
     for (var tree_i = 0; tree_i != trie.length; ++tree_i) {
       var rect_y = 0;
@@ -185,7 +198,7 @@ var RelPage = (function() {
         {
           var branchToParent = new fabric.Line([this.connX, rect.y + Math.round(rect.height / 2), rect.x, rect.y + Math.round(rect.height / 2)], {
             strokeWidth: strokeStyle,
-            stroke: "#000000",
+              stroke: CONNECTOR_COLOR,
 
             evented: false,
             hasBorders: false,
@@ -197,7 +210,7 @@ var RelPage = (function() {
 
           branchToParent = new fabric.Line([this.connX, rect.y + Math.round(rect.height / 2), this.connX, this.connY], {
             strokeWidth: strokeStyle,
-            stroke: "#000000",
+              stroke: CONNECTOR_COLOR,
 
             evented: false,
             hasBorders: false,
@@ -221,7 +234,7 @@ var RelPage = (function() {
               var number = new fabric.Text(blocked.issue.id.toString(), {
                 fontFamily: "Arial",
                 fontSize: fabric.util.parseUnit("12px"),
-                fill: "#428AC8",
+                  fill: FLAIR_COLOR,
                 underline: true,
 
                 left: x,
@@ -248,7 +261,7 @@ var RelPage = (function() {
           if (blockedParentFound) {
             var branchToBlockedParent = new fabric.Line([rect.x + rect.width, rect.y + Math.round(rect.height / 2), x, rect.y + Math.round(rect.height / 2)], {
               strokeWidth: strokeStyle,
-              stroke: "#000000",
+                stroke: CONNECTOR_COLOR,
 
               evented: false,
               hasBorders: false,

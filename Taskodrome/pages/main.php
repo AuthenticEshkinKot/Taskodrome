@@ -199,6 +199,7 @@
     print '<p id="cooldown_period_days" value="'. plugin_config_get("cooldown_period_days", null, false, null, $current_project_id) .'"></p>';
     print '<p id="cooldown_period_hours" value="'. plugin_config_get("cooldown_period_hours", null, false, null, $current_project_id) .'"></p>';
     print '<p id="darkmode" value="'. plugin_config_get("darkmode", null, false, null, $current_project_id) .'"></p>';
+    print '<p id="flair_color" value="'. plugin_config_get("flair_color", null, false, null, $current_project_id) .'"></p>';
     print '<p id="lang_description" value="'. lang_get("description") .'"></p>';
     print '<p id="lang_severity" value="'. lang_get("severity") .'"></p>';
     print '<p id="lang_priority" value="'. lang_get("priority") .'"></p>';

@@ -53,7 +53,8 @@ class TaskodromePlugin extends MantisPlugin
       "cooldown_period_days" => 14,
       "cooldown_period_hours" => 0,
       "hidden_users" => array(),
-      "darkmode" => false
+      "darkmode" => false,
+      "flair_color" => "#01CA00"
     );
   }
 }

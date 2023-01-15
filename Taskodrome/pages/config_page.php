@@ -123,6 +123,20 @@ print_manage_menu( 'manage_plugin_page.php' );
                   </td>
                 </tr>
 
+                <tr>
+                  <?php $t_field = 'flair_color'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center" width="40%">
+                    <span class="input">
+                      <input name="<?php echo $t_field ?>" size="20" value="<?php
+                          echo plugin_config_get( $t_field, null, false, null, helper_get_current_project() ); ?>"/>
+                    </span>
+                  </td>
+                </tr>
+
               </table>
             </div>
           </div>

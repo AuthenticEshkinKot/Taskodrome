@@ -8,13 +8,23 @@ function PopupAlert(/** @type {Page} */page) {
   var V_OFFSET = 20;
 
   var TIMEOUT = 3000;
-  var DURATION = 500;
+    var DURATION = 500;
+
+    BOX_BG = "#F9F9F9";
+    STROKE_COLOR = "#C0BFC1";
+    FLAIR_COLOR = "#428AC8";
+
+    if (DataSource.Inst().IsDarkMode()) {
+        BOX_BG = "#181818";
+        STROKE_COLOR = "#AAA";
+        FLAIR_COLOR = "#EEE"; //Decided just to use white-ish instead - guarentees will stand out to user.
+    };
 
   constructor();
   function constructor() {
     m_popup.back = new fabric.Rect({
-      fill: "#F9F9F9",
-      stroke: "#C0BFC1",
+        fill: BOX_BG, // bg
+        stroke: STROKE_COLOR,
 
       rx: 1,
       ry: 1,
@@ -47,12 +57,17 @@ function PopupAlert(/** @type {Page} */page) {
 
   function redraw(msgText) {
     m_popup.group.remove(m_popup.back);
-    m_popup.group.remove(m_popup.msg);
+      m_popup.group.remove(m_popup.msg);
+
+      var msgTxtCol = "#000"
+      if (DataSource.Inst().IsDarkMode()) {
+          msgTxtCol = "#ddd"
+      }
 
     m_popup.msg = new fabric.Text(msgText, {
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("20px"),
-      fill: "#428AC8",
+        fill: msgTxtCol, //text color
 
       evented: false,
       hasBorders: false,

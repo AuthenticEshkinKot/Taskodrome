@@ -4,8 +4,17 @@ function BlockGraphics(name, /** @type {ColumnHandler} */columnHandler, /** @typ
   var m_name = name;
   var m_name_height = 0;
 
-  var TEXT_COLOR = "#428AC8";
+    var TEXT_COLOR = "#428AC8";
   var DELIMITER_COLOR = "#BFD5E1";
+
+    if (DataSource.Inst().IsDarkMode()) {
+        DELIMITER_COLOR = "#999";
+        TEXT_COLOR = "#" + (DataSource.Inst().FlairColor());
+    };
+
+
+
+
 
   var m_label = null;
   var m_delimiter = null;

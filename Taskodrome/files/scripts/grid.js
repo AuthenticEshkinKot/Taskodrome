@@ -5,7 +5,19 @@ function Grid(/** @type {ColumnHandler} */columnHandler, /** @type {Page} */page
   var m_scrollbarV = new ScrollbarV(this, page);
   var m_scrollbarH = new ScrollbarH(this, page);
   var m_cardUpdater = cardUpdater;
-  var m_checkbox_empty_version = null;
+    var m_checkbox_empty_version = null;
+
+    COLUMN_HEADER_BG = "#428AC8";
+    COLUMN_HEADER_FG = "#FFF";
+    STROKE_COLOR = "#d2d1d3";
+    FLAIR_COLOR = "#428AC8";
+
+    if (DataSource.Inst().IsDarkMode()) {
+        COLUMN_HEADER_BG = "#111";
+        FLAIR_COLOR = "#" + (DataSource.Inst().FlairColor());
+        COLUMN_HEADER_FG = "#FFF";
+        STROKE_COLOR = "#aaa";
+    };
 
   function onEmptyBlockVisibility() {
     m_blocks.setEmptyBlockVisibility(m_checkbox_empty_version.checked);
@@ -116,12 +128,12 @@ function Grid(/** @type {ColumnHandler} */columnHandler, /** @type {Page} */page
   };
 
   function drawBorders() {
-    var STROKE_WIDTH = 2;
+    var STROKE_WIDTH = 1;
     var columnWidth = columnHandler.getColumnWidth();
     for (var i = 1; i != columnHandler.getColumnNumber(); ++i) {
       var border = new fabric.Line([i * columnWidth - STROKE_WIDTH / 2, 0, i * columnWidth - STROKE_WIDTH / 2, page.getCanvas().getHeight()], {
         strokeWidth: STROKE_WIDTH,
-        stroke: "#d2d1d3",
+        stroke: STROKE_COLOR,
 
         evented: false,
         hasBorders: false,
@@ -134,12 +146,11 @@ function Grid(/** @type {ColumnHandler} */columnHandler, /** @type {Page} */page
   };
 
   function drawColumnNames() {
-    var BLUE_COLOR = "#428AC8";
     var back = new fabric.Rect({
       left: 0,
       top: 0,
 
-      fill: BLUE_COLOR,
+      fill: COLUMN_HEADER_BG,
       strokeWidth: 0,
 
       width: page.getCanvas().getWidth(),
@@ -155,7 +166,7 @@ function Grid(/** @type {ColumnHandler} */columnHandler, /** @type {Page} */page
 
     var maxHeight = 0;
     var columnWidth = columnHandler.getColumnWidth();
-    function prepareHeader(item, i) {
+      function prepareHeader(item, i) {
       item.draw();
       item.setPos(new Position(i * columnWidth, 0));
       maxHeight = Math.max(maxHeight, item.m_bounds.bottom);
@@ -243,7 +254,19 @@ function Grid(/** @type {ColumnHandler} */columnHandler, /** @type {Page} */page
   };
 };
 
+
+
+
+
+
+
 function ColumnHeader(name, count, showDelimiter, /** @type {ColumnHandler} */columnHandler, /** @type {Page} */page) {
+
+    FLAIR_COLOR = "#428AC8";
+    if (DataSource.Inst().IsDarkMode()) {
+        FLAIR_COLOR = "#" + (DataSource.Inst().FlairColor());
+    }
+
   var H_OFFSET = 7;
   var V_OFFSET = 5;
   Drawable.call(this, H_OFFSET, H_OFFSET, V_OFFSET, V_OFFSET, true, /** @type {Page} */page);
@@ -313,7 +336,7 @@ function ColumnHeader(name, count, showDelimiter, /** @type {ColumnHandler} */co
     var res = new fabric.Text("(" + m_count.number + ")", {
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("16px"),
-      fill: "#ffffff",
+      fill: FLAIR_COLOR, // Numbers in coulmn headings
 
       evented: false,
       hasBorders: false,
@@ -340,7 +363,7 @@ function ColumnHeader(name, count, showDelimiter, /** @type {ColumnHandler} */co
     var STROKE_WIDTH = 2;
     return new fabric.Line([columnHandler.getColumnWidth() - H_OFFSET - STROKE_WIDTH / 2, 0, columnHandler.getColumnWidth() - H_OFFSET - STROKE_WIDTH / 2, Math.round(m_nameGr.getScaledHeight())], {
       strokeWidth: STROKE_WIDTH,
-      stroke: "#ffffff",
+      stroke: "#ffffff", // Column header dividers
       opacity: 0.5,
 
       evented: false,
@@ -354,8 +377,7 @@ function ColumnHeader(name, count, showDelimiter, /** @type {ColumnHandler} */co
     return new fabric.Text(text, {
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("18px"),
-      fill: "#FFFFFF",
-
+      fill: "#FFFFFF",  // Column Heading Text
       evented: false,
       hasBorders: false,
       hasControls: false,

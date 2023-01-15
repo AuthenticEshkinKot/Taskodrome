@@ -15,7 +15,7 @@ function Card(id, owner, version, summary, description, severity, priority, prio
 
     if (DataSource.Inst().IsDarkMode()) {
         STROKE_COLOR = "#aaa";
-        ISSUE_LINK_COLOR = "#428AC8";
+        ISSUE_LINK_COLOR = "#" + (DataSource.Inst().FlairColor());
         CARD_HEADER_BG = "#181818";
         CARD_BODY_BG = "#111";
         CARD_BODY_FG = "#EEE";

@@ -18,6 +18,7 @@ var DataSource = (function() {
   var m_relations = [];
     var m_dependencies = [];
     var m_darkmode = false;
+    var m_flairColor = "428AC8";
 
   function getIssuesRaw() {
     var ret = [];
@@ -302,12 +303,27 @@ var IsAutoassign = function () {
 
 function getDarkmode() {
     var val = document.getElementById("darkmode").getAttribute("value");
-    return (val !== "0");
+    return (val == "1");
 };
 
     var IsDarkMode = function () {
     return m_darkmode;
-};
+    };
+
+    function getFlairColor() {
+        var val = document.getElementById("flair_color").getAttribute("value").toString().replace('#','');
+        var regex = /[0-9A-Fa-f]{6}/g;
+        if (val.match(regex)) {
+            return val
+        } else {
+            return "428AC8"
+        }
+        return val;
+    };
+
+    var FlairColor = function () {
+        return m_flairColor;
+    };
 
   var CreateInst = function() {
     m_issues_raw = getIssuesRaw();
@@ -325,6 +341,7 @@ function getDarkmode() {
     m_relations = getRelations();
     m_dependencies = getDependencies();
       m_darkmode = getDarkmode();
+      m_flairColor = getFlairColor();
 
     return {
       IssuesRaw: IssuesRaw,
@@ -342,8 +359,8 @@ function getDarkmode() {
       IsAutoassign: IsAutoassign,
       Relations: Relations,
       Dependencies: Dependencies,
-      IsDarkMode: IsDarkMode
-
+        IsDarkMode: IsDarkMode,
+      FlairColor: FlairColor
 
     };
   };

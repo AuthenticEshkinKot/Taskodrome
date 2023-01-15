@@ -36,6 +36,11 @@ if( plugin_config_get( 'darkmode', null, false, null, helper_get_current_project
   plugin_config_set( 'darkmode', $f_darkmode, NO_USER, helper_get_current_project()  );
 }
 
+$f_flair_color = gpc_get_string( 'flair_color' );
+
+if( plugin_config_get( 'flair_color', null, false, null, helper_get_current_project() ) != $f_flair_color ) {
+  plugin_config_set( 'flair_color', $f_flair_color, NO_USER, helper_get_current_project()  );
+}
 
 form_security_purge( 'plugin_format_config_edit' );
 
