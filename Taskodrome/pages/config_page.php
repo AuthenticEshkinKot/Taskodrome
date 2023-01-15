@@ -103,6 +103,40 @@ print_manage_menu( 'manage_plugin_page.php' );
                     </span>
                   </td>
                 </tr>
+
+                <tr>
+                  <?php $t_field = 'darkmode'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center" width="20%">
+                    <span class="input">
+                    <input name="<?php echo $t_field; ?>" size="75" type="checkbox" <?php 
+                    $t_darkmode = plugin_config_get( $t_field, null, false, null, helper_get_current_project() );
+                    if ($t_darkmode) {
+                        echo "checked = true";
+                    }  ?>                      
+                     >
+                     </input>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <?php $t_field = 'flair_color'; ?>
+                  <th class="category width-40">
+                    <?php echo plugin_lang_get( $t_field . '_label' ) ?>
+                    <br /><span class="small"><?php echo plugin_lang_get( $t_field . '_hint' )?></span>
+                  </th>
+                  <td class="center" width="40%">
+                    <span class="input">
+                      <input name="<?php echo $t_field ?>" size="20" value="<?php
+                          echo plugin_config_get( $t_field, null, false, null, helper_get_current_project() ); ?>"/>
+                    </span>
+                  </td>
+                </tr>
+
               </table>
             </div>
           </div>

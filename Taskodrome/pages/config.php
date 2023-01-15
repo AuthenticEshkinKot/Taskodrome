@@ -30,6 +30,18 @@ if( plugin_config_get( 'hidden_users', null, false, null, helper_get_current_pro
   plugin_config_set( 'hidden_users', explode(';', $f_hidden_users), NO_USER, helper_get_current_project()  );
 }
 
+$f_darkmode = gpc_get_bool( 'darkmode' );
+
+if( plugin_config_get( 'darkmode', null, false, null, helper_get_current_project() ) != $f_darkmode ) {
+  plugin_config_set( 'darkmode', $f_darkmode, NO_USER, helper_get_current_project()  );
+}
+
+$f_flair_color = gpc_get_string( 'flair_color' );
+
+if( plugin_config_get( 'flair_color', null, false, null, helper_get_current_project() ) != $f_flair_color ) {
+  plugin_config_set( 'flair_color', $f_flair_color, NO_USER, helper_get_current_project()  );
+}
+
 form_security_purge( 'plugin_format_config_edit' );
 
 print_successful_redirect( plugin_page( 'config_page', true ) );

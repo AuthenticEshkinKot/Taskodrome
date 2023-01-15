@@ -7,8 +7,21 @@ function Card(id, owner, version, summary, description, severity, priority, prio
   var TEXT_H_OFFSET = 12;
   var TEXT_V_OFFSET = 6;
 
-  var BLUE_TEXT_COLOR = "#428AC8";
-  var STROKE_COLOR = "#C0BFC1";
+    var ISSUE_LINK_COLOR = "#428AC8";
+    var STROKE_COLOR = "#C0BFC1";
+    var CARD_HEADER_BG = "#F9F9F9";
+    var CARD_BODY_BG = "#FFF";
+    var CARD_BODY_FG = "#111";
+
+    if (DataSource.Inst().IsDarkMode()) {
+        STROKE_COLOR = "#aaa";
+        ISSUE_LINK_COLOR = "#" + (DataSource.Inst().FlairColor());
+        CARD_HEADER_BG = "#181818";
+        CARD_BODY_BG = "#111";
+        CARD_BODY_FG = "#EEE";
+    }
+
+
 
   Drawable.call(this, H_OFFSET, H_OFFSET, V_OFFSET, 0, false, page);
 
@@ -176,7 +189,7 @@ function Card(id, owner, version, summary, description, severity, priority, prio
     var number = new fabric.Text(m_id.toString(), {
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("12px"),
-      fill: BLUE_TEXT_COLOR,
+      fill: ISSUE_LINK_COLOR,
       underline: true,
 
       left: TEXT_H_OFFSET,
@@ -221,7 +234,7 @@ function Card(id, owner, version, summary, description, severity, priority, prio
       left: 0,
       top: 0,
 
-      fill: "#F9F9F9",
+      fill: CARD_HEADER_BG,
       stroke: STROKE_COLOR,
 
       width: width,
@@ -269,7 +282,7 @@ function Card(id, owner, version, summary, description, severity, priority, prio
 
     if (add_owner) {
       m_owner.gr = createShortenedText(m_owner.value, text_maxwidth, maxHeight, false);
-      m_owner.gr.fill = BLUE_TEXT_COLOR;
+      m_owner.gr.fill = ISSUE_LINK_COLOR;
       m_owner.gr.left = TEXT_H_OFFSET;
       m_owner.gr.top = top;
       if (m_owner.value != " ") {
@@ -279,7 +292,8 @@ function Card(id, owner, version, summary, description, severity, priority, prio
       }
     }
 
-    m_summary.gr = createShortenedText(m_summary.value.toString(), text_maxwidth, maxHeight, false);
+      m_summary.gr = createShortenedText(m_summary.value.toString(), text_maxwidth, maxHeight, false);
+      m_summary.gr.fill = CARD_BODY_FG;
     m_summary.gr.left = TEXT_H_OFFSET;
     m_summary.gr.top = top;
 
@@ -291,8 +305,8 @@ function Card(id, owner, version, summary, description, severity, priority, prio
       left: 0,
       top: v_offset,
 
-      fill: "#FFFFFF",
-      stroke: STROKE_COLOR,
+        fill: CARD_BODY_BG,
+        stroke: STROKE_COLOR,
 
       width: width,
       height: Math.round(m_updateTime.stamp.top + 1.5 * m_updateTime.stamp.getScaledHeight()) - v_offset,
@@ -420,11 +434,23 @@ function Card(id, owner, version, summary, description, severity, priority, prio
   };
 };
 
+
+
+
+
 function Popup(cardWidth, description, severity, priority, reproducibility, /** @type {Page} */page) {
   var TEXT_H_OFFSET = 12;
   var TEXT_V_OFFSET = 8;
 
-  var STROKE_COLOR = "#C0BFC1";
+    var STROKE_COLOR = "#C0BFC1";
+    var CARD_BODY_BG = "#FFF";
+    var CARD_BODY_FG = "#111";
+
+    if (DataSource.Inst().IsDarkMode()) {
+        STROKE_COLOR = "#aaa";
+        CARD_BODY_BG = "#111";
+        CARD_BODY_FG = "#EEE";
+    }
 
   Drawable.call(this, 0, 0, 0, 0, true, page);
 
@@ -439,33 +465,32 @@ function Popup(cardWidth, description, severity, priority, reproducibility, /** 
     var height = 0;
 
     var descriptionGr = createHeaderTextPair(DataSource.Inst().LangReportDetails()["description"] + ": ", description, maxWidth - 2 * TEXT_H_OFFSET);
-    descriptionGr.left = TEXT_H_OFFSET;
+      descriptionGr.left = TEXT_H_OFFSET;
     descriptionGr.top = TEXT_V_OFFSET;
     width = descriptionGr.getScaledWidth();
     height += TEXT_V_OFFSET + descriptionGr.getScaledHeight();
 
     var severityGr = createHeaderTextPair(DataSource.Inst().LangReportDetails()["severity"] + ": ", severity, maxWidth - 2 * TEXT_H_OFFSET);
-    severityGr.left = TEXT_H_OFFSET;
+      severityGr.left = TEXT_H_OFFSET;
     severityGr.top = Math.round(height + TEXT_V_OFFSET);
     width = Math.max(severityGr.getScaledWidth(), width);
     height += TEXT_V_OFFSET + severityGr.getScaledHeight();
 
     var priorityGr = createHeaderTextPair(DataSource.Inst().LangReportDetails()["priority"] + ": ", priority, maxWidth - 2 * TEXT_H_OFFSET);
-    priorityGr.left = TEXT_H_OFFSET;
+      priorityGr.left = TEXT_H_OFFSET;
     priorityGr.top = Math.round(height + TEXT_V_OFFSET);
     width = Math.max(priorityGr.getScaledWidth(), width);
     height += TEXT_V_OFFSET + priorityGr.getScaledHeight();
 
     var reproducibilityGr = createHeaderTextPair(DataSource.Inst().LangReportDetails()["reproducibility"] + ": ", reproducibility, maxWidth - 2 * TEXT_H_OFFSET);
-    reproducibilityGr.left = TEXT_H_OFFSET;
+      reproducibilityGr.left = TEXT_H_OFFSET;
     reproducibilityGr.top = Math.round(height + TEXT_V_OFFSET);
     width = Math.max(reproducibilityGr.getScaledWidth(), width);
     height += 2 * TEXT_V_OFFSET + reproducibilityGr.getScaledHeight();
 
     var back = new fabric.Rect({
-      fill: "#FFFFFF",
+        fill: CARD_BODY_BG,
       stroke: STROKE_COLOR,
-
       width: Math.round(width + 2 * TEXT_H_OFFSET),
       height: Math.round(height),
 
@@ -490,15 +515,17 @@ function Popup(cardWidth, description, severity, priority, reproducibility, /** 
       fontFamily: "Arial",
       fontSize: fabric.util.parseUnit("12px"),
       fontStyle: "bold",
-
       evented: false,
       hasBorders: false,
       hasControls: false,
       selectable: false
     });
 
+      headerGr.fill = CARD_BODY_FG;
+
     var textGr = createShortenedText(text, Math.round(maxLineWidth - headerGr.getScaledWidth()), page.getCanvas().getHeight(), false);
-    textGr.left = Math.round(headerGr.getScaledWidth());
+      textGr.left = Math.round(headerGr.getScaledWidth());
+      textGr.fill = CARD_BODY_FG;
 
     return new fabric.Group([headerGr, textGr], {
       hasBorders: false,
